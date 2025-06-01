@@ -1,0 +1,39 @@
+.navbar{
+    background-color: black;
+}
+
+.sidebar{
+    background-color: black;
+    height: 88vh
+}
+
+.sidebar {
+  /* width: 250px; */
+  /* background-color: #343a40; */
+  color: white;
+  /* height: 100%; */
+  /* z-index: 10; */
+  /* padding-top: 20px; */
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.sidebar li {
+  padding: 5px;
+  padding-top: 10px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.sidebar li:hover {
+  /* background-color: #495057; */
+  cursor: pointer;
+}
+
+li.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+}

@@ -1,3 +1,56 @@
 import { Routes } from '@angular/router';
+import { LoginComponent } from './components/login/login.component';
+import { LayoutComponent } from './components/layout/layout.component';
+import { HomeComponent } from './home/home.component';
+import { ServiceControlComponent } from './components/service-control/service-control.component';
+import { OrdersComponent } from './components/orders/orders.component';
+import { ComplaintsComponent } from './components/complaints/complaints.component';
+import { SuggestionsComponent } from './components/suggestions/suggestions.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { MetadataComponent } from './components/metadata/metadata.component';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'layout',
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'service-control',
+        component: ServiceControlComponent,
+      },
+      {
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'orders',
+        component: OrdersComponent,
+      },
+      {
+        path: 'complaints',
+        component: ComplaintsComponent,
+      },
+      {
+        path: 'suggestions',
+        component: SuggestionsComponent,
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+      },
+      {
+        path: 'metadata',
+        component: MetadataComponent,
+      },
+    ],
+  },
+];

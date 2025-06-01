@@ -1,0 +1,21 @@
+.logo {
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logoImg{
+    width: 300px;
+}
+
+.login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.border {
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px black;
+}

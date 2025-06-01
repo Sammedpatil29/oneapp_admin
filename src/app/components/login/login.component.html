@@ -1,0 +1,25 @@
+<div class="row" style="height: 100vh">
+    <div class="col logo fs-1 text-white">
+        <!-- <img class="logoImg" src="../../../assets/icon-512.webp" alt=""> -->
+         <strong>ONE</strong>APP <br> <span class="text-secondary">ADMIN</span>
+    </div>
+    <div class="col login">
+        <div class="border w-50 p-3 text-center">
+            <h3>Authority Login</h3>
+            <div class="d-flex flex-column">
+                <mat-form-field class="example-full-width mt-3" appearance="outline">
+                <mat-label>Mobile Number</mat-label>
+                <input matInput [(ngModel)]="mobileNumber" placeholder="Mobile Number" value="">
+            </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" [(ngModel)]="password" placeholder="Password" value="">
+            </mat-form-field>
+            <a href="" class="mb-2">forgot password?</a>
+            <button class="btn btn-dark" [disabled]="password == '' || mobileNumber == ''" (click)="logIn()">
+                Login
+            </button>
+            </div>
+        </div>
+    </div>
+</div>

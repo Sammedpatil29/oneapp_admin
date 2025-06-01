@@ -1,0 +1,24 @@
+<div class="m-3">
+    @if (!isLoading) {
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h3 class=" ms-3">Service Control ({{services.length}})</h3>
+        <button class="btn btn-dark" (click)="openDialogToAddService()">Add New Service</button>
+        </div>
+    <div class="row">
+  @for (item of services; track $index) {
+    <div class="col-md-3 mb-3 mb-sm-0" (click)="openDialog(item)">
+    <div class="card mb-3 position-relative">
+      <div class="card-body">
+        <h5 class="card-title">{{item.title}}</h5>
+        <p class="card-text fw-bold" [ngClass]="getStatusClass(item.status)">{{statusMap[item.status]}}</p>
+        <!-- <a [routerLink]="['/layout/home']" routerLinkActive="router-link-active"  class="btn btn-primary">Go somewhere</a> -->
+      </div>
+      <img class="position-absolute" style="bottom: -20px; right: -20px; width: 80px" [src]="item.img" alt="">
+    </div>
+  </div>
+  }
+</div>
+    } @else {
+        <app-loader></app-loader>
+    }
+</div>
