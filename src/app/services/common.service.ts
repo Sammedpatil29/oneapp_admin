@@ -10,6 +10,7 @@ export class CommonService {
 
   serviceUrl = 'https://oneapp-backend.onrender.com/api/services/'
   metaDataUrl = 'https://oneapp-backend.onrender.com/api/metadata/3/'
+  bannerUrl = 'https://oneapp-backend.onrender.com/api/banner/'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -33,6 +34,22 @@ export class CommonService {
 
   updateMetaData(params:any, id:any){
     return this.http.put(`${this.metaDataUrl}`, params)
+  }
+
+  getBanners(){
+    return this.http.get(this.bannerUrl)
+  }
+
+  createBanner(params:any){
+    return this.http.post(this.bannerUrl, params)
+  }
+
+  deleteBanner(id:any){
+    return this.http.delete(`${this.bannerUrl}${id}/`)
+  }
+
+  updateBanner(id:any, params:any){
+    return this.http.put(`${this.bannerUrl}${id}/`, params)
   }
 
 
