@@ -8,6 +8,7 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { AddEditServicesComponent } from '../add-edit-services/add-edit-services.component';
 import { CommonModule } from '@angular/common';
 import { unsubscribe } from 'diagnostics_channel';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-service-control',
@@ -18,9 +19,9 @@ import { unsubscribe } from 'diagnostics_channel';
 })
 export class ServiceControlComponent implements OnInit{
   readonly dialog = inject(MatDialog);  
-services: any = [];
+services: any;
 isLoading: boolean = false
-  constructor(private commonService: CommonService){
+  constructor(private commonService: CommonService, private cdr: ChangeDetectorRef){
   }
 
   ngOnInit() {
@@ -32,9 +33,7 @@ isLoading: boolean = false
     this.commonService.getServices().subscribe((res)=>{
       this.isLoading = false
         this.services = res
-        setTimeout(()=>{
-          this.services = [...this.services]
-        })
+        this.cdr.detectChanges();
         console.log(this.services)
            
     })
@@ -47,7 +46,9 @@ isLoading: boolean = false
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.getServices()
+      if(result == true){
+          this.getServices()
+      }
       console.log(`Dialog result: ${result}`);
     });
   }

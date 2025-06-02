@@ -78,9 +78,9 @@ selectedCategory = ''
     "className": JSON.parse(this.className)
     }
     this.commonService.updateService(params,this.data.item.id).subscribe((res)=>{
-      alert('updated successfully')
+      console.log('updated')
     }, error => {
-      alert('error occured')
+      console.log('error occured')
     })
   }
 
