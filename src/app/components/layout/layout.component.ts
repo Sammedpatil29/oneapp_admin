@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -9,4 +9,10 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 })
 export class LayoutComponent {
 
+  constructor(private router: Router){}
+
+openSettings(){
+  console.log('hbfwgfyewgf')
+  this.router.navigate(['/layout/settings'])
+}
 }

@@ -8,6 +8,7 @@ import { ComplaintsComponent } from './components/complaints/complaints.componen
 import { SuggestionsComponent } from './components/suggestions/suggestions.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { MetadataComponent } from './components/metadata/metadata.component';
+import { NotfoundComponent } from './components/notfound/notfound.component';
 
 export const routes: Routes = [
   {
@@ -52,5 +53,9 @@ export const routes: Routes = [
         component: MetadataComponent,
       },
     ],
+  },
+  {
+    path: '**',
+    component: NotfoundComponent,
   },
 ];

@@ -9,10 +9,11 @@ import {FormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { LoaderComponent } from "../loader/loader.component";
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-metadata',
-  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, LoaderComponent],
+  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule,MatExpansionModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, LoaderComponent],
   templateUrl: './metadata.component.html',
   styleUrl: './metadata.component.css'
 })

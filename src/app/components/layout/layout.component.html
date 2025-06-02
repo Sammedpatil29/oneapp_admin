@@ -6,7 +6,7 @@
     <strong>ONE</strong>APP <br> <span class="text-secondary">ADMIN</span>
 </div>
 <div>
-    <img class="me-4" style="width: 30px" src="../../../assets/system-solid-8-account-hover-account.gif" alt="">
+    <img (click)="openSettings()" class="me-4" style="width: 30px; cursor: pointer" src="../../../assets/system-solid-8-account-hover-account.gif" alt="">
 </div>
 </div>
 </nav>
@@ -15,7 +15,18 @@
 
 <div class="row">
     <!-- sidedbar starts -->
-    <div class="col-1 sidebar">
+    <div class="col-1"></div>
+  <!-- sidedbar ends -->
+
+  <!-- main content starts -->
+    <div class="col-11 ps-2" style="height: 86vh; overflow-y:scroll; margin-left: 8vw">
+        <router-outlet></router-outlet>
+    </div>
+    <!-- main content ends -->
+</div>
+</div>
+
+<div class="sidebar pe-2 position-fixed" style="width: 7vw; top: 50px">
     <ul class="mt-4 ms-2">
       <li routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/layout/home']"
@@ -54,12 +65,7 @@
     </li>
     </ul>
   </div>
-  <!-- sidedbar ends -->
 
-  <!-- main content starts -->
-    <div class="col-11" style="height: 86vh; overflow-y:scroll">
-        <router-outlet></router-outlet>
-    </div>
-    <!-- main content ends -->
-</div>
-</div>
+<footer class="position-fixed bottom-0 w-100" style="background-color: black;">
+    <p class="text-white text-center m-0 p-1">&copy; 2025 OneApp. All rights reserved.</p>
+</footer>

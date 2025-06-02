@@ -4,7 +4,7 @@
 
 .sidebar{
     background-color: black;
-    height: 88vh
+    height: 100vh
 }
 
 .sidebar {
@@ -36,4 +36,8 @@
 li.active {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 20px;
+}
+
+.row {
+        --bs-gutter-x: 0px !important
 }
