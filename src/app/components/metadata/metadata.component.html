@@ -7,7 +7,11 @@
     Main Changes
 </h3>
    <section>
+
+    <!-- accordion -->
      <mat-accordion>
+
+      <!-- metadata  -->
     <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title> Meta Data </mat-panel-title>
@@ -60,7 +64,10 @@
     <app-loader></app-loader>
 }
   </mat-expansion-panel>
-  <mat-expansion-panel hideToggle>
+  <!-- metadata -->
+
+  <!-- banners -->
+  <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title> Banners </mat-panel-title>
     </mat-expansion-panel-header>
@@ -141,8 +148,23 @@
     <app-loader></app-loader>
 }
   </mat-expansion-panel>
-  
+<!-- banners -->
+
+<!-- service area  -->
+  <mat-expansion-panel (opened)="initMap()">
+    <mat-expansion-panel-header>
+      <mat-panel-title> Set Service Area </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div #mapContainer id="map" style="height: 500px; width: 100%;"></div>
+
+<button (click)="exportAsJson()" class="btn btn-dark mt-2 float-end" [disabled]="!polygonCoords.length">
+  Save Area
+</button>
+  </mat-expansion-panel>
+  <!-- service area  -->
+
 </mat-accordion>
+<!-- accordion  -->
    </section>
 
    <div style="height: 50px;">

@@ -1,6 +1,41 @@
 
-@if(orders == []){
-<p>orders w0rks!</p>
+@if(orders){
+<google-map
+  height="100vh"
+  width="100vw"
+  class="position-relative"
+  [center]="center"
+  [zoom]="zoom">
+
+@for (point of generatedPoints; track $index) {
+    <map-marker 
+    (mapClick)="onMarkerClick(point)"
+    style="z-index: 999"
+    [position]="point"
+    [label]="''"
+    [title]="'Spot'">
+  </map-marker>
+  }
+
+   <map-polygon
+    [paths]="polygonPaths"
+    [options]="{
+      fillColor: '#FF0000',
+      fillOpacity: 0.3,
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2
+    }">
+  </map-polygon>
+
+  <mat-chip-listbox class="mat-mdc-chip-set-stacked position-absolute" style="top: 10px; right: 20px" aria-label="Cutest dog breeds">
+  @for (item of chipsOptions; track item) {
+    <mat-chip-option class="w-auto" [selected] = "item == 'Map View'">{{item}}</mat-chip-option>
+  }
+</mat-chip-listbox>
+
+</google-map>
+
 } @else {
     <app-empty-data></app-empty-data>
 }
