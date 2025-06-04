@@ -11,6 +11,7 @@ export class CommonService {
   serviceUrl = 'https://oneapp-backend.onrender.com/api/services/'
   metaDataUrl = 'https://oneapp-backend.onrender.com/api/metadata/3/'
   bannerUrl = 'https://oneapp-backend.onrender.com/api/banner/'
+  polygon = 'https://oneapp-backend.onrender.com/api/polygon/6/'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -50,6 +51,14 @@ export class CommonService {
 
   updateBanner(id:any, params:any){
     return this.http.put(`${this.bannerUrl}${id}/`, params)
+  }
+
+  getPolygonData(){
+    return this.http.get(this.polygon)
+  }
+
+  updatePlygonData(params:any){
+    return this.http.put(this.polygon, params)
   }
 
 

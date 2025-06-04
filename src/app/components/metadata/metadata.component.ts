@@ -29,18 +29,10 @@ imgUrl = ''
 isCreateBanner:boolean = false
 isMetaDataLoading:boolean = false
 isBannersLoading:boolean = false
+strokeColor = ''
+areaColor = ''
 
-polygonCoords: google.maps.LatLngLiteral[] = [
-  { lat: 16.721820, lng: 75.041123 },
-  { lat: 16.731534, lng: 75.044394 },
-  { lat: 16.733517, lng: 75.050348 },
-  { lat: 16.736431, lng: 75.062371 },
-  { lat: 16.727415, lng: 75.075158 },
-  { lat: 16.716180, lng: 75.073141 },
-  { lat: 16.704540, lng: 75.067789 },
-  { lat: 16.709470, lng: 75.055160 },
-  { lat: 16.714950, lng: 75.044911 },
-];
+polygonCoords: google.maps.LatLngLiteral[] = [];
 
 
 @ViewChild('mapContainer', { static: false }) mapContainer: any;
@@ -52,10 +44,36 @@ polygonCoords: google.maps.LatLngLiteral[] = [
   ngOnInit(): void {
       this.getMetaData()
       this.getbanners()
+      this.getPolygonData()
   }
 
   ngAfterViewInit(): void {
     this.initMap();
+  }
+
+  getPolygonData(){
+    console.log('polygon called')
+    this.commonService.getPolygonData().subscribe((res: any)=>{
+      this.polygonCoords = res.polygon
+      this.areaColor = res.inside_color
+      this.strokeColor = res.border_color
+      console.log(this.polygonCoords)
+    })
+  }
+
+  updatePolygonData(){
+    let params = {
+      "center": {
+        "lat": 16.715316578418758,
+        "lng": 75.05882421691895
+    },
+    "polygon": this.polygonCoords,
+    "inside_color": this.areaColor,
+    "border_color": this.strokeColor
+    }
+    this.commonService.updatePlygonData(params).subscribe((res)=> {
+      console.log('coords updated successfully')
+    })
   }
 
   getMetaData(){
@@ -116,10 +134,11 @@ polygonCoords: google.maps.LatLngLiteral[] = [
     })
   }
 
-  updateBanner(id:any, img:any, route:any){
+  updateBanner(id:any, img:any, route:any, active:any){
     let params = {
       "img": img,
-      "route": route
+      "route": route,
+      "is_active": active
     }
     console.log(params)
     console.log('updating')
@@ -144,8 +163,9 @@ polygonCoords: google.maps.LatLngLiteral[] = [
         drawingModes: [google.maps.drawing.OverlayType.POLYGON],
       },
       polygonOptions: {
-        fillColor: '#2196F3',
+        fillColor: this.areaColor,
         fillOpacity: 0.4,
+        strokeColor: this.strokeColor,
         strokeWeight: 2,
         clickable: true,
         editable: true,
@@ -171,8 +191,9 @@ polygonCoords: google.maps.LatLngLiteral[] = [
     if (this.polygonCoords.length > 0) {
   const defaultPolygon = new google.maps.Polygon({
     paths: this.polygonCoords,
-    fillColor: '#2196F3',
+    fillColor: this.areaColor,
     fillOpacity: 0.4,
+    strokeColor: this.strokeColor,
     strokeWeight: 2,
     clickable: true,
     editable: true,
@@ -199,19 +220,19 @@ polygonCoords: google.maps.LatLngLiteral[] = [
 
   }
 
-  exportAsJson(): void {
-    console.log(this.polygonCoords)
-    const mapData = {
-      serviceableArea: this.polygonCoords,
-    };
-    const blob = new Blob([JSON.stringify(mapData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
+  // exportAsJson(): void {
+  //   console.log(this.polygonCoords)
+  //   const mapData = {
+  //     serviceableArea: this.polygonCoords,
+  //   };
+  //   const blob = new Blob([JSON.stringify(mapData, null, 2)], { type: 'application/json' });
+  //   const url = URL.createObjectURL(blob);
 
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'map.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+  //   const a = document.createElement('a');
+  //   a.href = url;
+  //   a.download = 'map.json';
+  //   a.click();
+  //   URL.revokeObjectURL(url);
+  // }
 
 }

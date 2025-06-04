@@ -13,8 +13,8 @@ export class OrdersComponent {
  readonly chipsOptions: string[] = ['Map View', 'List View'];
 orders = []
 
-center: google.maps.LatLngLiteral = { lat: 16.731534, lng: 75.050348 };
-  zoom = 14.5;
+center: google.maps.LatLngLiteral = { lat: 16.715672, lng: 75.061847 };
+  zoom = 14;
 
   polygonPaths: google.maps.LatLngLiteral[] = [
     { lat: 16.721820, lng: 75.041123 }, 
