@@ -12,6 +12,9 @@ export class CommonService {
   metaDataUrl = 'https://oneapp-backend.onrender.com/api/metadata/3/'
   bannerUrl = 'https://oneapp-backend.onrender.com/api/banner/'
   polygon = 'https://oneapp-backend.onrender.com/api/polygon/6/'
+  orders = 'https://oneapp-backend.onrender.com/api/orders/'
+  suggestions = 'https://oneapp-backend.onrender.com/api/suggestions/user-suggestion/'
+  eventsUrl = 'https://oneapp-backend.onrender.com/api/event/events-by-token/'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -59,6 +62,18 @@ export class CommonService {
 
   updatePlygonData(params:any){
     return this.http.put(this.polygon, params)
+  }
+
+  getOrders(){
+    return this.http.get(this.orders)
+  }
+
+  getSuggestions(params:any){
+    return this.http.post(this.suggestions, params)
+  }
+
+  getEvents(params:any){
+    return this.http.post(this.eventsUrl, params)
   }
 
 

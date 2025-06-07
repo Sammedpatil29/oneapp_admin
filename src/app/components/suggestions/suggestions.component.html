@@ -1,6 +1,25 @@
-
-@if(suggestions == []){
-<p>suggestions w0rks!</p>
-} @else {
+@if (!isLoading) {
+    @if (suggestions.length > 0) {
+    <div class="d-flex justify-content-between align-items-center mt-3">
+  <h3 class="ms-3">Suggestions</h3>
+</div>
+    <div class="p-3 pt-0">
+         @for (item of suggestions; track $index) {
+    <div class="box p-2 mt-3">
+      <div class="d-flex">
+        <h6>{{ item.subject }}</h6> &nbsp;
+        <small>by {{ item.user_name | titlecase }}</small>
+      </div>
+      <q><i>{{ item.suggesion }}</i></q>
+      <hr class="my-1">
+      <small>{{ item.created_time | date: 'dd/MM/yyyy' }} &bull; {{ item.created_time | date: 'HH:mm' }}</small>
+    </div>
+  }
+    </div>
+ } @else {
     <app-empty-data></app-empty-data>
+ }
+} @else {
+    <app-loader></app-loader>
 }
+

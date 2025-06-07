@@ -9,6 +9,9 @@ import { SuggestionsComponent } from './components/suggestions/suggestions.compo
 import { SettingsComponent } from './components/settings/settings.component';
 import { MetadataComponent } from './components/metadata/metadata.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
+import { InventoryComponent } from './components/inventory/inventory.component';
+import { EventsComponent } from './components/events/events.component';
+import { PropertyComponent } from './components/property/property.component';
 
 export const routes: Routes = [
   {
@@ -51,6 +54,20 @@ export const routes: Routes = [
       {
         path: 'metadata',
         component: MetadataComponent,
+      },
+      {
+        path: 'inventory',
+        component: InventoryComponent,
+        children: [
+          {
+            path: 'events',
+            component: EventsComponent,
+          },
+          {
+            path: 'property',
+            component: PropertyComponent,
+          },
+        ],
       },
     ],
   },

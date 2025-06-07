@@ -31,6 +31,7 @@ isMetaDataLoading:boolean = false
 isBannersLoading:boolean = false
 strokeColor = ''
 areaColor = ''
+isMapUpdateLoading: boolean = false
 
 polygonCoords: google.maps.LatLngLiteral[] = [];
 
@@ -62,6 +63,7 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   }
 
   updatePolygonData(){
+    this.isMapUpdateLoading = true
     let params = {
       "center": {
         "lat": 16.715316578418758,
@@ -73,6 +75,9 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
     }
     this.commonService.updatePlygonData(params).subscribe((res)=> {
       console.log('coords updated successfully')
+      this.isMapUpdateLoading = false
+    }, error => {
+      this.isMapUpdateLoading = false
     })
   }
 

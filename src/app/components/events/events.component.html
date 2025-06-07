@@ -1,0 +1,27 @@
+@if (!isLoading) {
+    @if(events.length > 0) {
+        <div class="d-flex justify-content-between align-items-center mt-3">
+  <h3 class="ms-3">Events ({{events.length}})</h3>
+  <button class="btn btn-dark me-3">Add New Event</button>
+</div>
+       
+    <div class="row">
+         @for (item of events; track $index) {
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
+            <div class="card position-relative">
+                <img [src]="item.imageUrl" class="event-img" alt="">
+                <div class="position-absolute" style="right: 10px; top: 5px">
+                    <i class="bi bi-eye-fill me-3 text-secondary"></i>
+                    <i class="bi bi-pencil-fill fs-6 text-secondary"></i>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+
+    } @else {
+        <app-empty-data></app-empty-data>
+    }
+} @else {
+    <app-loader></app-loader>
+}

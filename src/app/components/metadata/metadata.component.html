@@ -169,6 +169,11 @@
         </div>
     <button (click)="updatePolygonData()" class="btn btn-dark mb-2 float-end" [disabled]="!polygonCoords.length">
   Save Area
+  @if (isMapUpdateLoading) {
+    <div class="spinner-grow fs-6" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+  }
 </button>
       </div>
     <div #mapContainer id="map" style="height: 500px; width: 100%;"></div>

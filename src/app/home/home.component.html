@@ -1,2 +1,52 @@
-<!-- <app-loader></app-loader> -->
- home works
+<div class="d-flex justify-content-between align-items-center mt-3">
+  <h3 class="ms-3">Dashboard</h3>
+</div>
+<div class="">
+  <div class="row g-1 mt-2">
+    <div class="col-4">
+      <div class="card">
+  <google-chart
+    [title]="chart.title"
+    [type]="chart.type"
+    [data]="chart.data"
+    [options]="chart.options"   
+    [height]="200">   
+  </google-chart>
+</div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+         <google-chart
+    [title]="chart.title"
+    [type]="chart.type"
+    [data]="chart.data"
+    [options]="chart.options"   
+    [height]="200">   
+  </google-chart>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+         <google-chart
+    [title]="chart.title"
+    [type]="chart.type"
+    [data]="chart.data"
+    [options]="chart.options"   
+    [height]="200">   
+  </google-chart>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+  <div class="card">
+    <google-chart
+      [type]="lineChart.type"
+      [data]="lineChart.data"
+      [options]="lineChart.options"
+      [height]="200">
+    </google-chart>
+  </div>
+</div>
+  </div>
+</div>

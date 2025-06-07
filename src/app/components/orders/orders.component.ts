@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EmptyDataComponent } from "../empty-data/empty-data.component";
 import { GoogleMapsModule } from '@angular/google-maps';
 import {MatChipsModule} from '@angular/material/chips';
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-orders',
@@ -9,9 +10,9 @@ import {MatChipsModule} from '@angular/material/chips';
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit{
  readonly chipsOptions: string[] = ['Map View', 'List View'];
-orders = []
+orders: any;
 
 center: google.maps.LatLngLiteral = { lat: 16.715672, lng: 75.061847 };
   zoom = 14;
@@ -44,8 +45,21 @@ center: google.maps.LatLngLiteral = { lat: 16.715672, lng: 75.061847 };
 
   selectedMarker: any = ''
 
+  constructor(private commonService: CommonService){}
+
+  ngOnInit(): void {
+      this.getOrders()
+  }
+
   onMarkerClick(marker: google.maps.LatLngLiteral) {
     this.selectedMarker = marker;
     console.log('Marker clicked:', marker);
+  }
+
+  getOrders(){
+    this.commonService.getOrders().subscribe((res)=>{
+      this.orders = res
+      console.log(this.orders)
+    } )
   }
 }

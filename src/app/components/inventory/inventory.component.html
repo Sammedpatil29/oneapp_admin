@@ -1,0 +1,29 @@
+@if (isLoading == false) {
+    <div class="row">
+    <div class="sidebar col-1 p-0">
+        <!-- <div class="text-center">
+            Services
+        </div> -->
+        <ul class="ps-0">
+            @for (item of services; track $index) {
+                <li>
+                <div
+    class="list-item px-1"
+    [routerLink]="[`/layout/inventory/${item.route}`]"
+    routerLinkActive="active-item"
+    [title]="item.title"
+  >
+    <h5 class="pt-3 pb-2 text-truncate">{{item.title}}</h5>
+    <div class="indicator" [ngClass]="getStatusClass(item.status)" [title]="item.status"></div>
+  </div>
+            </li>
+            }
+        </ul>
+    </div>
+    <div class="col-11">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+} @else {
+    <app-loader></app-loader>
+}
