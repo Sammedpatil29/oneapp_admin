@@ -29,6 +29,7 @@ imgUrl = ''
 isCreateBanner:boolean = false
 isMetaDataLoading:boolean = false
 isBannersLoading:boolean = false
+isMapDataLoading:boolean = false
 strokeColor = ''
 areaColor = ''
 isMapUpdateLoading: boolean = false
@@ -45,7 +46,6 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   ngOnInit(): void {
       this.getMetaData()
       this.getbanners()
-      this.getPolygonData()
   }
 
   ngAfterViewInit(): void {
@@ -54,10 +54,12 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
 
   getPolygonData(){
     console.log('polygon called')
+    this.isMapDataLoading = true
     this.commonService.getPolygonData().subscribe((res: any)=>{
       this.polygonCoords = res.polygon
       this.areaColor = res.inside_color
       this.strokeColor = res.border_color
+      this.isMapDataLoading = false
       console.log(this.polygonCoords)
     })
   }
@@ -154,6 +156,7 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   }
 
   initMap(): void {
+    this.getPolygonData()
     this.map = new google.maps.Map(this.mapContainer.nativeElement, {
       center: { lat: 16.7218, lng: 75.0503 },
       zoom: 14,

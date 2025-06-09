@@ -22,7 +22,7 @@ ngOnInit(): void {
 
 getSuggestions(){
   let params = {
- "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOCwicGhvbmUiOiI5NTkxNDIwMDY4IiwidXNlcl9uYW1lIjoiU2FtbWVkIEJpcmFkYXJwYXRpbCIsImlhdCI6MTc0ODQxNzc3Nn0.eKquCtEXSiEf5_LDKnowHiHQ3oQFPQi_rdMhwMIlSAY"
+ "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJwaG9uZSI6Iis5MTk1OTE0MjAwNjgiLCJ1c2VyX25hbWUiOiJzYW1tZWQiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0OTQ2MDI4Mn0.tO4XklsZN3Qw4QLHNctoEgW59dk3pOWAeF7qO8Imv8s"
 }
 this.isLoading = true
 this.suggestions = []

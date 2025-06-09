@@ -10,7 +10,7 @@ import { GoogleChartsModule, ChartType } from 'angular-google-charts';
 })
 export class HomeComponent{
 chart = {
-    title: '',
+    title: 'Orders',
      type: ChartType.PieChart,
     data: [
       ['Work', 8],
@@ -43,7 +43,7 @@ chart = {
     ],
     columnNames: ['Month', 'Sales'],
     options: {
-      title: 'Monthly Sales',
+      title: 'Compare Sales',
       width: '1200',
       backgroundColor: 'transparent',
       explorer: {
