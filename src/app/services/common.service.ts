@@ -15,6 +15,7 @@ export class CommonService {
   orders = 'https://oneapp-backend.onrender.com/api/orders/'
   suggestions = 'https://oneapp-backend.onrender.com/api/suggestions/user-suggestion/'
   eventsUrl = 'https://oneapp-backend.onrender.com/api/event/events-by-token/'
+  createEventsUrl = 'https://oneapp-backend.onrender.com/api/event/'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -74,6 +75,10 @@ export class CommonService {
 
   getEvents(params:any){
     return this.http.post(this.eventsUrl, params)
+  }
+
+  createEvent(params:any){
+    return this.http.post(this.createEventsUrl, params)
   }
 
 

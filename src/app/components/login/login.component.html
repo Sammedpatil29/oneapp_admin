@@ -1,4 +1,4 @@
-<div class="row" style="height: 100vh">
+<div class="row" style="height: 100vh; overflow-y: hidden">
     <div class="col-md-5 logo fs-1 text-white">
         <!-- <img class="logoImg" src="../../../assets/icon-512.webp" alt=""> -->
          <strong>ONE</strong>APP <br> <span class="text-secondary">ADMIN</span>
@@ -16,7 +16,7 @@
                 <input matInput type="password" [(ngModel)]="password" placeholder="Password" value="">
             </mat-form-field>
             <a href="javascript:void(0)" class="mb-2" (click)="forgotPassword()">forgot password?</a>
-            <button class="btn btn-dark" [disabled]="password == '' || mobileNumber == '' || isLoading" (click)="logIn()">
+            <button class="btn btn-dark" [disabled]="password == '' || mobileNumber.length !== 10 || isLoading" (click)="logIn()">
                  
                 @if (isLoading) {
                     <app-button-spinner></app-button-spinner>

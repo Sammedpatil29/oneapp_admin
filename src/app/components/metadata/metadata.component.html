@@ -164,8 +164,11 @@
     </mat-expansion-panel-header>
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
-          <div class="me-2">Stroke Color</div><input [(ngModel)]="strokeColor" type="color" id="colorPicker" name="colorPicker" value="#ff0000">
-      <div class="mx-2">Area Color</div><input [(ngModel)]="areaColor" (input)="initMap()" type="color" id="colorPicker" name="colorPicker" value="#ff0000">
+          <div class="me-2">Stroke Color</div><input [(ngModel)]="strokeColor" type="color" id="colorPicker" name="colorPicker" value="strokeColor">
+      <div class="mx-2">Area Color</div><input [(ngModel)]="areaColor" (input)="initMap()" type="color" id="colorPicker" name="colorPicker" value="areaColor">
+          @if (isMapDataLoading) {
+            <app-button-spinner class="ms-3"></app-button-spinner>
+          }
         </div>
     <button (click)="updatePolygonData()" class="btn btn-dark mb-2 float-end" [disabled]="!polygonCoords.length">
   Save Area
@@ -176,7 +179,7 @@
   }
 </button>
       </div>
-    <div #mapContainer id="map" style="height: 500px; width: 100%;"></div>
+    <div #mapContainer id="map" style="height: 500px; width: 100%; border-radius: 20px"></div>
 
 
   </mat-expansion-panel>

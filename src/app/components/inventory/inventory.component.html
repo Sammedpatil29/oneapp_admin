@@ -1,6 +1,6 @@
 @if (isLoading == false) {
     <div class="row">
-    <div class="sidebar col-1 p-0">
+    <div class="sidebar col-2 p-0">
         <!-- <div class="text-center">
             Services
         </div> -->
@@ -13,14 +13,14 @@
     routerLinkActive="active-item"
     [title]="item.title"
   >
-    <h5 class="pt-3 pb-2 text-truncate">{{item.title}}</h5>
+    <h5 class="pt-3 pb-2">{{item.title}}</h5>
     <div class="indicator" [ngClass]="getStatusClass(item.status)" [title]="item.status"></div>
   </div>
             </li>
             }
         </ul>
     </div>
-    <div class="col-11 h-100">
+    <div class="col-10" style="height:86vh; overflow-y: scroll">
         <router-outlet></router-outlet>
     </div>
 </div>

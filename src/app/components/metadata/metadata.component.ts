@@ -10,10 +10,11 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { LoaderComponent } from "../loader/loader.component";
 import {MatExpansionModule} from '@angular/material/expansion';
+import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 
 @Component({
   selector: 'app-metadata',
-  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule,MatExpansionModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, LoaderComponent],
+  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatExpansionModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, LoaderComponent, ButtonSpinnerComponent],
   templateUrl: './metadata.component.html',
   styleUrl: './metadata.component.css'
 })
@@ -78,6 +79,7 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
     this.commonService.updatePlygonData(params).subscribe((res)=> {
       console.log('coords updated successfully')
       this.isMapUpdateLoading = false
+      this.getPolygonData()
     }, error => {
       this.isMapUpdateLoading = false
     })
