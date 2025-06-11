@@ -17,6 +17,7 @@ import { title } from 'process';
 export class EventsComponent implements OnInit{
  events: any;
  isLoading: boolean = false
+ token: any;
  readonly dialog = inject(MatDialog);  
   constructor(private commonService: CommonService){}
 
@@ -26,8 +27,9 @@ export class EventsComponent implements OnInit{
 
   getEvents(){
     this.events = []
+    this.token = sessionStorage.getItem('token')
     let params = {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJwaG9uZSI6Iis5MTk1OTE0MjAwNjgiLCJ1c2VyX25hbWUiOiJzYW1tZWQiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0OTQ2MDI4Mn0.tO4XklsZN3Qw4QLHNctoEgW59dk3pOWAeF7qO8Imv8s"
+        "token": this.token
     }
     this.isLoading = true
     this.commonService.getEvents(params).subscribe((res:any)=>{
@@ -39,14 +41,14 @@ export class EventsComponent implements OnInit{
     })
   }
 
-  openDialogToAddService() {
+  openDialogToAddEvent() {
       const dialogRef = this.dialog.open(EditEventsComponent, {
         data: {type: 'add'},
         maxWidth: '75vw',
       });
   
       dialogRef.afterClosed().subscribe((result: any) => {
-        if(result == true){
+        if(result == true || result == undefined){
           this.getEvents()
         }
        
@@ -54,5 +56,21 @@ export class EventsComponent implements OnInit{
       });
     }
 
+
+    editEvent(item:any){
+      console.log('edit event')
+        const dialogRef = this.dialog.open(EditEventsComponent, {
+              data: {item: item, type: 'edit'},
+              maxWidth: '75vw',
+            });
+  
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if(result == true || result == undefined){
+          this.getEvents()
+        }
+       
+        console.log(`Dialog result: ${result}`);
+      });
+    }
     
 }

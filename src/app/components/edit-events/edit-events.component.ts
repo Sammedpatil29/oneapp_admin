@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {ChangeDetectionStrategy, inject} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
@@ -32,7 +32,7 @@ export interface Fruit {
   templateUrl: './edit-events.component.html',
   styleUrl: './edit-events.component.css'
 })
-export class EditEventsComponent {
+export class EditEventsComponent implements OnInit{
   readonly addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   readonly fruits = signal<Fruit[]>([{name: 'Lemon'}, {name: 'Lime'}, {name: 'Apple'}]);
@@ -65,10 +65,42 @@ selectedCategory = ''
 email = '' 
 contact = '' 
 ticketPrice = '' 
+ticketCount = '' 
 isFree: boolean = false
 date: any;
 time: any;
 isLoading: boolean = false
+token: any;
+is_active: boolean = true
+isDeleting: boolean = false
+
+
+ngOnInit(): void {
+    this.token = sessionStorage.getItem('token')
+    if(this.data.type == 'edit'){
+        this.title = this.data.item.title
+        this.description = this.data.item.description
+        this.location = this.data.item.location.location
+        this.lat = this.data.item.location.lat
+        this.lng = this.data.item.location.lng
+        this.selectedStatus = this.data.item.status
+        this.duration = this.data.item.duration
+        this.organiser = this.data.item.organizer
+        this.imgUrl = this.data.item.imageUrl
+        this.recurence = this.data.item.recurrence
+        this.registrationUrl = this.data.item.registrationUrl
+        this.category = this.data.item.category
+        this.email = this.data.item.email
+        this.contact = this.data.item.contact
+        this.ticketPrice = this.data.item.ticketPrice
+        this.ticketCount = this.data.item.ticketcount
+        this.isFree = this.data.item.isFree
+        this.date = this.data.item.date
+        this.time = this.data.item.time
+        this.isFree = this.data.item.isFree
+        this.is_active = this.data.item.is_active
+      }
+}
 
 add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
@@ -116,10 +148,8 @@ add(event: MatChipInputEvent): void {
   }
 
   createEvent(){
-    const hours = this.time.getHours().toString().padStart(2, '0'); // Get hours and pad if single digit
-const minutes = this.time.getMinutes().toString().padStart(2, '0')
       let params = {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJwaG9uZSI6Iis5MTk1OTE0MjAwNjgiLCJ1c2VyX25hbWUiOiJzYW1tZWQiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0OTQ2MDI4Mn0.tO4XklsZN3Qw4QLHNctoEgW59dk3pOWAeF7qO8Imv8s",
+  "token": this.token,
     "title": this.title,
     "description": this.description,
     "location": {
@@ -128,14 +158,16 @@ const minutes = this.time.getMinutes().toString().padStart(2, '0')
       "lng": this.lng
     },
     "date": this.date.toISOString().split('T')[0],
-    "time": `${hours}:${minutes}`,
+    "time": this.time,
     "duration": this.duration,
     "category": 'events',
     "tags": "hfrufhufurf",
     "organizer": this.organiser,
-    "contact": 'adajdaf@gmail.com',
+    "contact": this.contact,
+    "email": this.email,
     "isFree": this.isFree,
     "ticketPrice": this.ticketPrice,
+    "ticketcount": this.ticketCount,
     "imageUrl": this.imgUrl,
     "registrationUrl": this.registrationUrl,
     "recurrence": this.recurence
@@ -149,6 +181,69 @@ const minutes = this.time.getMinutes().toString().padStart(2, '0')
         this.isLoading = false
         alert('error while adding event')
       })
+    }
+
+    deleteEvent(){
+      let params = {
+        "token": this.token
+      }
+      this.isDeleting = true
+      this.commonService.deleteEvent(this.data.item.id, params).subscribe((res)=> {
+        alert("Event deleted Successfully")
+        this.isDeleting = false
+        this.dialogRef.close();
+      },error => {
+        this.isDeleting = false
+        alert(`error while deleting event: ${error}`)
+      })
+    }  
+
+    formatDate(){
+        const hours = this.time.getHours().toString().padStart(2, '0'); 
+      const minutes = this.time.getMinutes().toString().padStart(2, '0')
+      this.time = `${hours}:${minutes}`
+      console.log(this.time)
+    }
+
+
+    updateEvent(){
+      let params = {
+        "token": this.token,
+        "title": this.title,
+        "description": this.description,
+        "location": {
+            "lat": this.lat,
+            "lng": this.lng,
+            "location": this.location
+        },
+        "date": this.date,
+        "time": this.time,
+        "duration": this.duration,
+        "category": "events",
+        "tags": "hfrufhufurf",
+        "organizer": this.organiser,
+        "contact": this.contact,
+        "email": this.email,
+        "ticketcount": this.ticketCount,
+        "is_active": this.is_active,
+        "ticketoptions": [],
+        "isFree": this.isFree,
+        "ticketPrice": this.ticketPrice,
+        "imageUrl": this.imgUrl,
+        "registrationUrl": this.registrationUrl,
+        "recurrence": this.recurence,
+        "user": null
+    }
+    this.isLoading = true
+    this.commonService.editEvent(this.data.item.id, params).subscribe((res)=> {
+      alert("Event updated successfully")
+      this.isLoading = false
+      this.dialogRef.close();
+      
+    }, error => {
+      this.isLoading = false
+      alert("error while updating event")
+    })
     }
 
 

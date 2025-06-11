@@ -16,6 +16,7 @@ export class CommonService {
   suggestions = 'https://oneapp-backend.onrender.com/api/suggestions/user-suggestion/'
   eventsUrl = 'https://oneapp-backend.onrender.com/api/event/events-by-token/'
   createEventsUrl = 'https://oneapp-backend.onrender.com/api/event/'
+  deleteEventUrl = 'https://oneapp-backend.onrender.com/api/event/delete-events-by-token/'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -81,5 +82,11 @@ export class CommonService {
     return this.http.post(this.createEventsUrl, params)
   }
 
+  deleteEvent(id:any, params:any){
+    return this.http.post(`${this.deleteEventUrl}${id}/`, params)
+  } 
 
+  editEvent(id:any, params:any){
+    return this.http.put(`${this.createEventsUrl}${id}/`, params)
+  }
 }

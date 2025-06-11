@@ -21,8 +21,8 @@
         </div>
         <div class="col-3">
             <mat-form-field class="example-full-width mt-3" appearance="outline">
-                <mat-label>Offers</mat-label>
-                <input matInput [(ngModel)]="offers"  placeholder="Eg.Flat Rs5 OFF" value="offers">
+                <mat-label>Tickets Available</mat-label>
+                <input matInput [(ngModel)]="ticketCount"  placeholder="100 or 9999" value="ticketCount">
             </mat-form-field>
         </div>
         <div class="col-3">
@@ -63,6 +63,10 @@
         </div>
         <div class="d-flex align-items-center col-2">
             <span class="me-2">Is Free?</span><input id='checkbox' [(ngModel)]="isFree" name="checkbox" type="checkbox">
+        </div>
+
+        <div class="d-flex align-items-center col-2">
+            <span class="me-2">Is Active?</span><input id='checkbox' [(ngModel)]="is_active" value="is_active" name="checkbox" type="checkbox">
         </div>
         <div class="col-3" [hidden]="isFree">
              <mat-form-field class="example-full-width mt-3" appearance="outline">
@@ -169,13 +173,13 @@
             
 <mat-form-field appearance="outline">
     <mat-label>Choose a Time</mat-label>
-  <input matInput [matTimepicker]="timepicker" [(ngModel)]="time" placeholder="Select time">
+  <input matInput [matTimepicker]="timepicker" [(ngModel)]="time" (ngModelChange)="formatDate()" placeholder="Select time">
   <mat-timepicker #timepicker></mat-timepicker>
 </mat-form-field>
         </div>
     </div>
 
-    <div class="border p-3" style="border-radius: 20px; background-color: rgba(16, 219, 16, 0.377)">
+    <div class="border p-3 mb-3" style="border-radius: 20px; background-color: rgba(16, 219, 16, 0.377)">
        <span>
         <strong>Note - </strong> Please check all the details before adding
        </span>
@@ -185,14 +189,26 @@
 <mat-dialog-actions class="d-flex justify-content-between">
     <div>
         @if (data.type == 'edit') {
-            <button matButton class="btn btn-outline-danger me-2">Delete</button>
+            <button matButton class="btn btn-outline-danger me-2" (click)="deleteEvent()">
+                @if (isDeleting) {
+                    <app-button-spinner></app-button-spinner>
+                } @else {
+                    Delete
+                }
+            </button>
         }
     
     </div>
   <div>
     <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Close</button>
   @if (data.type == 'edit') {
-    <button matButton [mat-dialog-close]="true" class="btn btn-dark" cdkFocusInitial >Save</button>
+    <button matButton class="btn btn-dark" cdkFocusInitial (click)="updateEvent()">
+        @if (isLoading) {
+            <app-button-spinner></app-button-spinner>
+        } @else {
+            Update
+        }
+    </button>
   } @else {
     <button matButton  class="btn btn-dark" [disabled]="isLoading" (click)="createEvent()" cdkFocusInitial>
         @if (isLoading) {

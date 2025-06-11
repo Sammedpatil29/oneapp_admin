@@ -71,10 +71,10 @@
         <mat-form-field appearance="outline" class="mt-3">
   <mat-label>City</mat-label>
   <mat-select [(ngModel)]="selectedCities" multiple>
-    @for (item of cities; track item) {
-      <mat-option [value]="item">{{ item }}</mat-option>
-    }
-  </mat-select>
+  @for (item of cities; track item) {
+    <mat-option [value]="item">{{ item }}</mat-option>
+  }
+</mat-select>
 </mat-form-field>
         </div>
         <img style="height: 100px; width: auto" [src]="imgUrl" alt="">

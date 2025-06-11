@@ -6,10 +6,10 @@
     <div class="col-4">
       <div class="card">
   <google-chart
-    [title]="chart.title"
-    [type]="chart.type"
-    [data]="chart.data"
-    [options]="chart.options"   
+    [title]="servicesChart.title"
+    [type]="servicesChart.type"
+    [data]="servicesChart.data"
+    [options]="servicesChart.options"   
     [height]="200">   
   </google-chart>
 </div>
@@ -28,17 +28,17 @@
     <div class="col-4">
       <div class="card">
          <google-chart
-    [title]="chart.title"
-    [type]="chart.type"
-    [data]="chart.data"
-    [options]="chart.options"   
+    [title]="salesChart.title"
+    [type]="salesChart.type"
+    [data]="salesChart.data"
+    [options]="salesChart.options"   
     [height]="200">   
   </google-chart>
       </div>
     </div>
   </div>
-  <div class="row mt-2">
-    <div class="col">
+  <div class="row g-1 mt-2">
+    <div class="col-8">
   <div class="card">
     <google-chart
       [type]="lineChart.type"
@@ -46,6 +46,15 @@
       [options]="lineChart.options"
       [height]="200">
     </google-chart>
+  </div>
+</div>
+<div class="col-4">
+  <div class="card">
+    <small class="p-2 d-flex align-items-baseline"> <div class="indicator me-1"></div> <span>Live</span></small>
+    <div class="p-3 d-flex flex-column align-items-center justify-content-center">
+    <h2>Todays Orders - 20</h2>
+    <h2>Todays Sales - 2000</h2>
+  </div>
   </div>
 </div>
   </div>

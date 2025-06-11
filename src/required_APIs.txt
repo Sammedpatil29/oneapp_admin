@@ -1,0 +1,17 @@
+- Events API
+    - Add new admin users token to GET, DELETE, POST and PUT API
+    - Add email option - not Mandatory
+    - Add contact option - Mandatory (It is already exist but email validation is their remove it)
+    - Add ticketCount - Mandatory
+    - Add is_active option
+    - Add ticketOptions (Array) eg: Movie ticket options gold class and silver [500, 300]
+    - Add Category in Array Method 
+
+- Admin Users API
+    - Add DELETE, PUT methods
+    - Add is_active option in Admin Users 
+    - make sure all modifications rights should be with Admin only
+    - User should change only personal details.
+
+- For Charts (Only Counts)
+    - 

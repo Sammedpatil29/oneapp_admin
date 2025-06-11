@@ -50,7 +50,7 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   }
 
   ngAfterViewInit(): void {
-    this.initMap();
+    this.getPolygonData()
   }
 
   getPolygonData(){
@@ -60,6 +60,7 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
       this.polygonCoords = res.polygon
       this.areaColor = res.inside_color
       this.strokeColor = res.border_color
+      this.initMap();
       this.isMapDataLoading = false
       console.log(this.polygonCoords)
     })
@@ -158,7 +159,7 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   }
 
   initMap(): void {
-    this.getPolygonData()
+    
     this.map = new google.maps.Map(this.mapContainer.nativeElement, {
       center: { lat: 16.7218, lng: 75.0503 },
       zoom: 14,

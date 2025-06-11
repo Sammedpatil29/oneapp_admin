@@ -27,7 +27,7 @@ width = ''
 route = ''
 selectedStatus = ''
 className: any
-selectedCities: any
+selectedCities = []
 imgUrl = ''
 category: any
 selectedCategory = ''
