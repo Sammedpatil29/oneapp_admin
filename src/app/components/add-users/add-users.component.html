@@ -53,16 +53,28 @@
 <mat-dialog-actions class="d-flex justify-content-between">
     <div>
         @if (data.type == 'edit') {
-            <button matButton class="btn btn-outline-danger me-2">Delete</button>
+            <button matButton class="btn btn-outline-danger me-2" (click)="deleteUser()">
+                @if (isDeleting) {
+                    <app-button-spinner></app-button-spinner>
+                } @else {
+                    Delete
+                }
+            </button>
         }
-    <!-- @if (count > 2) {
+    @if (count > 2) {
         <i>*click <span class="text-danger">{{10 - count}}</span> more times to delete</i>
-    } -->
+    }
     </div>
   <div>
     <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Cancel</button>
   @if (data.type == 'edit') {
-    <button matButton [mat-dialog-close]="true" class="btn btn-dark" cdkFocusInitial>Save</button>
+    <button matButton class="btn btn-dark" cdkFocusInitial (click)="updateUser()">
+        @if (userUpdating) {
+            <app-button-spinner></app-button-spinner>
+        } @else {
+            Save
+        }
+    </button>
   } @else {
     <button matButton class="btn btn-dark" [disabled]="isLoading" cdkFocusInitial (click)="createUser()">
         @if (isLoading) {

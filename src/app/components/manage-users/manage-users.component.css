@@ -14,3 +14,13 @@ td, th {
 tr:nth-child(even) {
   background-color: #e2e2e2b6;
 }
+
+.table-row {
+  cursor: pointer;
+}
+
+.table-row:hover {
+  background-color: black;
+  /* box-shadow: 4px 4px 2px red; */
+  color: white;
+}

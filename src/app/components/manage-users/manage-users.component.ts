@@ -19,7 +19,7 @@ import { AddUsersComponent } from '../add-users/add-users.component';
 export class ManageUsersComponent implements OnInit{
   readonly dialog = inject(MatDialog);
   allUsers: any;
-  isLoading: boolean = false
+  isUsersLoading: boolean = false
 
   constructor(private http:HttpClient, private commonService: CommonService){}
 
@@ -34,6 +34,23 @@ export class ManageUsersComponent implements OnInit{
       });
 
     dialogRef.afterClosed().subscribe(result => {
+      if(result == undefined || result == 'true'){
+        this.getUsers()
+      }
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openEditDialog(item:any){
+    const dialogRef = this.dialog.open(AddUsersComponent, {
+        data: {item: item, type: 'edit'},
+        maxWidth: '75vw',
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == undefined || result == 'true'){
+        this.getUsers()
+      }
       console.log(`Dialog result: ${result}`);
     });
   }
@@ -42,16 +59,28 @@ export class ManageUsersComponent implements OnInit{
     let params = {
       "token": sessionStorage.getItem('token')
     }
-    this.isLoading = true
+    this.isUsersLoading = true
       this.commonService.getAllUsers(params).subscribe((res:any)=> {
           this.allUsers = res
-          this.isLoading = false
+          this.isUsersLoading = false
       }, error => {
-        this.isLoading = false
+        this.isUsersLoading = false
       })
   }  
 
-  editUser(){
-    
+  getStatus(isActive:any){
+    if(isActive){
+      return 'Active'
+    } else {
+      return 'Inactive'
+    }
+  }
+
+  getStatusColor(isActive:any){
+    if(isActive){
+      return 'text-success'
+    } else {
+      return 'text-danger'
+    }
   }
 }

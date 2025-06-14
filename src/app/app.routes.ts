@@ -14,6 +14,7 @@ import { EventsComponent } from './components/events/events.component';
 import { PropertyComponent } from './components/property/property.component';
 import { authGuard } from './auth.guard';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { GroceryComponent } from './components/grocery/grocery.component';
 
 export const routes: Routes = [
   {
@@ -73,6 +74,10 @@ export const routes: Routes = [
           {
             path: 'property',
             component: PropertyComponent,
+          },
+          {
+            path: 'grocery',
+            component: GroceryComponent,
           },
         ],
       },

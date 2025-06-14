@@ -1,29 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LoaderComponent } from "../components/loader/loader.component";
 import { GoogleChartsModule, ChartType } from 'angular-google-charts';
 import { ButtonSpinnerComponent } from "../components/button-spinner/button-spinner.component";
 import { CommonModule } from '@angular/common';
 import { CommonService } from '../services/common.service';
+import { unsubscribe } from 'diagnostics_channel';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   imports: [LoaderComponent, GoogleChartsModule, ButtonSpinnerComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
-export class HomeComponent implements OnInit{
-  isLoading: boolean = false
+export class HomeComponent implements OnInit, OnDestroy{
+  isLoading: boolean = false 
   isDataLoading: boolean = false
+  private apiSub!: Subscription;
 
   constructor(private commonService: CommonService){}
 
   ngOnInit(): void {
       this.getServiceCount()
+      this.getOrdersCount()
       setTimeout(()=>{
         setInterval(()=>{
         this.loadCountOnInterval()
       }, 10000)
       },5000)
+  }
+
+  ngOnDestroy(): void {
+      if(this.apiSub){
+        this.apiSub.unsubscribe()
+      }
   }
 
 
@@ -127,7 +137,16 @@ chart = {
   getServiceCount(){
     this.isLoading = true
     this.commonService.servicesCount().subscribe((res:any)=> {
-        this.servicesChart.data = res
+       this.servicesChart.data = res
+        this.isLoading = false
+    })
+  }
+
+  getOrdersCount(){
+    this.isLoading = true
+    this.commonService.ordersCount().subscribe((res:any)=> {
+         this.chart.data = res[0]
+        this.salesChart.data = res[0]
         this.isLoading = false
         console.log(this.servicesChart.data)
     })
@@ -135,7 +154,7 @@ chart = {
 
   loadCountOnInterval(){
     this.isDataLoading = true
-    this.commonService.servicesCount().subscribe((res:any)=> {
+    this.apiSub = this.commonService.servicesCount().subscribe((res:any)=> {
         this.servicesChart.data = res
         this.isDataLoading = false
         console.log(this.servicesChart.data)

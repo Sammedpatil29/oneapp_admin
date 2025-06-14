@@ -1,6 +1,7 @@
-<div class="d-flex justify-content-between align-items-center mt-3" style="top: 16px; z-index: 1">
-  <h3 class="ms-3">Manage Users</h3>
-  <button class="btn btn-dark me-3" (click)="addNewUser()">Add New User</button>
+<!-- @if (!isUsersLoading) { -->
+    <div class="d-flex justify-content-between align-items-center mt-3" style="top: 16px; z-index: 1">
+  <h3 class="">Manage Users</h3>
+  <button class="btn btn-dark" (click)="addNewUser()">Add New User</button>
 </div>
 
 @if (allUsers.length > 0) {
@@ -13,17 +14,17 @@
     <th>Contact</th>
     <th>Email</th>
     <th>Join Date</th>
-    <!-- <th>Status</th> -->
+    <th>Status</th>
   </tr>
   @for (item of allUsers; track $index) {
-    <tr>
+    <tr (click)="openEditDialog(item)" class="table-row">
     <td>{{$index + 1}}</td>
     <td>{{item.first_name | titlecase}}&nbsp;{{item.last_name | titlecase}}</td>
     <td>{{item.role}}</td>
     <td>{{item.phone}}</td>
     <td>{{item.email}}</td>
     <td>{{item.date_joined | date: 'dd/MM/yyyy'}}</td>
-    <!-- <td>{{item.is_active}}</td> -->
+    <td [ngClass]="getStatusColor(item.is_active)">{{getStatus(item.is_active)}}</td>
   </tr>
   }
   
@@ -33,3 +34,6 @@
 } @else {
     <app-empty-data></app-empty-data>
 }
+<!-- } @else {
+    <app-loader></app-loader>
+} -->

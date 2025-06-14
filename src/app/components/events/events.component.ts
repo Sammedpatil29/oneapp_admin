@@ -18,6 +18,7 @@ export class EventsComponent implements OnInit{
  events: any;
  isLoading: boolean = false
  token: any;
+ view = 'table';
  readonly dialog = inject(MatDialog);  
   constructor(private commonService: CommonService){}
 

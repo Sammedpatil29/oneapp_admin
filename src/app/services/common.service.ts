@@ -20,6 +20,10 @@ export class CommonService {
   getUsersUrl = 'https://oneapp-backend.onrender.com/api/adminuser/admin-list/'
   createUserUrl = 'https://oneapp-backend.onrender.com/api/adminuser/admin-create/'
   serviceCountUrl = 'https://oneapp-backend.onrender.com/api/services/count/'
+  ordersCountUrl = 'https://oneapp-backend.onrender.com/api/orders/scheduled-orders/'
+  updateUserUrl = 'https://oneapp-backend.onrender.com/api/adminuser/admin-detail/'
+  deleteUserUrl = 'https://oneapp-backend.onrender.com/api/adminuser/admin-delete/'
+  getGroceryListUrl = 'https://oneapp-backend.onrender.com/api/grocery/grocery-list/'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -101,7 +105,23 @@ export class CommonService {
     return this.http.post(this.createUserUrl, params)
   }
 
+  updateUser(id:any, params:any){
+    return this.http.put(`${this.updateUserUrl}${id}/`, params)
+  }
+
   servicesCount(){
     return this.http.get(this.serviceCountUrl)
+  }
+
+  ordersCount(){
+    return this.http.get(this.ordersCountUrl)
+  }
+
+  deleteUser(id:any, params:any){
+    return this.http.post(`${this.deleteUserUrl}${id}/`, params)
+  } 
+
+  getGroceryList(params:any){
+    return this.http.post(this.getGroceryListUrl, params)
   }
 }

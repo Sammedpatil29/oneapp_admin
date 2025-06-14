@@ -18,3 +18,28 @@
     color: white !important;
     cursor: pointer;
 }
+
+table {
+   font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 10px !important;
+}
+
+td {
+  border: 1px solid black;
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  /* border: 1px solid black; */
+  text-align: left;
+  padding: 8px;
+  background-color: black;
+  color: white;
+}
+
+/* tr:nth-child(even) {
+  background-color: #dddddd;
+} */

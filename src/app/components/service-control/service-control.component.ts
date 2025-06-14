@@ -35,7 +35,6 @@ isLoading: boolean = false
         this.services = res
         this.cdr.detectChanges();
         console.log(this.services)
-           
     })
   }
 
