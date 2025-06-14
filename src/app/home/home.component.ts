@@ -1,14 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { LoaderComponent } from "../components/loader/loader.component";
 import { GoogleChartsModule, ChartType } from 'angular-google-charts';
+import { ButtonSpinnerComponent } from "../components/button-spinner/button-spinner.component";
+import { CommonModule } from '@angular/common';
+import { CommonService } from '../services/common.service';
 
 @Component({
   selector: 'app-home',
-  imports: [LoaderComponent, GoogleChartsModule],
+  imports: [LoaderComponent, GoogleChartsModule, ButtonSpinnerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent{
+export class HomeComponent implements OnInit{
+  isLoading: boolean = false
+  isDataLoading: boolean = false
+
+  constructor(private commonService: CommonService){}
+
+  ngOnInit(): void {
+      this.getServiceCount()
+      setTimeout(()=>{
+        setInterval(()=>{
+        this.loadCountOnInterval()
+      }, 10000)
+      },5000)
+  }
+
+
+
   available = 2
 chart = {
     title: 'Orders',
@@ -34,8 +53,8 @@ chart = {
     title: 'Services',
      type: ChartType.PieChart,
     data: [
-      ['Not Available', 1],
-      ['Available', this.available]
+      ['Not Available', 0],
+      ['Available', 1]
     ],
     // columnNames: ['Task', 'Hours per Day'],
     options: {
@@ -44,7 +63,6 @@ chart = {
       width: '100%',
       is3D: false,
       pieHole: 0.3,
-      colors: ['red', 'green']
     }
   };
 
@@ -70,16 +88,16 @@ chart = {
   };
 
   lineChart = {
-    type: ChartType.LineChart,
+    type: ChartType.AreaChart,
     data: [
-      ['May 1', 10, 2000],
-      ['May 2', 32, 4000],
-      ['May 3', 43, 566],
-      ['May 4', 2, 2344],
-      ['May 5', 4, 9087],
-      ['May 6', 56, 2345],
-      ['May 7', 44, 6756],
-      ['May 8', 89, 1234],
+      ['May 1', 1500, 2000],
+      ['May 2', 2000, 4000],
+      ['May 3', 700, 566],
+      ['May 4', 2000, 2344],
+      ['May 5', 5000, 9087],
+      ['May 6', 1000, 2345],
+      ['May 7', 3000, 6756],
+      ['May 8', 600, 1234],
     ],
     columnNames: ['Day', 'Orders', 'Sales'],
     options: {
@@ -105,4 +123,22 @@ chart = {
       legend: { position: 'right' },
     }
   };
+
+  getServiceCount(){
+    this.isLoading = true
+    this.commonService.servicesCount().subscribe((res:any)=> {
+        this.servicesChart.data = res
+        this.isLoading = false
+        console.log(this.servicesChart.data)
+    })
+  }
+
+  loadCountOnInterval(){
+    this.isDataLoading = true
+    this.commonService.servicesCount().subscribe((res:any)=> {
+        this.servicesChart.data = res
+        this.isDataLoading = false
+        console.log(this.servicesChart.data)
+    })
+  }
 }

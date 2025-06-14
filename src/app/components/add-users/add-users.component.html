@@ -1,0 +1,76 @@
+<h2 mat-dialog-title>
+    @if(data.type == 'edit'){
+        Edit User
+    } @else {
+        Add New User
+    }
+</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="row">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3" appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput [(ngModel)]="firstName"  placeholder="First Name" value="firstName">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3" appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput [(ngModel)]="lastName"  placeholder="Last Name" value="lastName">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3" appearance="outline">
+                <mat-label>Contact</mat-label>
+                <input matInput [(ngModel)]="contact"  placeholder="Mobile Number" value="contact">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3" appearance="outline">
+                <mat-label>email</mat-label>
+                <input matInput [(ngModel)]="email"  placeholder="Email" value="email">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3" appearance="outline">
+                <mat-label>Role</mat-label>
+                <input matInput [(ngModel)]="role"  placeholder="Role" value="role">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3" appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" [(ngModel)]="password"  placeholder="Password" value="password">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            is active? <input type="checkbox" [(ngModel)]="isActive">
+        </div>
+    </div>
+        
+  
+</mat-dialog-content>
+<mat-dialog-actions class="d-flex justify-content-between">
+    <div>
+        @if (data.type == 'edit') {
+            <button matButton class="btn btn-outline-danger me-2">Delete</button>
+        }
+    <!-- @if (count > 2) {
+        <i>*click <span class="text-danger">{{10 - count}}</span> more times to delete</i>
+    } -->
+    </div>
+  <div>
+    <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Cancel</button>
+  @if (data.type == 'edit') {
+    <button matButton [mat-dialog-close]="true" class="btn btn-dark" cdkFocusInitial>Save</button>
+  } @else {
+    <button matButton class="btn btn-dark" [disabled]="isLoading" cdkFocusInitial (click)="createUser()">
+        @if (isLoading) {
+            <app-button-spinner></app-button-spinner>
+        } @else {
+            Create
+        }
+    </button>
+  }
+  </div>
+</mat-dialog-actions>

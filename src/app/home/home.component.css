@@ -9,3 +9,8 @@
     background-color: red;
     border-radius: 50%;
 }
+
+.spinner-grow {
+    --bs-spinner-width: 1rem;
+    --bs-spinner-height: 1rem;
+}

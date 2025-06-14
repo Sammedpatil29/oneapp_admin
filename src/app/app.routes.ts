@@ -13,6 +13,7 @@ import { InventoryComponent } from './components/inventory/inventory.component';
 import { EventsComponent } from './components/events/events.component';
 import { PropertyComponent } from './components/property/property.component';
 import { authGuard } from './auth.guard';
+import { ManageUsersComponent } from './components/manage-users/manage-users.component';
 
 export const routes: Routes = [
   {
@@ -56,6 +57,10 @@ export const routes: Routes = [
       {
         path: 'metadata',
         component: MetadataComponent,
+      },
+      {
+        path: 'manageUsers',
+        component: ManageUsersComponent,
       },
       {
         path: 'inventory',

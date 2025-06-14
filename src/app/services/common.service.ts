@@ -17,6 +17,9 @@ export class CommonService {
   eventsUrl = 'https://oneapp-backend.onrender.com/api/event/events-by-token/'
   createEventsUrl = 'https://oneapp-backend.onrender.com/api/event/'
   deleteEventUrl = 'https://oneapp-backend.onrender.com/api/event/delete-events-by-token/'
+  getUsersUrl = 'https://oneapp-backend.onrender.com/api/adminuser/admin-list/'
+  createUserUrl = 'https://oneapp-backend.onrender.com/api/adminuser/admin-create/'
+  serviceCountUrl = 'https://oneapp-backend.onrender.com/api/services/count/'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -88,5 +91,17 @@ export class CommonService {
 
   editEvent(id:any, params:any){
     return this.http.put(`${this.createEventsUrl}${id}/`, params)
+  }
+
+  getAllUsers(params:any){
+    return this.http.post(this.getUsersUrl, params)
+  }
+
+  createUser(params:any){
+    return this.http.post(this.createUserUrl, params)
+  }
+
+  servicesCount(){
+    return this.http.get(this.serviceCountUrl)
   }
 }

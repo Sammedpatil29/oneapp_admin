@@ -9,7 +9,7 @@
          @for (item of events; track $index) {
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
             <div class="card position-relative">
-                <img [src]="item.imageUrl" (click)="editEvent(item)" class="border event-img" alt="">
+                <img [src]="item.imageUrl" (click)="editEvent(item)" class="border event-img img-fluid" alt="">
                 <div class="position-absolute" style="right: 10px; top: 5px">
                     <!-- <i class="bi bi-eye-fill me-3 text-secondary"></i> -->
                     <i class="bi bi-pencil-fill fs-6 text-secondary" (click)="editEvent(item)"></i>

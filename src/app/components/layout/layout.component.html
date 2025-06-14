@@ -26,7 +26,7 @@
 </div>
 </div>
 
-<div class="sidebar pe-2 position-fixed" style="width: 7vw; top: 50px">
+<div class="sidebar pe-2 mt-2 position-fixed" style="width: 7vw; top: 50px; top: 54px; overflow-y: auto; height: calc(100vh - 80px); scrollbar-width: none;">
     <ul class="mt-4 ms-2">
       <li routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/layout/home']"
@@ -65,6 +65,13 @@
         title="Meta Data"><svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#FFFFFF"><path d="M480-120q-151 0-255.5-46.5T120-280v-400q0-66 105.5-113T480-840q149 0 254.5 47T840-680v400q0 67-104.5 113.5T480-120Zm0-479q89 0 179-25.5T760-679q-11-29-100.5-55T480-760q-91 0-178.5 25.5T200-679q14 30 101.5 55T480-599Zm0 199q42 0 81-4t74.5-11.5q35.5-7.5 67-18.5t57.5-25v-120q-26 14-57.5 25t-67 18.5Q600-528 561-524t-81 4q-42 0-82-4t-75.5-11.5Q287-543 256-554t-56-25v120q25 14 56 25t66.5 18.5Q358-408 398-404t82 4Zm0 200q46 0 93.5-7t87.5-18.5q40-11.5 67-26t32-29.5v-98q-26 14-57.5 25t-67 18.5Q600-328 561-324t-81 4q-42 0-82-4t-75.5-11.5Q287-343 256-354t-56-25v99q5 15 31.5 29t66.5 25.5q40 11.5 88 18.5t94 7Z"/></svg></a>
     <!-- <p class="mb-0">Suggestions</p> -->
     </li>
+    @if(role === 'admin'){
+      <li routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/layout/manageUsers']"
+        title="Manage Users"><svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#e3e3e3"><path d="M680-280q25 0 42.5-17.5T740-340q0-25-17.5-42.5T680-400q-25 0-42.5 17.5T620-340q0 25 17.5 42.5T680-280Zm0 120q31 0 57-14.5t42-38.5q-22-13-47-20t-52-7q-27 0-52 7t-47 20q16 24 42 38.5t57 14.5ZM480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v227q-19-8-39-14.5t-41-9.5v-147l-240-90-240 90v188q0 47 12.5 94t35 89.5Q310-290 342-254t71 60q11 32 29 61t41 52q-1 0-1.5.5t-1.5.5Zm200 0q-83 0-141.5-58.5T480-280q0-83 58.5-141.5T680-480q83 0 141.5 58.5T880-280q0 83-58.5 141.5T680-80ZM480-494Z"/></svg></a>
+    <!-- <p class="mb-0">Settings</p> -->
+    </li>
+    }
     <li routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/layout/settings']"
         title="Settings"><svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#FFFFFF"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg></a>
@@ -73,6 +80,6 @@
     </ul>
   </div>
 
-<footer class="position-fixed bottom-0 w-100 text-center" style="background-color: black;">
-    <small class="text-white text-center m-0 p-1" style="font-family: monospace;">&copy; 2025 OneApp. All rights reserved.</small>
+<footer class="position-fixed bottom-0 w-100 text-center" style="background-color: black; z-index: -1">
+    <small class="text-white text-center m-0 p-1" style="font-family: monospace; z-index: -1">&copy; 2025 OneApp. All rights reserved.</small>
 </footer>
