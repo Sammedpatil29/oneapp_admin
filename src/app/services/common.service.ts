@@ -12,7 +12,7 @@ export class CommonService {
   metaDataUrl = 'https://oneapp-backend.onrender.com/api/metadata/3/'
   bannerUrl = 'https://oneapp-backend.onrender.com/api/banner/'
   polygon = 'https://oneapp-backend.onrender.com/api/polygon/6/'
-  orders = 'https://oneapp-backend.onrender.com/api/orders/'
+  orders = 'https://oneapp-backend.onrender.com/api/orders/all-orders/'
   suggestions = 'https://oneapp-backend.onrender.com/api/suggestions/user-suggestion/'
   eventsUrl = 'https://oneapp-backend.onrender.com/api/event/events-by-token/'
   createEventsUrl = 'https://oneapp-backend.onrender.com/api/event/'
@@ -24,6 +24,9 @@ export class CommonService {
   updateUserUrl = 'https://oneapp-backend.onrender.com/api/adminuser/admin-detail/'
   deleteUserUrl = 'https://oneapp-backend.onrender.com/api/adminuser/admin-delete/'
   getGroceryListUrl = 'https://oneapp-backend.onrender.com/api/grocery/grocery-list/'
+  createGroceryListUrl = 'https://oneapp-backend.onrender.com/api/grocery/grocery-create/'
+  updateGroceryListUrl = 'https://oneapp-backend.onrender.com/api/grocery/grocery-detail/'
+  deleteGroceryListUrl = 'https://oneapp-backend.onrender.com/api/grocery/grocery-delete/'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -73,8 +76,8 @@ export class CommonService {
     return this.http.put(this.polygon, params)
   }
 
-  getOrders(){
-    return this.http.get(this.orders)
+  getOrders(params:any){
+    return this.http.post(this.orders, params)
   }
 
   getSuggestions(params:any){
@@ -123,5 +126,17 @@ export class CommonService {
 
   getGroceryList(params:any){
     return this.http.post(this.getGroceryListUrl, params)
+  }
+
+  createGroceryItem(params:any){
+    return this.http.post(this.createGroceryListUrl, params)
+  }
+
+  updateGroceryItem(id:any, params:any){
+    return this.http.put(`${this.updateGroceryListUrl}${id}/`, params)
+  }
+
+  deleteGroceryItem(id:any, params:any){
+    return this.http.post(`${this.deleteGroceryListUrl}${id}/`, params)
   }
 }

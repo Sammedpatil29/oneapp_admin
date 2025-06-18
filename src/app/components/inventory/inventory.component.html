@@ -12,7 +12,7 @@
     [routerLink]="[`/layout/inventory/${item.route}`]"
     routerLinkActive="active-item"
     [title]="item.title"
-  >
+  > 
     <h5 class="pt-3 pb-2">{{item.title}}</h5>
     <div class="indicator" [ngClass]="getStatusClass(item.status)" [title]="item.status"></div>
   </div>
@@ -21,7 +21,14 @@
         </ul>
     </div>
     <div class="col-10" style="height:86vh; overflow-y: scroll">
-        <router-outlet></router-outlet>
+        <!-- @if(currentUrl === '/layout/inventory'){
+            <div class="w-100 h-100 d-flex justify-content-center align-items-center position-relative border text-center" style="color: #e3e3e3">
+                <img src="../../../assets/system-regular-161-trending-flat-hover-ternd-flat-3.webp" style="width: 100px; transform: rotate(180deg); position: absolute; top: 100px; left: 0" alt="">
+                <h4>Please Select a Service</h4>
+            </div>
+        } @else { -->
+            <router-outlet></router-outlet>
+        <!-- } -->
     </div>
 </div>
 } @else {

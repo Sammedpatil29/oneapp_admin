@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonService } from '../../services/common.service';
 import { LoaderComponent } from '../loader/loader.component';
 import { FormsModule } from '@angular/forms';
 import { EmptyDataComponent } from '../empty-data/empty-data.component';
 import { CommonModule } from '@angular/common';
+import { AddGroceryComponent } from '../add-grocery/add-grocery.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-grocery',
@@ -12,6 +14,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './grocery.component.css'
 })
 export class GroceryComponent implements OnInit{
+  readonly dialog = inject(MatDialog);
 groceryList: any;
 fullGroceryList: any;
 view = 'table'
@@ -58,7 +61,37 @@ getStockColor(count:any){
   if(count < 10){
     return 'text-danger'
   } else {
-    return 'text-dark'
+    return
   }
 }
+
+addNewItem(){
+    const dialogRef = this.dialog.open(AddGroceryComponent, {
+        data: {type: 'add'},
+        maxWidth: '75vw',
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result == undefined || result == 'true'){
+        this.getAllGroceryList()
+      }
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  openEditDialog(item:any){
+      const dialogRef = this.dialog.open(AddGroceryComponent, {
+          data: {item: item, type: 'edit'},
+          maxWidth: '75vw',
+        });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(result == undefined || result == 'true'){
+          this.getAllGroceryList()
+        }
+        console.log(`Dialog result: ${result}`);
+      });
+    }
+
+
 }

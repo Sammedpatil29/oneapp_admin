@@ -1,0 +1,122 @@
+<h2 mat-dialog-title>
+    @if(data.type == 'edit'){
+    Modify Item
+    } @else {
+    Add New Item
+    }
+</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="row">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="name" placeholder="Item Name" value="name">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Category</mat-label>
+                <input matInput [(ngModel)]="category" placeholder="Category" value="category">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Description</mat-label>
+                <input matInput [(ngModel)]="description" placeholder="Description" value="description">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Brand</mat-label>
+                <input matInput [(ngModel)]="brand" placeholder="brand" value="brand">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Quantity</mat-label>
+                <input matInput [(ngModel)]="qAmount" placeholder="Quantity" value="qAmount">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Unit</mat-label>
+                <input matInput [(ngModel)]="unit" placeholder="Unit" value="unit">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>MRP</mat-label>
+                <input matInput [(ngModel)]="mrp" placeholder="MRP" value="mrp">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Our Price</mat-label>
+                <input matInput [(ngModel)]="ourPrice" placeholder="Our Price" value="ourPrice">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Discount</mat-label>
+                <input matInput [(ngModel)]="dAmount" placeholder="Discount" value="dAmount">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Stock</mat-label>
+                <input matInput [(ngModel)]="stock" placeholder="Stock" value="stock">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Image Url</mat-label>
+                <input matInput [(ngModel)]="image_url" placeholder="Image Url" value="image_url">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            @if(image_url !== ''){
+            <img style="width: 100px; height: 100px; border-radius: 15px" class="me-2" [src]="image_url"
+                alt="add image">
+            }
+            is available? <input type="checkbox" [(ngModel)]="is_available">
+        </div>
+    </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions class="d-flex justify-content-between">
+    <div>
+        @if (data.type == 'edit') {
+        <button matButton class="btn btn-outline-danger me-2" (click)="deleteGroceryItem()">
+            @if (isDeleting) {
+            <app-button-spinner></app-button-spinner>
+            } @else {
+            Delete
+            }
+        </button>
+        }
+        @if (count > 2) {
+        <i>*click <span class="text-danger">{{10 - count}}</span> more times to delete</i>
+        }
+    </div>
+    <div>
+        <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Cancel</button>
+        @if (data.type == 'edit') {
+        <button matButton class="btn btn-dark" cdkFocusInitial (click)="updateGroceryList()">
+            @if (itemUpdating) {
+            <app-button-spinner></app-button-spinner>
+            } @else {
+            Save
+            }
+        </button>
+        } @else {
+        <button matButton class="btn btn-dark" cdkFocusInitial [disabled]="isLoading" (click)="createGroceryList()">
+            @if (isLoading) {
+            <app-button-spinner></app-button-spinner>
+            } @else {
+            Create
+            }
+        </button>
+        }
+    </div>
+</mat-dialog-actions>

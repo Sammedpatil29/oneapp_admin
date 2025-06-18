@@ -7,58 +7,65 @@
 </h2>
 <mat-dialog-content class="mat-typography">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col">
             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Title</mat-label>
                 <input matInput [(ngModel)]="title"  placeholder="title" value="title">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Description</mat-label>
                 <input matInput [(ngModel)]="description"  placeholder="events details" value="description">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Tickets Available</mat-label>
                 <input matInput [(ngModel)]="ticketCount"  placeholder="100 or 9999" value="ticketCount">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Location</mat-label>
                 <input matInput [(ngModel)]="location"  placeholder="eg: History main town resort" value="location">
             </mat-form-field>
         </div>
-        <div class="col-3">
-             <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Latitude</mat-label>
                 <input matInput [(ngModel)]="lat"  placeholder="17.456373" value="lat">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Longitude</mat-label>
                 <input matInput [(ngModel)]="lng"  placeholder="75.55555" value="lng">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Duration</mat-label>
                 <input matInput [(ngModel)]="duration"  placeholder="Eg. 1hr, 4hr, 1 day etc." value="duration">
             </mat-form-field>
         </div>
-        <div class="col-3">
-             <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Organiser Phone</mat-label>
                 <input matInput [(ngModel)]="contact"  placeholder="Eg. 965777443434" value="contact">
             </mat-form-field>
         </div>
-        <div class="col-3">
-             <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Organiser Email (Optional)</mat-label>
                 <input matInput [(ngModel)]="email"  placeholder="Eg. orgniser@gmail.com" value="email">
+            </mat-form-field>
+        </div>
+        
+        <div class="col" [hidden]="isFree">
+             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Ticket Price</mat-label>
+                <input matInput [(ngModel)]="ticketPrice"  placeholder="Eg. 199" value="ticketPrice">
             </mat-form-field>
         </div>
         <div class="d-flex align-items-center col-2">
@@ -68,16 +75,10 @@
         <div class="d-flex align-items-center col-2">
             <span class="me-2">Is Active?</span><input id='checkbox' [(ngModel)]="is_active" value="is_active" name="checkbox" type="checkbox">
         </div>
-        <div class="col-3" [hidden]="isFree">
-             <mat-form-field class="example-full-width mt-3" appearance="outline">
-                <mat-label>Ticket Price</mat-label>
-                <input matInput [(ngModel)]="ticketPrice"  placeholder="Eg. 199" value="ticketPrice">
-            </mat-form-field>
-        </div>
     </div>
     <div class="row">
         
-        <!-- <div class="col-3">
+        <!-- <div class="col">
             <mat-form-field appearance="outline" class="mt-3">
   <mat-label>Category</mat-label>
   <mat-select [(ngModel)]="selectedCategory">
@@ -114,7 +115,7 @@
   </mat-chip-grid>
 </mat-form-field> -->
 
-        <!-- <div class="col-3">
+        <!-- <div class="col">
             <mat-form-field appearance="outline" class="mt-3">
   <mat-label>Status</mat-label>
   <mat-select [(ngModel)]="selectedStatus">
@@ -124,13 +125,13 @@
   </mat-select>
 </mat-form-field>
         </div> -->
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Organiser</mat-label>
                 <input matInput [(ngModel)]="organiser"  placeholder="History town resort" value="organiser">
             </mat-form-field>
         </div>
-        <!-- <div class="col-3">
+        <!-- <div class="col">
         <mat-form-field appearance="outline" class="mt-3">
   <mat-label>City</mat-label>
   <mat-select [(ngModel)]="selectedCities" multiple>
@@ -141,27 +142,27 @@
 </mat-form-field>
         </div> -->
         <img style="height: 100px; width: auto" [src]="imgUrl" [hidden]="imgUrl == ''" alt="">
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Image URL</mat-label>
                 <input matInput [(ngModel)]="imgUrl"  placeholder="Image Url" value="imgUrl">
             </mat-form-field>
                     <small class="text-nowrap text-muted"> <img style="width: 20px; padding-bottom: 2px" src="../../../assets/wired-flat-1738-no-entry-hover-pinch.webp" alt=""> Note: use only <strong>3391*4423px</strong> image </small>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Registration URL (Optional)</mat-label>
                 <input matInput [(ngModel)]="imgUrl"  placeholder="Registration Url" value="imgUrl">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Recurrence (Optional)</mat-label>
                 <input matInput [(ngModel)]="recurence"  placeholder="Eg: Daily, Monthly etc." value="recurence">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width w-100" appearance="outline">
   <mat-label>Choose a date</mat-label>
   <input matInput [matDatepicker]="picker" [(ngModel)]="date">
   <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
@@ -169,9 +170,9 @@
   <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
         </div>
-        <div class="col-3">
+        <div class="col">
             
-<mat-form-field appearance="outline">
+<mat-form-field appearance="outline" class="w-100">
     <mat-label>Choose a Time</mat-label>
   <input matInput [matTimepicker]="timepicker" [(ngModel)]="time" (ngModelChange)="formatDate()" placeholder="Select time">
   <mat-timepicker #timepicker></mat-timepicker>

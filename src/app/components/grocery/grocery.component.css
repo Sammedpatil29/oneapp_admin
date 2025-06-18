@@ -14,3 +14,12 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+
+.item-row {
+    cursor: pointer;
+}
+
+.item-row:hover {
+    background-color: black;
+    color: white;
+}

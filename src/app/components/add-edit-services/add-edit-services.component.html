@@ -7,40 +7,40 @@
 </h2>
 <mat-dialog-content class="mat-typography">
     <div class="row">
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>title</mat-label>
                 <input matInput [(ngModel)]="title"  placeholder="title" value="title">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Sub title</mat-label>
                 <input matInput [(ngModel)]="subTitle"  placeholder="Eg.Book Now" value="subTitle">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Offers</mat-label>
                 <input matInput [(ngModel)]="offers"  placeholder="Eg.Flat Rs5 OFF" value="offers">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Width</mat-label>
                 <input matInput [(ngModel)]="width"  placeholder="100% or 50%" value="width">
             </mat-form-field>
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Route</mat-label>
                 <input matInput [(ngModel)]="route"  placeholder="Eg. home or events" value="route">
             </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field appearance="outline" class="mt-3">
+        <div class="col">
+            <mat-form-field appearance="outline" class="mt-3 w-100">
   <mat-label>Category</mat-label>
   <mat-select [(ngModel)]="selectedCategory">
     @for (item of category; track item) {
@@ -49,8 +49,8 @@
   </mat-select>
 </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field appearance="outline" class="mt-3">
+        <div class="col">
+            <mat-form-field appearance="outline" class="mt-3 w-100">
   <mat-label>Status</mat-label>
   <mat-select [(ngModel)]="selectedStatus">
     @for (item of status; track item) {
@@ -59,16 +59,16 @@
   </mat-select>
 </mat-form-field>
         </div>
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>className</mat-label>
                 <input matInput [(ngModel)]="className"  placeholder="CSS class" value="className">
             </mat-form-field>
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
-        <mat-form-field appearance="outline" class="mt-3">
+        <div class="col">
+        <mat-form-field appearance="outline" class="mt-3 w-100">
   <mat-label>City</mat-label>
   <mat-select [(ngModel)]="selectedCities" multiple>
   @for (item of cities; track item) {
@@ -78,8 +78,8 @@
 </mat-form-field>
         </div>
         <img style="height: 100px; width: auto" [src]="imgUrl" alt="">
-        <div class="col-3">
-            <mat-form-field class="example-full-width mt-3" appearance="outline">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Image URL</mat-label>
                 <input matInput [(ngModel)]="imgUrl"  placeholder="Image Url" value="imgUrl">
             </mat-form-field>

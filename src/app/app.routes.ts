@@ -79,6 +79,10 @@ export const routes: Routes = [
             path: 'grocery',
             component: GroceryComponent,
           },
+          {
+            path: '',
+            component: EventsComponent
+          }
         ],
       },
     ],

@@ -35,10 +35,10 @@ li {
 }
 
 .indicator {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    border-radius: 0px 8px 0px 8px;
     position: absolute;
-    top: 3px;
-    right: 3px;
+    top: 0px;
+    right: 0px;
 }

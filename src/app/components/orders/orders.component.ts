@@ -57,7 +57,10 @@ center: google.maps.LatLngLiteral = { lat: 16.715672, lng: 75.061847 };
   }
 
   getOrders(){
-    this.commonService.getOrders().subscribe((res)=>{
+    let params = {
+      "token": sessionStorage.getItem("token")
+    }
+    this.commonService.getOrders(params).subscribe((res)=>{
       this.orders = res
       console.log(this.orders)
     } )

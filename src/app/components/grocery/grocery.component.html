@@ -10,7 +10,7 @@
   <label class="btn btn-outline-dark" for="btnradio2"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h133v-133H200v133Zm213 0h134v-133H413v133Zm214 0h133v-133H627v133ZM200-413h133v-134H200v134Zm213 0h134v-134H413v134Zm214 0h133v-134H627v134ZM200-627h133v-133H200v133Zm213 0h134v-133H413v133Zm214 0h133v-133H627v133Z"/></svg></label>
 </div>
   <button class="btn btn-dark">Download</button>
-  <button class="btn btn-dark ms-2 text-nowrap">Add New Item</button>
+  <button class="btn btn-dark ms-2 text-nowrap" (click)="addNewItem()">Add New Item</button>
   </div>
 </div>
 
@@ -29,13 +29,13 @@
     <th>Status</th>
   </tr>
  @for (item of groceryList; track $index) {
-     <tr>
+     <tr (click)="openEditDialog(item)" class="item-row">
     <td>{{$index + 1}}</td>
     <td>{{item.name}}</td>
     <td>{{item.category}}</td>
     <td>{{item.quantity.amount}}&nbsp;{{item.quantity.unit}}</td>
     <td><span class="text-decoration-line-through">&#8377;{{item.price.mrp}}</span>&nbsp;<span class="text-success">&#8377;{{item.price.ourPrice}}</span></td>
-    <td [ngClass]="getStockColor(item.stock)">{{item.stock}}</td>
+    <td [ngClass]="getStockColor(item.stock)"><span>{{item.stock}}</span></td>
     <td>{{item.brand}}</td>
     <td>{{getAvailability(item.is_available)}}</td>
   </tr>
