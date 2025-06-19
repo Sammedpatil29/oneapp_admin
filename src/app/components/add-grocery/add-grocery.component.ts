@@ -28,6 +28,7 @@ export class AddGroceryComponent implements OnInit{
   dType = ''
   d_valid_untill = ''
   stock = ''
+  newStock = ''
   image_url = ''
   is_available = true
   rating = ''
@@ -151,4 +152,8 @@ export class AddGroceryComponent implements OnInit{
     }
 
   }
+
+  // updateStock(){
+  //   this.stock = String(Number(this.newStock) + Number(this.stock))
+  // }
 }

@@ -39,15 +39,17 @@
       <th>Organiser</th>
       <th>Event Date</th>
       <th>Ticket Count</th>
+      <th>Status</th>
     </tr>
     @for (item of events; track $index) {
-        <tr (click)="editEvent(item)" style="cursor: pointer;">
+        <tr class="eventTableBody" (click)="editEvent(item)" style="cursor: pointer;">
       <td>{{$index + 1}}</td>
       <td>{{item.title}}</td>
       <td>{{item.contact}}</td>
       <td>{{item.organizer}}</td>
       <td>{{item.date | date: 'dd-MMM-yy'}}</td>
       <td>{{item.ticketcount}}</td>
+      <td [ngClass]="getStatusColor(item.is_active)"><strong>{{getStatus(item.is_active)}}</strong></td>
     </tr>
     }
   </table>

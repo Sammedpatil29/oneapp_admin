@@ -1,15 +1,22 @@
 <div class="d-flex justify-content-between align-items-center mt-3" style="top: 16px; z-index: 1">
   <h3 class="">Grocery List</h3>
   <div class="d-flex align-items-center">
-        <input type="text" class="form-control w-50" [(ngModel)]="searchTerm" (input)="searchItems()" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Item">
-    <div class="btn-group btn" role="group" aria-label="Basic radio toggle button group">
+        <input type="text" class="form-control w-50 me-2" [(ngModel)]="searchTerm" (input)="searchItems()" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Item">
+    <!-- <div class="btn-group btn" role="group" aria-label="Basic radio toggle button group">
   <input type="radio" class="btn-check" name="btnradio" (click)="view = 'table'" id="btnradio1" autocomplete="off" checked>
   <label class="btn btn-outline-dark" for="btnradio1"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-600v-80h560v80H280Zm0 160v-80h560v80H280Zm0 160v-80h560v80H280ZM160-600q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680q17 0 28.5 11.5T200-640q0 17-11.5 28.5T160-600Zm0 160q-17 0-28.5-11.5T120-480q0-17 11.5-28.5T160-520q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440Zm0 160q-17 0-28.5-11.5T120-320q0-17 11.5-28.5T160-360q17 0 28.5 11.5T200-320q0 17-11.5 28.5T160-280Z"/></svg></label>
 
   <input type="radio" class="btn-check" name="btnradio" (click)="view = 'card'" id="btnradio2" autocomplete="off">
   <label class="btn btn-outline-dark" for="btnradio2"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h133v-133H200v133Zm213 0h134v-133H413v133Zm214 0h133v-133H627v133ZM200-413h133v-134H200v134Zm213 0h134v-134H413v134Zm214 0h133v-134H627v134ZM200-627h133v-133H200v133Zm213 0h134v-133H413v133Zm214 0h133v-133H627v133Z"/></svg></label>
-</div>
-  <button class="btn btn-dark">Download</button>
+</div> -->
+<button class="btn btn-danger me-2" (click)="showLowInventory()">
+    @if(lowSet === false){
+        Low
+    } @else {
+        Reset
+    }
+</button>
+  <button class="btn btn-dark" (click)="exportToExcel()">Download</button>
   <button class="btn btn-dark ms-2 text-nowrap" (click)="addNewItem()">Add New Item</button>
   </div>
 </div>
@@ -17,7 +24,7 @@
 @if (!isLoading) {
     @if(groceryList.length > 0){
         <div>
-    <table>
+    <table class="mt-2">
   <tr>
     <th>Sl. No</th>
     <th>Name</th>
@@ -37,7 +44,7 @@
     <td><span class="text-decoration-line-through">&#8377;{{item.price.mrp}}</span>&nbsp;<span class="text-success">&#8377;{{item.price.ourPrice}}</span></td>
     <td [ngClass]="getStockColor(item.stock)"><span>{{item.stock}}</span></td>
     <td>{{item.brand}}</td>
-    <td>{{getAvailability(item.is_available)}}</td>
+    <td [ngClass]="getStatusColor(item.is_available)">{{getAvailability(item.is_available)}}</td>
   </tr>
  }
 </table>

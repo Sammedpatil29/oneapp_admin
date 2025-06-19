@@ -12,66 +12,83 @@ import { title } from 'process';
   selector: 'app-events',
   imports: [LoaderComponent, EmptyDataComponent, CommonModule],
   templateUrl: './events.component.html',
-  styleUrl: './events.component.css'
+  styleUrl: './events.component.css',
 })
-export class EventsComponent implements OnInit{
- events: any;
- isLoading: boolean = false
- token: any;
- view = 'table';
- readonly dialog = inject(MatDialog);  
-  constructor(private commonService: CommonService){}
+export class EventsComponent implements OnInit {
+  events: any;
+  isLoading: boolean = false;
+  token: any;
+  view = 'table';
+  readonly dialog = inject(MatDialog);
+  constructor(private commonService: CommonService) {}
 
   ngOnInit(): void {
-      this.getEvents()
+    this.getEvents();
   }
 
-  getEvents(){
-    this.events = []
-    this.token = sessionStorage.getItem('token')
+  getEvents() {
+    this.events = [];
+    this.token = sessionStorage.getItem('token');
     let params = {
-        "token": this.token
-    }
-    this.isLoading = true
-    this.commonService.getEvents(params).subscribe((res:any)=>{
-      this.events = res
-      this.isLoading = false
-      console.log(this.events)
-    }, error => {
-      this.isLoading = false
-    })
+      token: this.token,
+    };
+    this.isLoading = true;
+    this.commonService.getEvents(params).subscribe(
+      (res: any) => {
+        this.events = res;
+        this.isLoading = false;
+        console.log(this.events);
+      },
+      (error) => {
+        this.isLoading = false;
+      }
+    );
   }
 
   openDialogToAddEvent() {
-      const dialogRef = this.dialog.open(EditEventsComponent, {
-        data: {type: 'add'},
-        maxWidth: '75vw',
-      });
-  
-      dialogRef.afterClosed().subscribe((result: any) => {
-        if(result == true || result == undefined){
-          this.getEvents()
-        }
-       
-        console.log(`Dialog result: ${result}`);
-      });
-    }
+    const dialogRef = this.dialog.open(EditEventsComponent, {
+      data: { type: 'add' },
+      maxWidth: '75vw',
+    });
 
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result == true || result == undefined) {
+        this.getEvents();
+      }
 
-    editEvent(item:any){
-      console.log('edit event')
-        const dialogRef = this.dialog.open(EditEventsComponent, {
-              data: {item: item, type: 'edit'},
-              maxWidth: '75vw',
-            });
-  
-      dialogRef.afterClosed().subscribe((result: any) => {
-        if(result == true || result == undefined){
-          this.getEvents()
-        }
-       
-        console.log(`Dialog result: ${result}`);
-      });
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  editEvent(item: any) {
+    console.log('edit event');
+    const dialogRef = this.dialog.open(EditEventsComponent, {
+      data: { item: item, type: 'edit' },
+      maxWidth: '75vw',
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result == true || result == undefined) {
+        this.getEvents();
+      }
+
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  getStatus(status: any) {
+    if(status == true){
+      return 'Active'
+    } else {
+      return 'Inactive'
     }
-    
+  }
+
+  getStatusColor(status: any) {
+    if(status == true){
+      return 'text-success'
+    } else {
+      return 'text-danger'
+    }
+  }
 }

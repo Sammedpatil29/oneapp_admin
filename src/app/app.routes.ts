@@ -15,6 +15,9 @@ import { PropertyComponent } from './components/property/property.component';
 import { authGuard } from './auth.guard';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
 import { GroceryComponent } from './components/grocery/grocery.component';
+import { EmptyDataComponent } from './components/empty-data/empty-data.component';
+import { DoctorAppointmentComponent } from './components/doctor-appointment/doctor-appointment.component';
+import { SelectServiceComponent } from './components/select-service/select-service.component';
 
 export const routes: Routes = [
   {
@@ -80,8 +83,12 @@ export const routes: Routes = [
             component: GroceryComponent,
           },
           {
+            path: 'doctor',
+            component: DoctorAppointmentComponent,
+          },
+          {
             path: '',
-            component: EventsComponent
+            component: SelectServiceComponent
           }
         ],
       },
