@@ -55,7 +55,7 @@ export class GroceryComponent implements OnInit {
   }
 
   searchItems() {
-    console.log('called search terams');
+    this.lowSet = false
     const term = this.searchTerm.trim().toLowerCase();
     this.groceryList = this.fullGroceryList.filter((item: any) => {
       return (

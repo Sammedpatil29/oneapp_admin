@@ -8,10 +8,11 @@ import {FormsModule} from '@angular/forms';
 import { CommonService } from '../../services/common.service';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-services',
-  imports: [MatDialogModule, MatButtonModule,FormsModule, MatFormFieldModule, MatInputModule,MatFormFieldModule, MatSelectModule, FormsModule],
+  imports: [MatDialogModule, CommonModule, MatButtonModule,FormsModule, MatFormFieldModule, MatInputModule,MatFormFieldModule, MatSelectModule, FormsModule],
   templateUrl: './add-edit-services.component.html',
   styleUrl: './add-edit-services.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,6 +39,7 @@ selectedCategory = ''
 
   ngOnInit(): void {
       this.getMetaData()
+      this.className = '{"right":"-20px","width":"80px","bottom":"-20px","z-index":"-1","position":"absolute"}'
       if(this.data.type == 'edit'){
         this.title = this.data.item.title
         this.subTitle = this.data.item.subtitle
@@ -46,7 +48,8 @@ selectedCategory = ''
         this.route = this.data.item.route
         this.selectedStatus = this.data.item.status
         this.className = JSON.stringify(this.data.item.className)
-        this.selectedCities = this.data.item.cities
+        this.selectedCities = this.data.item.city
+        console.log(this.selectedCities)
         this.imgUrl = this.data.item.img
         this.selectedCategory = this.data.item.category
       }
