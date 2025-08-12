@@ -1,0 +1,94 @@
+@if(!isLoading){
+<div class="mt-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="">Push Notifications by FCM (🔥)</h5>
+        </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        <h5 class="text-center">Send Notification</h5>
+        <mat-form-field class="example-full-width mt-1 w-100" appearance="outline">
+                <mat-label>Notification Title</mat-label>
+                <input matInput [(ngModel)]="title" placeholder="Title for Notification" value="">
+            </mat-form-field>
+        <mat-form-field class="example-full-width mt-1 w-100" appearance="outline">
+                <mat-label>Notification Body</mat-label>
+                <input matInput [(ngModel)]="body" placeholder="Body for Notification" value="">
+            </mat-form-field>
+        <mat-form-field class="example-full-width mt-1 w-100" appearance="outline">
+                <mat-label>Image Url</mat-label>
+                <input matInput [(ngModel)]="imageUrl" placeholder="Image Url" value="">
+            </mat-form-field>
+            <div class="w-100 d-flex justify-content-center">
+                 <button class="btn btn-dark w-100" [disabled]="title == ''" (click)="sendNotification()">Send Notification</button>
+            </div>
+    </div>
+    <div class="col-4">
+        <h5 class="text-center">Notification Preview</h5>
+        @if (title !== '') {
+        <div class="notification">
+            <div class="row">
+                <div class="col-1">
+                    <div class="logo"></div>
+                </div>
+                <div class="col-11">
+                        <div class="me-2 position-relative">
+                        <div class="d-flex justify-content-between">
+                        <small>OneApp • 1m</small>
+                        <div><svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#000000"><path d="m480-538.85-189 189L253.85-387 480-613.15 706.15-387 669-349.85l-189-189Z"/></svg></div>
+                        </div>
+                        <h6 class="mt-2 text-wrap">{{title}}</h6>
+                        <small>{{body}}</small>
+                        @if (imageUrl !== '') {
+                            <img [src]="imageUrl" class="w-100 mt-2" style="height: 140px; border-radius: 10px" alt="">
+                        }
+                        @if (showIcon) {
+                            <img src="../../../assets/icon-512.webp" class="icon" alt="">
+                        }
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        } @else {
+        <div class="h-50 w-100 d-flex align-items-end justify-content-center">
+            Start Creating Notification
+        </div>
+        }
+        </div>
+    <div class="col-4">
+        <h5 class="text-center">Past Notifications</h5>
+        <div class="scroll-container px-1 pb-2" style="height: 72vh; overflow-y: scroll; overflow-x: hidden;">
+            @for (item of notifications; track $index) {
+            <div class="notification pastNotification mt-2" (click)="duplicateNotification(item)">
+            <div class="row">
+                <div class="col-1">
+                    <div class="logo"></div>
+                </div>
+                <div class="col-11">
+                        <div class="me-2 position-relative">
+                        <div class="d-flex justify-content-between">
+                        <small>OneApp • 1m</small>
+                        <div><svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#000000"><path d="m480-538.85-189 189L253.85-387 480-613.15 706.15-387 669-349.85l-189-189Z"/></svg></div>
+                        </div>
+                        <h6 class="mt-2 text-wrap">{{item.title}}</h6>
+                        <small>{{item.body}}</small>
+                        @if (item.imageUrl !== '') {
+                            <img [src]="item.imageUrl" class="w-100 mt-2" style="height: 140px; border-radius: 10px" alt="">
+                        }
+                        @if (showIcon) {
+                            <img src="../../../assets/icon-512.webp" class="icon" alt="">
+                        }
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        }
+        </div>
+    </div>
+   
+</div>
+} @else {
+    <app-loader></app-loader>
+}

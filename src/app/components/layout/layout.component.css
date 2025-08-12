@@ -42,3 +42,7 @@ li.active {
 .row {
         --bs-gutter-x: 0px !important
 }
+
+.scroll-container::-webkit-scrollbar {
+  display: none;
+}

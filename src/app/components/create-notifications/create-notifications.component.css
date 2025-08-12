@@ -1,0 +1,31 @@
+.notification {
+    border-radius: 20px;
+    box-shadow: 0px 0px 3px black;
+    padding: 10px;
+}
+
+.logo {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: black;
+    margin-top: 4px;
+    margin-left: 4px;
+}
+
+.icon {
+    height: 50px;
+    width: 50px;
+    border-radius: 5px;
+    position: absolute;
+    top: 9px;
+    right: 30px;
+}
+
+.pastNotification:hover{
+    cursor: pointer
+}
+
+/* .scroll-container::-webkit-scrollbar {
+  display: none;
+} */
