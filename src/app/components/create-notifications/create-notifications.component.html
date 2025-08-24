@@ -27,8 +27,40 @@
                 <mat-label>Image Url</mat-label>
                 <input matInput [(ngModel)]="imageUrl" placeholder="Image Url" value="">
             </mat-form-field>
-            <div class="w-100 d-flex justify-content-center">
-                 <button class="btn btn-dark w-100" [disabled]="title == ''" (click)="sendNotification()">
+
+            <!-- select other options block starts -->
+            <p class="d-none">Select other options</p>
+            <div class="w-100 d-flex justify-content-center gap-2 mb-3 d-none">
+                 <button class="btn btn-outline-dark w-100 text-truncate" disabled>
+                    Small Icon
+                 </button>
+                 <button class="btn btn-outline-dark w-100 text-truncate" (click)="colorPicker.click()" disabled>
+                    @if(selectedColor === ''){
+                        Bg Color
+                    } @else {
+                        <span [ngStyle]="{color: selectedColor}">
+                            {{selectedColor}}
+                        </span>
+                    }
+                 </button>
+                 <button class="btn btn-outline-dark w-100 text-truncate" disabled>
+                    Large Icon
+                 </button>
+                 <div class="">
+                    <input class="float-end" type="color" #colorPicker hidden (change)="onColorPicked($event)">
+                 </div>
+            </div>
+            <!-- select other options block ends -->
+
+            <div class="w-100 d-flex justify-content-center gap-2">
+                 <button class="btn btn-outline-dark w-100" style="cursor: not-allowed;" [disabled]="true" (click)="sendNotification()">
+                    @if (savingNotification) {
+                    <app-button-spinner></app-button-spinner>
+                } @else {
+                    Save Notification
+                }
+                 </button>
+                 <button class="btn btn-dark w-100" [disabled]="title == '' || sendingNotification" (click)="sendNotification()">
                     @if (sendingNotification) {
                     <app-button-spinner></app-button-spinner>
                 } @else {

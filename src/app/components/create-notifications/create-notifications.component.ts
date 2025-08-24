@@ -7,10 +7,11 @@ import { CommonService } from '../../services/common.service';
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-create-notifications',
-  imports: [LoaderComponent, MatInputModule, FormsModule, ButtonSpinnerComponent],
+  imports: [LoaderComponent, MatInputModule, FormsModule, ButtonSpinnerComponent, CommonModule],
   templateUrl: './create-notifications.component.html',
   styleUrl: './create-notifications.component.css',
 })
@@ -26,6 +27,11 @@ export class CreateNotificationsComponent {
   imageUrl = '';
   showIcon: boolean = false;
   sendingNotification: boolean = false;
+  savingNotification: boolean = false;
+  selectedColor: string = '';
+  smallIcon = 'oneapp'
+  bgColor = '#050303ff'
+
 
   notifications = [
     {
@@ -58,8 +64,8 @@ export class CreateNotificationsComponent {
     },
     "android": { 
       "notification": { 
-        "icon": "oneapp", 
-        "color": "#000000", 
+        "icon": this.smallIcon, 
+        "color": this.bgColor, 
         "sound": "default" } }
   }
 };
@@ -138,5 +144,10 @@ this.sendingNotification = true
     this.title = item.title;
     this.body = item.body;
     this.imageUrl = item.imageUrl;
+  }
+
+  onColorPicked(event: any) {
+    this.selectedColor = event.target.value;
+    console.log('Selected color:', this.selectedColor);
   }
 }

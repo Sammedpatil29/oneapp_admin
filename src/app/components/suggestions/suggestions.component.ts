@@ -3,20 +3,24 @@ import { EmptyDataComponent } from "../empty-data/empty-data.component";
 import { CommonService } from '../../services/common.service';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from "../loader/loader.component";
+import { ComplaintsComponent } from '../complaints/complaints.component';
 
 @Component({
   selector: 'app-suggestions',
-  imports: [EmptyDataComponent, CommonModule, LoaderComponent],
+  imports: [EmptyDataComponent, CommonModule, LoaderComponent, ComplaintsComponent],
   templateUrl: './suggestions.component.html',
   styleUrl: './suggestions.component.css'
 })
 export class SuggestionsComponent implements OnInit{
 suggestions:any;
 isLoading: boolean = false
+view = 'complaints'
+header = ''
 
 constructor(private commonService: CommonService){}
 
 ngOnInit(): void {
+  this.header = 'Complaints'
     this.getSuggestions()
 }
 
@@ -34,6 +38,15 @@ this.suggestions = []
     this.isLoading = false
   })
   
+}
+
+changeView(view:any){
+  this.view = view
+  if(view == 'suggestions'){
+    this.header = 'Suggestions'
+  } else {
+    this.header = 'Complaints'
+  }
 }
 
 }

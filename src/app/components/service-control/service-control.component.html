@@ -7,7 +7,7 @@
     <div class="row">
   @for (item of services; track $index) {
     <div class="col-md-3 mb-3 mb-sm-0" (click)="openDialog(item)">
-    <div class="card mb-3 position-relative">
+    <div class="card mb-3 position-relative" style="cursor: pointer;">
       <div class="card-body">
         <h5 class="card-title">{{item.title}}</h5>
         <p class="card-text fw-bold"[ngClass]="getStatusClass(item.status)">{{statusMap[item.status]}}</p>

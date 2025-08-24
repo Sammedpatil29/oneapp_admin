@@ -24,11 +24,11 @@ export class HomeComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
       this.getServiceCount()
       this.getOrdersCount()
-      setTimeout(()=>{
-        this.intervalId = setInterval(()=>{
-        this.loadCountOnInterval()
-      }, 10000)
-      },5000)
+      // setTimeout(()=>{
+      //   this.intervalId = setInterval(()=>{
+      //   this.loadCountOnInterval()
+      // }, 10000)
+      // },5000)
   }
 
   ngOnDestroy(): void {

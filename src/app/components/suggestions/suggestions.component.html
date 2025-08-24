@@ -1,8 +1,20 @@
-@if (!isLoading) {
-    @if (suggestions.length > 0) {
-    <div class="d-flex justify-content-between align-items-center mt-3">
-  <h3 class="ms-3">Suggestions</h3>
+<!-- headers starts -->
+<div class="d-flex justify-content-between align-items-center mt-3">
+  <h3 class="ms-3">{{header}}</h3>
+  <div class="btn-group btn" role="group" aria-label="Basic radio toggle button group">
+    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" (click)="changeView('complaints')" autocomplete="off" checked>
+  <label class="btn btn-outline-dark" for="btnradio2">Complaints</label>
+
+  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" (click)="changeView('suggestions')" autocomplete="off">
+  <label class="btn btn-outline-dark" for="btnradio1">Suggestions</label>
 </div>
+</div>
+<!-- headers end -->
+
+@if(view === 'suggestions'){
+  @if(!isLoading){
+     @if (suggestions.length > 0) {
+    
     <div class="p-3 pt-0">
          @for (item of suggestions; track $index) {
     <div class="box p-2 mt-3">
@@ -18,8 +30,14 @@
     </div>
  } @else {
     <app-empty-data></app-empty-data>
+ } 
+  } @else {
+  <app-loader></app-loader>
  }
-} @else {
-    <app-loader></app-loader>
 }
+
+@if(view === 'complaints'){
+  <app-complaints></app-complaints>
+}
+
 

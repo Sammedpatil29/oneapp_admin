@@ -26,6 +26,10 @@
     cursor: pointer
 }
 
+.btn-disabled {
+    pointer-events: auto;
+}
+
 /* .scroll-container::-webkit-scrollbar {
   display: none;
 } */

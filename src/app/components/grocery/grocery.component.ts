@@ -8,6 +8,7 @@ import { AddGroceryComponent } from '../add-grocery/add-grocery.component';
 import { MatDialog } from '@angular/material/dialog';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-grocery',
@@ -137,8 +138,8 @@ export class GroceryComponent implements OnInit {
 
 exportToExcel(): void {
   const exportList = this.groceryList.map((item: any) => this.flattenForExport(item));
-
-  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportList);
+  if(exportList.length > 0){
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportList);
   const wb: XLSX.WorkBook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Grocery List');
 
@@ -148,6 +149,15 @@ exportToExcel(): void {
   });
   const date = new Date().toLocaleDateString()
   FileSaver.saveAs(data, `Grocery_List_${date}.xlsx`);
+  } else {
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'error',
+        body: 'No Data to Export',
+        type: 'error',
+      },
+    });
+  }
 }
 
 }

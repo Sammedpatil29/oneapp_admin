@@ -9,14 +9,17 @@
             <div class="d-flex flex-column">
                 <mat-form-field class="example-full-width mt-3" appearance="outline">
                 <mat-label>Mobile Number</mat-label>
-                <input matInput [(ngModel)]="mobileNumber" placeholder="Mobile Number" value="">
+                <input matInput type="text"
+       maxlength="10"
+       pattern="[0-9]*"
+       inputmode="numeric" [(ngModel)]="mobileNumber" placeholder="Mobile Number" value="">
             </mat-form-field>
                 <mat-form-field class="example-full-width" appearance="outline">
                 <mat-label>Password</mat-label>
                 <input matInput type="password" [(ngModel)]="password" placeholder="Password" value="">
             </mat-form-field>
             <a href="javascript:void(0)" class="mb-2" (click)="forgotPassword()">forgot password?</a>
-            <button class="btn btn-dark" [disabled]="password == '' || mobileNumber.length !== 10 || isLoading" (click)="logIn()">
+            <button class="btn btn-dark" [disabled]="password == '' || mobileNumber.length !== 10 || isLoading" (keydown)="logIn()" (click)="logIn()">
                  
                 @if (isLoading) {
                     <app-button-spinner></app-button-spinner>
