@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import {jwtDecode} from 'jwt-decode';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +16,7 @@ import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.compone
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  readonly dialog = inject(MatDialog);
   mobileNumber = ''
   password = ''
   isLoading:boolean = false
@@ -34,18 +37,38 @@ export class LoginComponent {
           this.router.navigate(['/layout/home']);
         } catch (err) {
           console.error('Error decoding token', err);
+          this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'error',
+            body: 'Error while decoding token',
+            type: 'error'
+          }
+        });
         }
         this.isLoading = false
     }, error => {
       this.isLoading = false
       console.log('Error Logging In')
-      alert('Error Logging In')
+      this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'error',
+            body: 'Failed to Login to Admin Panel',
+            type: 'error'
+          }
+        });
     })
     
   }
 
   forgotPassword(){
-    alert('Contact your admin to reset your password')
+    // alert('Contact your admin to reset your password')
+     this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'info',
+            body: 'Contact your admin to reset your password',
+            type: 'info'
+          }
+        });
   }
 
 }

@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy{
   isLoading: boolean = false 
   isDataLoading: boolean = false
+  intervalId: any
   private apiSub!: Subscription;
 
   constructor(private commonService: CommonService){}
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy{
       this.getServiceCount()
       this.getOrdersCount()
       setTimeout(()=>{
-        setInterval(()=>{
+        this.intervalId = setInterval(()=>{
         this.loadCountOnInterval()
       }, 10000)
       },5000)
@@ -33,6 +34,9 @@ export class HomeComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
       if(this.apiSub){
         this.apiSub.unsubscribe()
+      }
+      if(this.intervalId){
+         clearInterval(this.intervalId);
       }
   }
 

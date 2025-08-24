@@ -20,6 +20,7 @@ import {MatChipEditedEvent, MatChipInputEvent, MatChipsModule} from '@angular/ma
 import {MatIconModule} from '@angular/material/icon';
 import { DialogRef } from '@angular/cdk/dialog';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 
 export interface Fruit {
   name: string;
@@ -37,6 +38,7 @@ export class EditEventsComponent implements OnInit{
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   readonly fruits = signal<Fruit[]>([{name: 'Lemon'}, {name: 'Lime'}, {name: 'Apple'}]);
   readonly announcer = inject(LiveAnnouncer);
+  readonly dialog = inject(MatDialog);
 
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService,  private dialogRef: MatDialogRef<EditEventsComponent>){
@@ -174,12 +176,25 @@ add(event: MatChipInputEvent): void {
       }
       this.isLoading = true
       this.commonService.createEvent(params).subscribe((res)=> {
-        alert('Event created successfully')
+        // alert('Event created successfully')
+        this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    title: 'success',
+                    body: 'Event created successfully',
+                    type: 'success'
+                  }
+                });
         this.isLoading = false
         this.dialogRef.close();
       }, error => {
         this.isLoading = false
-        alert('error while adding event')
+        this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    title: 'error',
+                    body: 'Error While creating event',
+                    type: 'error'
+                  }
+                });
       })
     }
 
@@ -189,12 +204,24 @@ add(event: MatChipInputEvent): void {
       }
       this.isDeleting = true
       this.commonService.deleteEvent(this.data.item.id, params).subscribe((res)=> {
-        alert("Event deleted Successfully")
+        this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    title: 'success',
+                    body: 'Event deleted successfully',
+                    type: 'success'
+                  }
+                });
         this.isDeleting = false
         this.dialogRef.close();
       },error => {
         this.isDeleting = false
-        alert(`error while deleting event: ${error}`)
+        this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    title: 'error',
+                    body: 'Error while deleting Event',
+                    type: 'error'
+                  }
+                });
       })
     }  
 
@@ -236,13 +263,25 @@ add(event: MatChipInputEvent): void {
     }
     this.isLoading = true
     this.commonService.editEvent(this.data.item.id, params).subscribe((res)=> {
-      alert("Event updated successfully")
+      this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    title: 'success',
+                    body: 'Event updated successfully',
+                    type: 'success'
+                  }
+                });
       this.isLoading = false
       this.dialogRef.close();
       
     }, error => {
       this.isLoading = false
-      alert("error while updating event")
+      this.dialog.open(AlertdialogComponent, {
+                  data: {
+                    title: 'success',
+                    body: 'Error while updating Event',
+                    type: 'success'
+                  }
+                });
     })
     }
 

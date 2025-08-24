@@ -61,8 +61,8 @@ export class ManageUsersComponent implements OnInit{
     }
     this.isUsersLoading = true
       this.commonService.getAllUsers(params).subscribe((res:any)=> {
+        this.isUsersLoading = false
           this.allUsers = res
-          this.isUsersLoading = false
       }, error => {
         this.isUsersLoading = false
       })

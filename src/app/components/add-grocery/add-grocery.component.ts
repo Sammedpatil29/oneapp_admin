@@ -7,6 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-add-grocery',
@@ -15,7 +16,7 @@ import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.compone
   styleUrl: './add-grocery.component.css'
 })
 export class AddGroceryComponent implements OnInit{
-
+readonly dialog = inject(MatDialog);
   name = ''
   category = ''
   description = ''
@@ -88,12 +89,26 @@ export class AddGroceryComponent implements OnInit{
     }
     this.isLoading = true
     this.commonService.createGroceryItem(params).subscribe((res)=>{
-      alert('Item added successfully')
-      this.isLoading = false
+      // alert('Item added successfully')
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'success',
+          body: 'Item added successfully',
+          type: 'success',
+        },
+      });
+
+      this.isLoading = false;
       this.dialogRef.close();
     }, error => {
       this.isLoading = false
-      alert('error creating item')
+     this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'error',
+          body: 'Error while adding Item',
+          type: 'error',
+        },
+      });
     })
   }
 
@@ -124,12 +139,24 @@ export class AddGroceryComponent implements OnInit{
     }
     this.itemUpdating = true
     this.commonService.updateGroceryItem(this.data.item.id,params).subscribe((res)=>{
-      alert('Item updated successfully')
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'success',
+          body: 'Item updated successfully',
+          type: 'success',
+        },
+      });
       this.itemUpdating = false
       this.dialogRef.close();
     }, error => {
       this.itemUpdating = false
-      alert('error while updating item')
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'error',
+          body: 'Failed to update Item',
+          type: 'error',
+        },
+      });
     })
   }
 
@@ -142,12 +169,24 @@ export class AddGroceryComponent implements OnInit{
     if(this.count == 10){
       this.isDeleting = true
       this.commonService.deleteGroceryItem(this.data.item.id, params).subscribe(res=>{
-        alert('item deleted successfully')
+        this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'success',
+          body: 'Item deleted successfully',
+          type: 'success',
+        },
+      });
         this.isDeleting = false
         this.dialogRef.close();
       }, error => {
         this.isDeleting = false
-        alert('error while deleting item')
+        this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'error',
+          body: 'Failed to delete Item',
+          type: 'error',
+        },
+      });
       })
     }
 

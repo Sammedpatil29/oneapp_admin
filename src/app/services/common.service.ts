@@ -27,6 +27,7 @@ export class CommonService {
   createGroceryListUrl = 'https://oneapp-backend.onrender.com/api/grocery/grocery-create/'
   updateGroceryListUrl = 'https://oneapp-backend.onrender.com/api/grocery/grocery-detail/'
   deleteGroceryListUrl = 'https://oneapp-backend.onrender.com/api/grocery/grocery-delete/'
+  sendNotificationUrl = 'https://oneapp-backend.onrender.com/api/users/send-to-all/'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -138,5 +139,9 @@ export class CommonService {
 
   deleteGroceryItem(id:any, params:any){
     return this.http.post(`${this.deleteGroceryListUrl}${id}/`, params)
+  }
+
+  sendNotification(params:any){
+    return this.http.post(`${this.sendNotificationUrl}`, params)
   }
 }

@@ -1,7 +1,7 @@
 @if(!isLoading){
 <div class="mt-3">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="">Push Notifications by FCM (🔥)</h5>
+            <h5 class="">Push Notifications by <span title="firebase">🔥</span></h5>
         </div>
 </div>
 <div class="row">
@@ -11,22 +11,70 @@
                 <mat-label>Notification Title</mat-label>
                 <input matInput [(ngModel)]="title" placeholder="Title for Notification" value="">
             </mat-form-field>
-        <mat-form-field class="example-full-width mt-1 w-100" appearance="outline">
+        <!-- <mat-form-field class="example-full-width mt-1 w-100" appearance="outline">
                 <mat-label>Notification Body</mat-label>
                 <input matInput [(ngModel)]="body" placeholder="Body for Notification" value="">
-            </mat-form-field>
+            </mat-form-field> -->
+            <mat-form-field class="example-full-width mt-1 w-100" appearance="outline">
+  <mat-label>Notification Body</mat-label>
+  <textarea matInput [(ngModel)]="body"
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"></textarea>
+</mat-form-field>
         <mat-form-field class="example-full-width mt-1 w-100" appearance="outline">
                 <mat-label>Image Url</mat-label>
                 <input matInput [(ngModel)]="imageUrl" placeholder="Image Url" value="">
             </mat-form-field>
             <div class="w-100 d-flex justify-content-center">
-                 <button class="btn btn-dark w-100" [disabled]="title == ''" (click)="sendNotification()">Send Notification</button>
+                 <button class="btn btn-dark w-100" [disabled]="title == ''" (click)="sendNotification()">
+                    @if (sendingNotification) {
+                    <app-button-spinner></app-button-spinner>
+                } @else {
+                    Send Notification
+                }
+                 </button>
             </div>
     </div>
     <div class="col-4">
         <h5 class="text-center">Notification Preview</h5>
         @if (title !== '') {
-        <div class="notification">
+            <!-- <div class="ms-2 mb-1">Collapsed View</div> -->
+            <div class="notification">
+            <div class="row" style="--bs-gutter-x: none">
+                <div class="col-1 d-flex align-items-center justify-content-center">
+                    <div class="logo" style="margin-top: 0; margin-left: -8px"></div>
+                     <!-- <img src="assets/favicon_oneapp/favicon-32x32.png" class="" alt=""> -->
+                </div>
+                <div class="col-10">
+                        <div class="me-2 position-relative">
+                        <div class="d-flex justify-content-between">
+                        </div>
+                        <div class="d-flex justify-content-start align-items-center">
+                            <h6 class="mt-1 text-truncate mb-0">{{title}}</h6>
+                        <!-- <small>• &nbsp;</small><small> now</small> -->
+                        </div>
+                        <div >
+                            <div class="text-truncate" style="font-size: 14px;">{{body}}</div>
+                        </div>
+                        @if (imageUrl !== '') {
+                            <!-- <img [src]="imageUrl" class="w-100 mt-2" style="height: 140px; border-radius: 10px" alt=""> -->
+                        }
+                        @if (showIcon) {
+                            <img src="../../../assets/icon-512.webp" class="icon" alt="">
+                        }
+                    </div>
+                    
+                </div>
+                <div class="col-1 d-flex align-items-center">
+                  <div style="transform: rotate(180deg);"><svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#000000"><path d="m480-538.85-189 189L253.85-387 480-613.15 706.15-387 669-349.85l-189-189Z"/></svg></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="ms-2 my-1 ">Expanded View</div> -->
+        <div class="notification mt-2">
             <div class="row">
                 <div class="col-1">
                     <div class="logo"></div>
