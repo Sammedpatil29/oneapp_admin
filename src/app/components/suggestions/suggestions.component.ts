@@ -16,17 +16,19 @@ suggestions:any;
 isLoading: boolean = false
 view = 'complaints'
 header = ''
+token: any = ''
 
 constructor(private commonService: CommonService){}
 
 ngOnInit(): void {
+  this.token = sessionStorage.getItem('token')
   this.header = 'Complaints'
     this.getSuggestions()
 }
 
 getSuggestions(){
   let params = {
- "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJwaG9uZSI6Iis5MTk1OTE0MjAwNjgiLCJ1c2VyX25hbWUiOiJzYW1tZWQiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0OTQ2MDI4Mn0.tO4XklsZN3Qw4QLHNctoEgW59dk3pOWAeF7qO8Imv8s"
+ "token": this.token
 }
 this.isLoading = true
 this.suggestions = []
@@ -44,6 +46,7 @@ changeView(view:any){
   this.view = view
   if(view == 'suggestions'){
     this.header = 'Suggestions'
+    this.getSuggestions()
   } else {
     this.header = 'Complaints'
   }

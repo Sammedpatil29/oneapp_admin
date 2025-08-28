@@ -65,7 +65,7 @@ export class CreateNotificationsComponent {
     "android": { 
       "notification": { 
         "icon": this.smallIcon, 
-        "color": this.bgColor, 
+        "color": 'black', 
         "sound": "default" } }
   }
 };

@@ -1,0 +1,8 @@
+.details-block {
+    border-radius: 10px;
+    padding: 20px;
+    border: 0px solid black;
+    box-shadow: 0px 0px 3px black;
+    margin-top: 10px;
+    text-align: center;
+}

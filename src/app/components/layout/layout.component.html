@@ -5,9 +5,12 @@
 <div class="d-flex p-2 fs-5 ms-4">
     <strong>ONE</strong>APP <br> <span class="text-secondary">ADMIN</span>
 </div>
-<div>
-    <img (click)="openSettings()" class="me-4" style="width: 30px; cursor: pointer" src="../../../assets/system-solid-8-account-hover-account (1).gif" alt=""> 
+@if(!isSettings()){
+  <div class="d-flex align-items-center" style="cursor: pointer;" (click)="openSettings()">
+  <div class="border me-2" style="border-radius: 7px; padding: 4px 12px"> <img class="me-1" style="width: 25px" src="../../../assets/system-solid-8-account-hover-account (1).gif" alt=""> 
+You're a <b>{{role | titlecase}}</b></div>
 </div>
+}
 </div>
 </nav>
 <!-- navbar ends -->
@@ -31,7 +34,7 @@
       <li routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/layout/home']"
          title="Home"><svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#FFFFFF"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg></a>
-        <!-- <p class="mb-0">Home</p> -->
+        <!-- <p class="mb-0" style="font-size: 11px">Home</p> -->
         </li>
       <li routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"><a [routerLink]="['/layout/service-control']"
