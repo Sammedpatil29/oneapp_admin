@@ -1,13 +1,20 @@
 <!-- headers starts -->
-<div class="d-flex justify-content-between align-items-center mt-3">
-  <h3 class="ms-3">{{header}}</h3>
-  <div class="btn-group btn" role="group" aria-label="Basic radio toggle button group">
+<div class="header d-flex justify-content-between align-items-center">
+  <h3 class="">{{header}}</h3>
+    <div class="d-flex gap-0 align-items-center">
+     @if (view != 'suggestions') {
+      <input type="text" class="form-control w-50 me-2" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Tickets">
+      <button class="btn btn-dark ms-2 text-nowrap" (click)="addNewTicket()">Create New Ticket</button>
+     }
+      <div class="btn-group btn pe-0" role="group" aria-label="Basic radio toggle button group">
     <input type="radio" class="btn-check" name="btnradio" id="btnradio2" (click)="changeView('complaints')" autocomplete="off" checked>
-  <label class="btn btn-outline-dark" for="btnradio2">Complaints</label>
+  <label class="btn btn-outline-dark text-nowrap" for="btnradio2">Support Tickets</label>
 
   <input type="radio" class="btn-check" name="btnradio" id="btnradio1" (click)="changeView('suggestions')" autocomplete="off">
   <label class="btn btn-outline-dark" for="btnradio1">Suggestions</label>
 </div>
+  </div>
+  
 </div>
 <!-- headers end -->
 
@@ -41,7 +48,7 @@
 }
 
 @if(view === 'complaints'){
-  <app-complaints></app-complaints>
+  <app-complaints [searchTerm]="searchTerm"></app-complaints>
 }
 
 

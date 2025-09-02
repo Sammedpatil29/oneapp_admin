@@ -62,10 +62,12 @@ export class CreateNotificationsComponent {
     "data": { 
       "screen": "offers" 
     },
-    "android": { 
-      "notification": { 
-        "icon": this.smallIcon, 
-        "color": 'black', 
+    "android": {
+      "priority": 'HIGH',
+      "notification": {
+        "icon": this.smallIcon,
+        "color": 'black',
+        "channel_id": "default",
         "sound": "default" } }
   }
 };

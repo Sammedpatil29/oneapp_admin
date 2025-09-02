@@ -12,3 +12,10 @@ hr {
     border: 1px solid black;
     border-left: 6px solid gray
 }
+
+.header{
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: white;
+}

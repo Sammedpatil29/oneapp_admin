@@ -3,45 +3,61 @@ import { EmptyDataComponent } from "../empty-data/empty-data.component";
 import { GoogleMapsModule } from '@angular/google-maps';
 import {MatChipsModule} from '@angular/material/chips';
 import { CommonService } from '../../services/common.service';
+import { LoaderComponent } from "../loader/loader.component";
 
 @Component({
   selector: 'app-orders',
-  imports: [EmptyDataComponent, GoogleMapsModule, MatChipsModule],
+  imports: [EmptyDataComponent, GoogleMapsModule, MatChipsModule, LoaderComponent],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
 export class OrdersComponent implements OnInit{
  readonly chipsOptions: string[] = ['Map View', 'List View'];
 orders: any;
+isLoading: boolean = false
+ordersSelected: boolean = false
+
+ markerIcon: any = {
+  new: {
+    url: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'
+  },
+  confirmed: {
+    url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+  },
+  packed: {
+    url: 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png'
+  },
+  outForDelivery: {
+    url: 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+  },
+  delivered: {
+    url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+  },
+  selected: {
+    url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+  }
+};
+
 
 center: google.maps.LatLngLiteral = { lat: 16.715672, lng: 75.061847 };
   zoom = 14;
 
-  polygonPaths: google.maps.LatLngLiteral[] = [
-    { lat: 16.721820, lng: 75.041123 }, 
-    { lat: 16.731534, lng: 75.044394 },
-    { lat: 16.733517, lng: 75.050348},
-    { lat: 16.736431, lng: 75.062371},
-    { lat: 16.727415, lng: 75.075158},
-    { lat: 16.716180, lng: 75.073141},
-    { lat: 16.704540, lng: 75.067789},
-    { lat: 16.709470, lng: 75.055160},
-    { lat: 16.714950, lng: 75.044911},
-  ];
+  polygonPaths: google.maps.LatLngLiteral[] = []
 
-  generatedPoints: google.maps.LatLngLiteral[] = [
-    { lat: 16.719841, lng: 75.050290 },
-    { lat: 16.723528, lng: 75.057112 },
-    { lat: 16.715672, lng: 75.061847 },
-    { lat: 16.724905, lng: 75.069351 },
-    { lat: 16.712384, lng: 75.058297 },
-    { lat: 16.725312, lng: 75.046832 },
-    { lat: 16.730182, lng: 75.059740 },
-    { lat: 16.710473, lng: 75.067132 },
-    { lat: 16.717918, lng: 75.053958 },
-    { lat: 16.726631, lng: 75.063280 },
-    { lat: 16.714950, lng: 75.044911 }
-  ];
+  generatedPoints: { lat: number; lng: number; status: string }[] = [
+  { lat: 16.719841, lng: 75.050290, status: 'new' },
+  { lat: 16.723528, lng: 75.057112, status: 'confirmed' },
+  { lat: 16.715672, lng: 75.061847, status: 'packed' },
+  { lat: 16.724905, lng: 75.069351, status: 'outForDelivery' },
+  { lat: 16.712384, lng: 75.058297, status: 'delivered' },
+  { lat: 16.725312, lng: 75.046832, status: 'new' },
+  { lat: 16.730182, lng: 75.059740, status: 'confirmed' },
+  { lat: 16.710473, lng: 75.067132, status: 'packed' },
+  { lat: 16.717918, lng: 75.053958, status: 'outForDelivery' },
+  { lat: 16.726631, lng: 75.063280, status: 'delivered' },
+  { lat: 16.714950, lng: 75.044911, status: 'new' }
+];
+
 
   selectedMarker: any = ''
 
@@ -49,20 +65,39 @@ center: google.maps.LatLngLiteral = { lat: 16.715672, lng: 75.061847 };
 
   ngOnInit(): void {
       this.getOrders()
+      this.commonService.getPolygonData().subscribe((res:any) => {
+        console.log(res)
+        this.polygonPaths = res.polygon
+      })
   }
 
+  selectedOrders:any = []
   onMarkerClick(marker: google.maps.LatLngLiteral) {
     this.selectedMarker = marker;
-    console.log('Marker clicked:', marker);
+    this.ordersSelected = !this.ordersSelected
+    if(this.selectedOrders.includes(this.selectedMarker.lat)){
+      const index = this.selectedOrders.indexOf(marker.lat);
+      this.selectedOrders.splice(index, 1);
+    } else {
+      this.selectedOrders.push(this.selectedMarker.lat)
+    }
+    
+    // alert(`click on ${marker.lat} - ${this.ordersSelected}`);
   }
 
   getOrders(){
     let params = {
       "token": sessionStorage.getItem("token")
     }
+    this.isLoading = true
     this.commonService.getOrders(params).subscribe((res)=>{
       this.orders = res
+      this.isLoading = false
       console.log(this.orders)
     } )
   }
+
+  ordersCountByStatus(type: string): number {
+  return this.generatedPoints.filter(item => item.status === type).length;
+}
 }

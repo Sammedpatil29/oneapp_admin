@@ -1,0 +1,146 @@
+@if (data.type != 'view') {
+    <h2 mat-dialog-title>
+    @if(data.type == 'edit'){
+        Modify Ticket
+    } @else if(data.type == 'add'){
+        Create New Ticket
+    } @else {
+        
+    }
+</h2>
+}
+
+@if(data.type == 'add'){
+<mat-dialog-content class="mat-typography" style="background-image: url('assets/vecteezy_empty-ticket-clipart-design-illustration_9305127.png')">
+    <div class="row">
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Issue Title</mat-label>
+                <input matInput [(ngModel)]="title" placeholder="Issue Title" value="name">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Issue Description</mat-label>
+                <input matInput [(ngModel)]="description" placeholder="Issue Description" value="description">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>User Number</mat-label>
+                <input matInput [(ngModel)]="userNumber" placeholder="User Number" value="userNumber">
+            </mat-form-field>
+        </div>
+    </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions class="d-flex justify-content-between">
+    <!-- <div>
+        @if (data.type == 'edit') {
+        <button matButton class="btn btn-outline-danger me-2" (click)="deleteGroceryItem()">
+            @if (isDeleting) {
+            <app-button-spinner></app-button-spinner>
+            } @else {
+            Delete
+            }
+        </button>
+        }
+        @if (count > 2) {
+        <i>*click <span class="text-danger">{{10 - count}}</span> more times to delete</i>
+        }
+    </div> -->
+    <div>
+        <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Cancel</button>
+        @if (data.type == 'edit') {
+        <button matButton class="btn btn-dark" cdkFocusInitial>
+            @if (itemUpdating) {
+            <app-button-spinner></app-button-spinner>
+            } @else {
+            Save
+            }
+        </button>
+        } @else {
+        <button matButton class="btn btn-dark" cdkFocusInitial [disabled]="isLoading" (click)="createTicket()">
+            @if (isLoading) {
+            <app-button-spinner></app-button-spinner>
+            } @else {
+            Create
+            }
+        </button>
+        }
+    </div>
+</mat-dialog-actions>
+} @else if (data.type == 'view') {
+    @if (isViewTicket) {
+
+        <mat-dialog-content class="mat-typography">
+            <div class="text-center my-2 mb-3" style="font-size: xxx-large;">
+                🎟️
+            </div>
+            <div class="mb-1">
+                <h5>{{data.item.title}}</h5>
+                <p>
+                    <q><i>{{data.item.details}}</i></q>
+                </p>
+            </div>
+            <div style="background-color: rgba(27, 228, 27, 0.308); border-radius: 10px">
+                <div class="d-flex justify-content-between gap-3 py-1 px-2">
+                        <p class="m-0 text-nowrap">Ticket Id: <i>{{data.item.ticket_id}}</i></p>
+                    <p class="m-0 text-nowrap">Ticket Status: <span [ngClass]="data.item.status == 'Open'? 'text-success':'text-danger'"><i>{{data.item.status}}</i></span></p>
+                    <p class="m-0 text-nowrap">Created on: <i>{{data.item.created_at | date:'dd/MM/yy'}} {{data.item.created_at | date:'shortTime'}}</i></p>
+                    </div>
+                <div class="d-flex justify-content-between gap-3 py-1 px-2">
+                    <p class="m-0 text-nowrap">Raised by: <i>Sammed</i></p>
+                    <p class="m-0 text-nowrap">Contact: <i>9591420068</i></p>
+                    <p class="m-0 text-nowrap">Email: <i>sammed.patil29#gmail.com</i></p>
+                    </div>
+            </div>
+                    @if (data.item.status == 'Open') {
+                        @if(showCommentBox){
+                            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Closing Comment</mat-label>
+                <input matInput [(ngModel)]="comment" placeholder="Add closing comment" value="name">
+            </mat-form-field>
+                        }
+                        <div class="d-flex align-items-center justify-content-between gap-1">
+                            <button matButton class="btn btn-outline-danger w-100 mt-2" (click)="closeTicket()" [disabled]="isLoading" cdkFocusInitial>
+            @if (isLoading) {
+            <app-button-spinner></app-button-spinner>
+            } @else {
+            Mark as Ticket Resolved
+            }
+        </button>
+                        @if(role == 'admin'){
+                            <button matButton class="btn btn-outline-danger w-25 mt-2"  [disabled]="isLoading" cdkFocusInitial>
+            @if (isLoading) {
+            <app-button-spinner></app-button-spinner>
+            } @else {
+            Delete
+            }
+        </button>
+                        }
+                        <button matButton class="btn btn-dark w-25 mt-2" (click)="close()" [disabled]="isLoading" cdkFocusInitial>
+            @if (isLoading) {
+            <app-button-spinner></app-button-spinner>
+            } @else {
+            Cancel
+            }
+        </button>
+                        </div>
+                    }
+                    @if(data.item.status != 'Open'){
+                        <div class="p-2 mt-2" style="border: 1px dashed black; border-radius: 10px">
+                            <b>Closing Comment: </b> <q>{{data.item.comment}}</q>
+                        </div>
+                    }
+        </mat-dialog-content>
+        <!-- <mat-dialog-actions class="d-flex justify-content-between">
+    <div>
+        <button matButton class="btn btn-dark" float="end" cdkFocusInitial [disabled]="isLoading">
+            Ok
+        </button>
+    </div>
+        </mat-dialog-actions> -->
+    }
+}

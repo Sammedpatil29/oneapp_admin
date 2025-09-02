@@ -1,0 +1,39 @@
+.open {
+    background: #92ed91;
+background: linear-gradient(56deg, rgba(146, 237, 145, 1) 0%, rgba(145, 219, 143, 1) 0%, rgba(0, 212, 255, 0) 100%);
+border-radius:  15px 0px 0px 15px;
+}
+
+.close {
+    background: #92ed91;
+background: linear-gradient(56deg, rgba(146, 237, 145, 1) 0%, rgba(151, 162, 166, 1) 0%, rgba(0, 212, 255, 0) 100%);
+border-radius:  15px 0px 0px 15px;
+}
+
+.ticket-logo-right{
+    border-radius: 50% 0% 0% 50% ;
+    height: 17px;
+    width: 10px;
+    position: absolute;
+    right: -1.5px;
+    top: 45%;
+    border-top: 1px solid var(--bs-border-color-translucent);
+    border-right: 0px solid var(--bs-border-color-translucent);
+    border-bottom: 1px solid var(--bs-border-color-translucent);
+    border-left: 1px solid var(--bs-border-color-translucent);
+    background-color: white;
+}
+
+.ticket-logo-left{
+    border-radius: 0% 50% 50% 0% ;
+    height: 17px;
+    width: 10px;
+    position: absolute;
+    left: -1.5px;
+    top: 45%;
+    border-top: 1px solid var(--bs-border-color-translucent);
+    border-right: 1px solid var(--bs-border-color-translucent);
+    border-bottom: 1px solid var(--bs-border-color-translucent);
+    border-left: 0px solid var(--bs-border-color-translucent);
+    background-color: white;
+}

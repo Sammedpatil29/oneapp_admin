@@ -13,7 +13,7 @@ export class CommonService {
   bannerUrl = 'https://oneapp-backend.onrender.com/api/banner/'
   polygon = 'https://oneapp-backend.onrender.com/api/polygon/6/'
   orders = 'https://oneapp-backend.onrender.com/api/orders/all-orders/'
-  suggestions = 'https://oneapp-backend.onrender.com/api/suggestions/user-suggestion/'
+  suggestions = 'https://oneapp-backend.onrender.com/api/suggestions/admin-suggestion/'
   eventsUrl = 'https://oneapp-backend.onrender.com/api/event/events-by-token/'
   createEventsUrl = 'https://oneapp-backend.onrender.com/api/event/'
   deleteEventUrl = 'https://oneapp-backend.onrender.com/api/event/delete-events-by-token/'
@@ -28,6 +28,9 @@ export class CommonService {
   updateGroceryListUrl = 'https://oneapp-backend.onrender.com/api/grocery/grocery-detail/'
   deleteGroceryListUrl = 'https://oneapp-backend.onrender.com/api/grocery/grocery-delete/'
   sendNotificationUrl = 'https://oneapp-backend.onrender.com/api/users/send-to-all/'
+  getAllSupportTicketsUrl = 'https://oneapp-backend.onrender.com/api/ticket/admin-ticket-list/'
+  createSupportTicketsUrl = 'https://oneapp-backend.onrender.com/api/ticket/admin-ticket-create/'
+  updateSupportTicketsUrl = 'https://oneapp-backend.onrender.com/api/ticket/admin-ticket-update'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -143,5 +146,17 @@ export class CommonService {
 
   sendNotification(params:any){
     return this.http.post(`${this.sendNotificationUrl}`, params)
+  }
+
+  getAllSupportTickets(params:any){
+    return this.http.post(`${this.getAllSupportTicketsUrl}`, params)
+  }
+
+  createSupportTickets(params:any){
+    return this.http.post(`${this.createSupportTicketsUrl}`, params)
+  }
+
+  updateSupportTickets(params:any, id:any){
+    return this.http.post(`${this.updateSupportTicketsUrl}/${id}/`, params)
   }
 }
