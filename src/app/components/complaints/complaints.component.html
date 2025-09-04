@@ -13,6 +13,7 @@
         <div class="ps-2">{{item.created_at | date: 'dd/MM/yy'}}</div>
         <div class="pe-2">{{item.closed_at | date: 'dd/MM/yy'}}</div>
     </div>
+    <hr style="border: 0.1px dashed black;">
     <h5 class="card-title text-truncate">{{item.title}}</h5>
     @if (item.details != '') {
         <p class="card-text text-truncate">{{item.details}}</p>

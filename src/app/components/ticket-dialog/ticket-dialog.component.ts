@@ -20,6 +20,7 @@ export class TicketDialogComponent implements OnInit{
   readonly dialog = inject(MatDialog);
 isLoading:boolean = false
 itemUpdating:boolean = false
+isDeleting:boolean = false
 title: any = ''
 description: any = ''
 userNumber: any = ''
@@ -108,5 +109,39 @@ closeTicket(){
 
 close(){
   this.dialogRef.close();
+}
+
+clickCount = 0
+deleteTicket(id:any){
+  if(this.clickCount != 10){
+    this.clickCount += 1
+    console.log(this.clickCount)
+  } else {
+    let params = {
+      "token": sessionStorage.getItem('token')
+    }
+    this.isDeleting = true
+    this.commonService.deleteSupportTickets(params, id).subscribe(res => {
+      this.isDeleting = false
+      this.dialogRef.close();
+      this.dialog.open(AlertdialogComponent, {
+            data: {
+              title: 'success',
+              body: `${this.data.item.ticket_id} deleted successfully`,
+              type: 'success',
+            },
+          });
+
+    }, error => {
+      this.isDeleting = false
+      this.dialog.open(AlertdialogComponent, {
+            data: {
+              title: 'error',
+              body: `Failed to delete ${this.data.item.ticket_id}`,
+              type: 'error',
+            },
+          });
+    })
+  }
 }
 }

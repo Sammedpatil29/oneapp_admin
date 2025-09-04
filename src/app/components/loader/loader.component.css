@@ -1,0 +1,7 @@
+.loader-box {
+    background-color: white;
+    height: 50px;
+    width: 50px;
+    border-radius: 7px;
+    box-shadow: 0px 0px 2px black;
+}

@@ -32,7 +32,11 @@ export class ComplaintsComponent implements OnInit{
     let params = {
       "token": sessionStorage.getItem('token')
     }
-    this.isLoading = true
+    if(this.filteredTickets.length > 0){
+      this.isLoading = false
+    } else {
+      this.isLoading = true
+    }
     this.commonService.getAllSupportTickets(params).subscribe(res => {
         this.supportTickets = res
         this.filteredTickets = this.supportTickets.reverse()
@@ -60,7 +64,7 @@ export class ComplaintsComponent implements OnInit{
    
        dialogRef.afterClosed().subscribe((result) => {
          if (result == undefined || result == 'true') {
-           // this.getAllGroceryList();
+            this.getAllTickets()
          }
          console.log(`Dialog result: ${result}`);
        });

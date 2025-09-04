@@ -112,8 +112,8 @@
             }
         </button>
                         @if(role == 'admin'){
-                            <button matButton class="btn btn-outline-danger w-25 mt-2"  [disabled]="isLoading" cdkFocusInitial>
-            @if (isLoading) {
+                            <button matButton class="btn btn-outline-danger w-25 mt-2"  [disabled]="isDeleting" (click)="deleteTicket(data.item.id)" cdkFocusInitial>
+            @if (isDeleting) {
             <app-button-spinner></app-button-spinner>
             } @else {
             Delete
@@ -121,11 +121,7 @@
         </button>
                         }
                         <button matButton class="btn btn-dark w-25 mt-2" (click)="close()" [disabled]="isLoading" cdkFocusInitial>
-            @if (isLoading) {
-            <app-button-spinner></app-button-spinner>
-            } @else {
             Cancel
-            }
         </button>
                         </div>
                     }
@@ -133,6 +129,15 @@
                         <div class="p-2 mt-2" style="border: 1px dashed black; border-radius: 10px">
                             <b>Closing Comment: </b> <q>{{data.item.comment}}</q>
                         </div>
+                    }
+                    @if(data.item.status == 'Closed'){
+                        <button matButton class="btn btn-outline-danger w-100 mt-2"  [disabled]="isDeleting" (click)="deleteTicket(data.item.id)" cdkFocusInitial>
+            @if (isDeleting) {
+            <app-button-spinner></app-button-spinner>
+            } @else {
+            Delete
+            }
+        </button>
                     }
         </mat-dialog-content>
         <!-- <mat-dialog-actions class="d-flex justify-content-between">

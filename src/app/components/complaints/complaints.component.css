@@ -37,3 +37,9 @@ border-radius:  15px 0px 0px 15px;
     border-left: 0px solid var(--bs-border-color-translucent);
     background-color: white;
 }
+
+::ng-deep .btn-outline-danger:hover {
+  background-color: rgba(220, 53, 69, 0.2) !important; 
+  color: #dc3545; 
+  border-color: #dc3545;
+}
