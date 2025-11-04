@@ -4,10 +4,11 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import {MatChipsModule} from '@angular/material/chips';
 import { CommonService } from '../../services/common.service';
 import { LoaderComponent } from "../loader/loader.component";
+import {MatTabsModule} from '@angular/material/tabs';
 
 @Component({
   selector: 'app-orders',
-  imports: [EmptyDataComponent, GoogleMapsModule, MatChipsModule, LoaderComponent],
+  imports: [EmptyDataComponent, GoogleMapsModule, MatChipsModule, LoaderComponent, MatTabsModule],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
@@ -15,7 +16,10 @@ export class OrdersComponent implements OnInit{
  readonly chipsOptions: string[] = ['Map View', 'List View'];
 orders: any;
 isLoading: boolean = false
-ordersSelected: boolean = false
+ordersSelected: boolean = true
+showSideBox: boolean = true
+deliveryOrder: boolean = true
+orderType: string = 'Delivery'
 
  markerIcon: any = {
   new: {
@@ -99,5 +103,14 @@ center: google.maps.LatLngLiteral = { lat: 16.715672, lng: 75.061847 };
 
   ordersCountByStatus(type: string): number {
   return this.generatedPoints.filter(item => item.status === type).length;
+}
+
+changeDeliveryMode(){
+  this.deliveryOrder = !this.deliveryOrder
+  if(this.deliveryOrder == true){
+    this.orderType = 'Delivery'
+  } else {
+    this.orderType = 'Non-delivery'
+  }
 }
 }

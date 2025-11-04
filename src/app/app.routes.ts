@@ -19,6 +19,7 @@ import { EmptyDataComponent } from './components/empty-data/empty-data.component
 import { DoctorAppointmentComponent } from './components/doctor-appointment/doctor-appointment.component';
 import { SelectServiceComponent } from './components/select-service/select-service.component';
 import { CreateNotificationsComponent } from './components/create-notifications/create-notifications.component';
+import { VisitsComponent } from './components/visits/visits.component';
 
 export const routes: Routes = [
   {
@@ -66,6 +67,10 @@ export const routes: Routes = [
       {
         path: 'manageUsers',
         component: ManageUsersComponent,
+      },
+      {
+        path: 'visits',
+        component: VisitsComponent,
       },
       {
         path: 'notifications',

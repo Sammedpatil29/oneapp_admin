@@ -16,8 +16,9 @@ export class LayoutComponent implements OnInit{
   readonly dialog = inject(MatDialog);
 role:string | null = ''
 token: any = ''
+year = new Date().getFullYear()
   constructor(private router: Router){
-    
+    // this.year = new Date().getFullYear()
   }
 
   ngOnInit(): void {

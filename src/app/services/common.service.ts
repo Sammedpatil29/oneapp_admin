@@ -32,6 +32,7 @@ export class CommonService {
   createSupportTicketsUrl = 'https://oneapp-backend.onrender.com/api/ticket/admin-ticket-create/'
   updateSupportTicketsUrl = 'https://oneapp-backend.onrender.com/api/ticket/admin-ticket-update'
   deleteSupportTicketsUrl = 'https://oneapp-backend.onrender.com/api/ticket/admin-ticket-delete/'
+  allVisitsUrl = 'https://brahmadev-backend.onrender.com/all-visits'
 
   getServices(){
     return this.http.get(this.serviceUrl)
@@ -163,5 +164,9 @@ export class CommonService {
 
   deleteSupportTickets(params:any, id:any){
     return this.http.post(`${this.deleteSupportTicketsUrl}${id}/`, params)
+  }
+
+  getAllVisits(){
+    return this.http.get(this.allVisitsUrl)
   }
 }

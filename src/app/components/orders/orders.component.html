@@ -2,20 +2,38 @@
 @if (!isLoading) {
   @if(orders){
  <div class="position-relative">
-    @if(selectedOrders.length > 0){ 
-      <div class="orders-box position-absolute">
+    
+      <div class="orders-box position-absolute" [hidden]="!showSideBox">
+        <mat-tab-group>
+  <mat-tab label="Live Orders"> Content 1 </mat-tab>
+  <mat-tab label="Selected Orders"> 
+  @if(selectedOrders.length > 0){ 
+          
       <h5 class="text-center mt-1 d-flex justify-content-center align-items-center">
         <img [src]="markerIcon.selected.url" alt="" style="height: 17px"> <div> Selected Orders ({{selectedOrders.length}}) </div> </h5>
       @for (item of selectedOrders; track $index) {
         {{item}}
-      }
+      } 
+    } @else {
+        <div class="h-100 p-5">
+          <app-empty-data ></app-empty-data>
+        </div>
+    }  
+  </mat-tab>
+</mat-tab-group>
+<div class="d-flex align-items-center justify-content-center ps-1 box-button-close" (click)="showSideBox = false">
+<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M400-107.69 27.69-480 400-852.31l42.54 42.54L112.77-480l329.77 329.77L400-107.69Z"/></svg>
 </div>
-    }
-<div >
+</div>
+
+<div class="d-flex align-items-center justify-content-center box-button-open" (click)="showSideBox = true">
+<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m531.69-480-184-184L376-692.31 588.31-480 376-267.69 347.69-296l184-184Z"/></svg>
+</div>
    
+<div >
   <google-map
   height="86vh"
-  width="100vw"
+  width="92vw"
   class="position-relative"
   [center]="center"
   [zoom]="zoom">
@@ -46,8 +64,9 @@
   </map-polygon>
 
   <mat-chip-listbox class="mat-mdc-chip-set-stacked position-absolute" style="top: 10px; right: 20px" aria-label="Cutest dog breeds">
-  
+    
     <!-- <mat-chip-option class="w-auto" [selected] = "">Delivered</mat-chip-option> -->
+    <mat-chip-option class="w-auto" (click)="changeDeliveryMode()">{{orderType}}</mat-chip-option>
     <mat-chip-option class="w-auto" selected><img [src]="markerIcon.new.url" alt="" style="height: 17px">New Order ({{ordersCountByStatus('new')}})</mat-chip-option>
     <mat-chip-option class="w-auto" selected><img [src]="markerIcon.packed.url" alt="" style="height: 17px">Packed ({{ordersCountByStatus('packed')}})</mat-chip-option>
     <mat-chip-option class="w-auto" selected><img [src]="markerIcon.confirmed.url" alt="" style="height: 17px">Confirmed ({{ordersCountByStatus('confirmed')}})</mat-chip-option>
