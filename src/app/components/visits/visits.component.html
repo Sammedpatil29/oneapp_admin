@@ -9,9 +9,71 @@
   @if(selectedOrders.length > 0){ 
           
       <h5 class="text-center mt-1 d-flex justify-content-center align-items-center">
-         <div> Visit Details </div> </h5>
+          </h5>
       @for (item of selectedOrders; track $index) {
-        {{item.id}}
+        <div class="m-2 p-2" style="border-radius: 10px; box-shadow: 0px 0px 1px black;">
+      <div class="row px-1">
+        <div class="col-9">
+          <SMALL><b>Owner Name</b>: {{item.ownerName | titlecase}}</SMALL><br>
+      <SMALL><b>Owner Contact</b>: {{item.ownerContact | titlecase}}</SMALL><br>
+      <SMALL><b>Response</b>: {{item.response | titlecase}}</SMALL>
+        </div>
+        <div class="col-3 d-flex align-items-center justify-content-center">
+          <!-- <button class="btn btn-sm float-end" (click)="openMap(item.lat, item.lng)">
+        <img style="width: 25px" src="/assets/icon/wired-lineal-18-location-pin-hover-jump.gif" alt="">
+      </button> -->
+      <a [attr.href]="'tel:' + item.ownerContact"><svg class="me-2" xmlns="http://www.w3.org/2000/svg" height="25px" viewBox="0 -960 960 960" width="25px" fill="#039105"><path d="M796.48-113.3q-120.44 0-242.63-56.02-122.2-56.02-225.15-158.9-103.12-103.11-159.22-225.43-56.1-122.31-56.1-242.59 0-21.38 14.5-36 14.5-14.62 35.88-14.62h147.25q18.55 0 31.35 11.55 12.81 11.55 17.1 30.11l26.58 126.44q2.64 17.77-.78 31.34-3.43 13.56-13.66 23.24l-100.11 98.4q23.04 39.52 50.42 74.76 27.39 35.24 60.92 67.61 33.97 34.79 70.64 63.19 36.68 28.4 76.63 50.14l96.02-97.46q11.66-12.25 27.24-16.89 15.57-4.65 31.85-1.69l119.99 25.95q18.89 5.27 30.27 18.88 11.39 13.62 11.39 32.02v145.51q0 21.38-14.62 35.92-14.62 14.54-35.76 14.54Z"/></svg></a>
+      <svg (click)="openMap(item.lat, item.lng)" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#4B77D1"><path d="M480.4-92q-80.73 0-151.79-30.46-71.06-30.47-123.34-83Q153-258 122.5-328.83 92-399.67 92-480.4q0-80.3 30.46-151.27 30.47-70.98 83-123.66Q258-808 328.83-838q70.84-30 151.67-30 80.38 0 151.44 30t123.56 82.5Q808-703 838-631.94t30 151.44q0 80.83-30 151.67-30 70.83-82.67 123.37-52.68 52.53-123.66 83Q560.7-92 480.4-92Zm-.4-388Zm-25.67 225.67q9.95 10.66 23.67 10.66 13.72 0 23.67-10.66l204-202q10-10.63 10-24.99 0-14.35-10-24.35l-204-202.66q-9.93-10-23.63-10-13.71 0-23.71 10l-202 202.66q-10.66 9.98-10.66 24.67 0 14.69 10.66 24.67l202 202ZM345.67-389v-131.79q0-4.88 3.85-8.88 3.85-4 8.81-4H597l-73.33-72.66L541-623.67l101.33 101.34L539.67-419l-17.34-17.33 74-73.34H369.67V-389h-24Zm135 273Q633-116 738.5-221.83 844-327.67 844-480.67 844-633 738.5-738.5 633-844 480.67-844q-153 0-258.84 105.5Q116-633 116-480.67q0 153 105.83 258.84Q327.67-116 480.67-116Z"/></svg>
+        </div>
+      </div>
+      <div class="px-1">
+        <SMALL><b>Visit On</b>: {{ item.createdAt | date:'d MMM y, h:mm a' }}</SMALL>&nbsp;
+      </div>
+      <div class="row mx-1 my-1 text-center d-flex align-items-center py-1" style="border-radius: 8px; background-color: rgba(120, 213, 236, 0.144)">
+        <div class="col" style="line-height: 17px">
+          <small class="text-nowrap" style="font-size: 12px">Aprx. Area</small><br>
+          <small><b>{{item.builtUpArea}}</b></small>
+        </div>
+        <div class="col" style="line-height: 17px">
+          <small class="text-nowrap" style="font-size: 12px">No. of floors</small><br>
+          <small><b>{{item.floors}}</b></small>
+        </div>
+        <!-- <div class="col">
+          <button class="btn btn-sm float-end me-1" (click)="openImage(item)">
+        <img style="width: 25px" src="/assets/icon/wired-lineal-54-photo-hover-pinch.gif" alt="">
+      </button>
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#8C1AF6"><path d="M360-400h400L622-580l-92 120-62-80-108 140Zm-40 160q-33 0-56.5-23.5T240-320v-480q0-33 23.5-56.5T320-880h480q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H320Zm0-80h480v-480H320v480ZM160-80q-33 0-56.5-23.5T80-160v-560h80v560h560v80H160Zm160-720v480-480Z"/></svg>
+        </div> -->
+      </div>
+      
+     
+      @if (item.engineerName !== null || item.engineerContact !== null || item.contractorName !== null || item.contractorContact !== null || item.comments !== null) {
+        <div class="mt-2 p-2" style="background:#f8f9fa; border-radius: 8px;">
+        @if (item.engineerName != null) {
+          <SMALL><b>Engineer Name</b>: {{item.engineerName | titlecase}}</SMALL><br>
+        }
+        @if (item.engineerContact != null) {
+          <SMALL class="me-2"><b>Engineer Contact</b>: {{item.engineerContact}}</SMALL>
+          <a [attr.href]="'tel:' + item.engineerContact"><svg class="me-2" style="z-index: 9999" xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#039105"><path d="M796.48-113.3q-120.44 0-242.63-56.02-122.2-56.02-225.15-158.9-103.12-103.11-159.22-225.43-56.1-122.31-56.1-242.59 0-21.38 14.5-36 14.5-14.62 35.88-14.62h147.25q18.55 0 31.35 11.55 12.81 11.55 17.1 30.11l26.58 126.44q2.64 17.77-.78 31.34-3.43 13.56-13.66 23.24l-100.11 98.4q23.04 39.52 50.42 74.76 27.39 35.24 60.92 67.61 33.97 34.79 70.64 63.19 36.68 28.4 76.63 50.14l96.02-97.46q11.66-12.25 27.24-16.89 15.57-4.65 31.85-1.69l119.99 25.95q18.89 5.27 30.27 18.88 11.39 13.62 11.39 32.02v145.51q0 21.38-14.62 35.92-14.62 14.54-35.76 14.54Z"/></svg></a><br>
+        }
+        @if (item.contractorName != null) {
+          <SMALL><b>Contractor Name</b>: {{item.contractorName | titlecase}}</SMALL><br>
+        }
+        @if (item.contractorContact != null) {
+          <SMALL class="me-2"><b>Contractor Contact</b>: {{item.contractorContact}}</SMALL>
+          <a [attr.href]="'tel:' + item.contractorContact"><svg class="me-2" xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#039105"><path d="M796.48-113.3q-120.44 0-242.63-56.02-122.2-56.02-225.15-158.9-103.12-103.11-159.22-225.43-56.1-122.31-56.1-242.59 0-21.38 14.5-36 14.5-14.62 35.88-14.62h147.25q18.55 0 31.35 11.55 12.81 11.55 17.1 30.11l26.58 126.44q2.64 17.77-.78 31.34-3.43 13.56-13.66 23.24l-100.11 98.4q23.04 39.52 50.42 74.76 27.39 35.24 60.92 67.61 33.97 34.79 70.64 63.19 36.68 28.4 76.63 50.14l96.02-97.46q11.66-12.25 27.24-16.89 15.57-4.65 31.85-1.69l119.99 25.95q18.89 5.27 30.27 18.88 11.39 13.62 11.39 32.02v145.51q0 21.38-14.62 35.92-14.62 14.54-35.76 14.54Z"/></svg></a><br>
+        }
+        @if (item.comments != null) {
+          <SMALL><b>Comments</b>: {{item.comments}}</SMALL>
+        }
+      </div>
+      }
+      @for (item of item.locationImage; track $index) {
+        <img [src]="item" class="w-100 border mt-2" style="border-radius: 10px" alt="">
+      }
+      <img [src]="item.selfie" class="w-100 border mt-2" style="border-radius: 10px" alt="">
+      
+    </div>
       } 
     } @else {
         <div class="h-100 p-5">
