@@ -68,4 +68,8 @@ registerZomato: boolean = false;
 
     this.totalAmount = total;
   }
+
+  resetTotal() {
+  this.totalAmount = 0;
+}
 }
