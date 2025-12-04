@@ -20,6 +20,7 @@ import { DoctorAppointmentComponent } from './components/doctor-appointment/doct
 import { SelectServiceComponent } from './components/select-service/select-service.component';
 import { CreateNotificationsComponent } from './components/create-notifications/create-notifications.component';
 import { VisitsComponent } from './components/visits/visits.component';
+import { CalculatorComponent } from './components/calculator/calculator.component';
 
 export const routes: Routes = [
   {
@@ -30,6 +31,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'calculator',
+    component: CalculatorComponent,
   },
   {
     path: 'layout',

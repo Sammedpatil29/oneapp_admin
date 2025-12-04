@@ -1,0 +1,136 @@
+<div class="calculator">
+
+  <h2>🍽️Cloud Kitchen <br> Registration Charge Calculator</h2>
+
+<!-- FSSAI -->
+  <label>
+    <input type="checkbox" [(ngModel)]="needFssai">
+    Apply for FSSAI Licence
+  </label>
+
+  <div *ngIf="needFssai" class="option-box">
+    <label>Number of years:</label>
+    <select [(ngModel)]="fssaiYears">
+      <option *ngFor="let y of [1,2,3,4,5]" [value]="y">{{y}} year(s)</option>
+    </select>
+  </div>
+
+  <hr>
+  
+  <!-- ZOMATO -->
+  <label>
+    <input type="checkbox" [(ngModel)]="registerZomato">
+    Register for Zomato (₹1200)
+  </label>
+
+  <div *ngIf="registerZomato" class="option-box">
+    <p>Zomato Payment Option:</p>
+    <label>
+      <input type="radio" name="zomatoPay" [(ngModel)]="zomatoPayOption" value="now"> 
+      Pay Now (₹1200)
+    </label>
+    <label>
+      <input type="radio" name="zomatoPay" [(ngModel)]="zomatoPayOption" value="later"> 
+      Pay Later (₹0 now)
+    </label>
+  </div>
+
+  <hr>
+
+  <!-- SWIGGY -->
+  <label>
+    <input type="checkbox" [(ngModel)]="registerSwiggy">
+    Register for Swiggy (₹1200)
+  </label>
+
+  <div *ngIf="registerSwiggy" class="option-box">
+    <p>Swiggy Payment Option:</p>
+    <label>
+      <input type="radio" name="swiggyPay" [(ngModel)]="swiggyPayOption" value="600"> 
+      Pay ₹600 now
+    </label>
+    <label>
+      <input type="radio" name="swiggyPay" [(ngModel)]="swiggyPayOption" value="1200"> 
+      Pay full ₹1200 now
+    </label>
+  </div>
+
+  <hr>
+
+  <!-- MAGICPIN -->
+  <label>
+    <input type="checkbox" [(ngModel)]="registerMagicpin">
+    Register for Magicpin (FREE)
+  </label>
+
+  <hr>
+
+  
+
+  <button (click)="calculateTotal()">Calculate Total</button>
+
+  <h3>Total Amount to Pay Now: ₹{{ totalAmount }}</h3>
+
+  <!-- PRICE BREAKDOWN -->
+<div class="breakdown-box" *ngIf="totalAmount > 0">
+
+  <h4>Price Breakdown</h4>
+  <ul>
+
+    <!-- ZOMATO -->
+    <li *ngIf="registerZomato">
+      Zomato:
+      <strong>
+        {{ zomatoPayOption === 'now' ? '₹1200' : '₹0 (Pay Later)' }}
+      </strong>
+    </li>
+
+    <!-- SWIGGY -->
+    <li *ngIf="registerSwiggy">
+      Swiggy:
+      <strong>
+        {{ swiggyPayOption === '600' ? '₹600' : '₹1200' }}
+      </strong>
+    </li>
+
+    <!-- MAGICPIN -->
+    <li *ngIf="registerMagicpin">
+      Magicpin: <strong>₹0 (Free)</strong>
+    </li>
+
+    <!-- FSSAI -->
+    <li *ngIf="needFssai">
+      FSSAI Govt Fee ({{ fssaiYears }} years):
+      <strong>₹{{ 100 * fssaiYears }}</strong>
+    </li>
+
+    <!-- SERVICE CHARGE -->
+    <li *ngIf="registerZomato || registerSwiggy || registerMagicpin || needFssai">
+  One-time Service Charge:
+  <strong>₹1500</strong>
+
+  <ul class="sub-details ms-4">
+    <li><span class="text-success">✔</span> Complete Documentation Handling</li>
+    <li><span class="text-success">✔</span> Partner Registration (Zomato/Swiggy/Magicpin)</li>
+    <li><span class="text-success">✔</span> Menu Preparation & Price setup</li>
+    <li><span class="text-success">✔</span> FSSAI Application Filing & Support</li>
+    <li><span class="text-success">✔</span> Follow-up & Status Tracking</li>
+    <li><span class="text-success">✔</span> Customer Support Until Approval</li>
+  </ul>
+</li>
+
+    <hr>
+
+    <li class="total-line">
+      Final Total: <strong>₹{{ totalAmount }}</strong>
+    </li>
+
+  </ul>
+</div>
+
+</div>
+
+
+
+
+

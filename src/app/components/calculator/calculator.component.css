@@ -1,0 +1,116 @@
+.calculator {
+  max-width: 550px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.calculator h2 {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 25px;
+  font-size: 26px;
+  color: #333;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  padding: 8px 0;
+  cursor: pointer;
+  color: #444;
+}
+
+.option-box {
+  background: #f7f9fe;
+  border-left: 4px solid #3f51b5;
+  padding: 15px 15px 10px 15px;
+  margin: 10px 0;
+  border-radius: 6px;
+}
+
+.option-box p {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.option-box label {
+  display: flex;
+  gap: 8px;
+  margin: 5px 0;
+}
+
+select {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #bbb;
+  margin-top: 8px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  background: #3f51b5;
+  color: white;
+  font-size: 17px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: 0.2s ease-in-out;
+}
+
+button:hover {
+  background: #2c3ea3;
+}
+
+h3 {
+  margin-top: 25px;
+  text-align: center;
+  padding: 15px;
+  background: #e9f0ff;
+  border-left: 5px solid #3f51b5;
+  border-radius: 6px;
+  color: #222;
+  font-size: 22px;
+}
+
+.breakdown-box {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f7f9ff;
+  border-left: 5px solid #3f51b5;
+  border-radius: 6px;
+}
+
+.breakdown-box h4 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.breakdown-box ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.breakdown-box li {
+  margin: 6px 0;
+  font-size: 16px;
+  color: #444;
+}
+
+.total-line {
+  font-size: 18px !important;
+  font-weight: 700;
+  margin-top: 12px;
+}
