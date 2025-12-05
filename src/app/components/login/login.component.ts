@@ -71,4 +71,8 @@ export class LoginComponent {
         });
   }
 
+  openCalculator(){
+    this.router.navigate(['/calculator'])
+  }
+
 }
