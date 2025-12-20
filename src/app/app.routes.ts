@@ -21,6 +21,7 @@ import { SelectServiceComponent } from './components/select-service/select-servi
 import { CreateNotificationsComponent } from './components/create-notifications/create-notifications.component';
 import { VisitsComponent } from './components/visits/visits.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
+import { TaskTrackerComponent } from './components/task-tracker/task-tracker.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,10 @@ export const routes: Routes = [
   {
     path: 'calculator',
     component: CalculatorComponent,
+  },
+  {
+    path: 'task_tracker',
+    component: TaskTrackerComponent,
   },
   {
     path: 'layout',

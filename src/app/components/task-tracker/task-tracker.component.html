@@ -1,0 +1,160 @@
+<div class="page">
+
+  <header class="header">
+  <div class="header-row">
+    <div class="title">
+      <h1>📈 Discipline Tracker</h1>
+      <p>🔥 Small wins. Big discipline.</p>
+    </div>
+
+    <div class="user p-1">
+        <div class="user">
+      <span class="user-name">{{ userName }}</span>
+      <span class="user-emoji">{{ userEmoji }}</span>
+    </div>
+    <div class="user">
+      <!-- <span class="user-name">Logout</span> -->
+      <span class="user-emoji" title="Logout">⛔</span>
+    </div>
+    </div>
+  </div>
+</header>
+
+
+  <!-- KPI GRID -->
+  <section class="kpi-grid advanced">
+
+    <div class="kpi-card highlight">
+      <span class="label">🎯 Discipline Score</span>
+      <span class="value">{{ disciplineScore() }}</span>
+      <small>/ 100</small>
+    </div>
+
+    <div class="kpi-card">
+      <span class="label">📅 Today</span>
+      <span class="value">{{ todayPercentage() }}%</span>
+    </div>
+
+    <div class="kpi-card">
+      <span class="label">🗓️ Weekly Avg</span>
+      <span class="value">{{ weeklyPercentage() }}%</span>
+    </div>
+
+    <div class="kpi-card">
+      <span class="label">📆 Monthly Avg</span>
+      <span class="value">{{ monthlyPercentage() }}%</span>
+    </div>
+
+    <div class="kpi-card">
+      <span class="label">💪 Strong Task</span>
+      <span class="task">
+        {{ strongestTask() ? '🔥 ' + strongestTask() : '—' }}
+      </span>
+    </div>
+
+    <div class="kpi-card">
+      <span class="label">⚠️ Weak Task</span>
+      <span class="task">
+        {{ weakestTask() ? '🧊 ' + weakestTask() : '—' }}
+      </span>
+    </div>
+
+    <div class="kpi-card">
+      <span class="label">🔥 Current Streak</span>
+      <span class="value">{{ currentStreak() }}</span>
+      <small>days</small>
+    </div>
+
+  </section>
+  
+  <!-- Controls Bar -->
+<div class="controls">
+
+  <!-- Date Picker -->
+  <div class="date-picker">
+    <label>📅 From</label>
+    <input
+      type="date"
+      [max]="todayStr"
+      [(ngModel)]="fromDate"
+      (change)="onDateChange()"
+    />
+
+    <label>➡️ To</label>
+    <input
+      type="date"
+      [max]="todayStr"
+      [(ngModel)]="toDate"
+      (change)="onDateChange()"
+    />
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button class="btn add" (click)="addTaskPrompt()">➕ Add Task</button>
+    <button class="btn export" (click)="exportCSV()">📤 Export</button>
+  </div>
+
+</div>
+
+
+  <!-- TRACKER TABLE -->
+  <section class="table-wrapper">
+    <table class="tracker-table">
+      <thead>
+  <tr>
+    <th class="sticky-left">📌 Task</th>
+    <th class="sticky-left">🎯 Target</th>
+    <th class="sticky-left">⚙️</th>
+    <th *ngFor="let d of dates"
+    [class.today-col]="d === todayStr">
+  {{ d | date:'dd MMM' }}
+  <span *ngIf="d === todayStr">📍(Today)</span>
+</th>   
+  </tr>
+</thead>
+
+      <tbody>
+  <tr *ngFor="let task of tracker.tasks"
+      [class.task-disabled]="!task.enabled">
+
+    <!-- Task name -->
+    <td class="sticky-left task-name">
+      {{ task.enabled ? '✅' : '⏸️' }} {{ task.name }}
+    </td>
+
+    <!-- Frequency -->
+    <td class="sticky-left frequency">
+      {{ task.weeklyTarget }} / week
+    </td>
+
+    <!-- Enable toggle -->
+    <td class="sticky-left">
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="task.enabled">
+        <span class="slider"></span>
+      </label>
+    </td>
+
+    <!-- Date checkboxes -->
+    <td *ngFor="let d of dates"
+    [class.today-col]="d === todayStr">
+
+  <input
+    class="checkbox"
+    type="checkbox"
+    [checked]="tracker.isCompleted(task.id, d)"
+    (change)="toggle(task, d)"
+  />
+
+</td>
+
+
+  </tr>
+</tbody>
+
+    </table>
+  </section>
+
+</div>
+

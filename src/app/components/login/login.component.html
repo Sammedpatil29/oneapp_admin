@@ -1,37 +1,79 @@
-<div class="row" style="height: 100vh; overflow-y: hidden">
-    <div class="col-md-5 logo fs-1 text-white">
-        <!-- <img class="logoImg" src="../../../assets/icon-512.webp" alt=""> -->
-         <strong>ONE</strong>APP <br> <span class="text-secondary">ADMIN</span>
+<div class="container-fluid vh-100">
+  <div class="row h-100">
+
+    <!-- LEFT BRAND SECTION -->
+    <div class="col-md-5 d-none d-md-flex align-items-center justify-content-center brand-section">
+      <div class="text-center text-white">
+        <h1 class="fw-bold display-4">ONE<span class="fw-light">APP</span></h1>
+        <h4 class="text-secondary">ADMIN PANEL</h4>
+      </div>
     </div>
-    <div class="col-md-7 login">
-        <div class="border w-50 p-3 text-center bg-white">
-            <h3>Admin Login</h3>
-            <div class="d-flex flex-column">
-                <mat-form-field class="example-full-width mt-3" appearance="outline">
-                <mat-label>Mobile Number</mat-label>
-                <input matInput type="text"
-       maxlength="10"
-       pattern="[0-9]*"
-       inputmode="numeric" [(ngModel)]="mobileNumber" placeholder="Mobile Number" value="">
-            </mat-form-field>
-                <mat-form-field class="example-full-width" appearance="outline">
-                <mat-label>Password</mat-label>
-                <input matInput type="password" [(ngModel)]="password" placeholder="Password" value="">
-            </mat-form-field>
-            <a href="javascript:void(0)" class="mb-2" (click)="forgotPassword()">forgot password?</a>
-            <button class="btn btn-dark" [disabled]="password == '' || mobileNumber.length !== 10 || isLoading" (keydown)="logIn()" (click)="logIn()">
-                 
-                @if (isLoading) {
-                    <app-button-spinner></app-button-spinner>
-                } @else {
-                    Login
-                }
-            </button>
-            </div>
+
+    <!-- RIGHT LOGIN SECTION -->
+    <div class="col-md-7 d-flex align-items-center justify-content-center bg-light">
+      <div class="login-card shadow-lg bg-white p-4 rounded">
+
+        <h3 class="mb-4 text-center fw-bold">Admin Login</h3>
+
+        <div class="d-flex flex-column">
+
+          <mat-form-field appearance="outline" class="mb-3">
+            <mat-label>Mobile Number</mat-label>
+            <input
+              matInput
+              type="text"
+              maxlength="10"
+              pattern="[0-9]*"
+              inputmode="numeric"
+              [(ngModel)]="mobileNumber"
+              placeholder="Mobile Number"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="mb-2">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              type="password"
+              [(ngModel)]="password"
+              placeholder="Password"
+            />
+          </mat-form-field>
+
+          <div class="text-end mb-3">
+            <a href="javascript:void(0)" (click)="forgotPassword()">
+              Forgot password?
+            </a>
+          </div>
+
+          <button
+            class="btn btn-dark w-100 py-2"
+            [disabled]="password == '' || mobileNumber.length !== 10 || isLoading"
+            (keydown)="logIn()"
+            (click)="logIn()"
+          >
+            @if (isLoading) {
+              <app-button-spinner></app-button-spinner>
+            } @else {
+              Login
+            }
+          </button>
+
         </div>
+      </div>
     </div>
+
+  </div>
 </div>
 
-<div class="position-fixed" style="top: 10px; left: 10px;" (click)="openCalculator()">
-    <img class="kitchenLogo" src="assets/wired-flat-615-coffee-machine-hover-pinch (1).gif" alt="">
-</div> 
+<!-- FLOATING CALCULATOR ICON -->
+<div
+  class="position-fixed calculator-btn"
+  (click)="openCalculator()"
+>
+  <img
+    class="kitchenLogo"
+    src="assets/wired-flat-615-coffee-machine-hover-pinch (1).gif"
+    alt=""
+  />
+</div>

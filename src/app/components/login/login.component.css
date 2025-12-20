@@ -1,29 +1,19 @@
-.logo {
-    background-color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.brand-section {
+  background: linear-gradient(135deg, #000000, #1f1f1f);
 }
 
-.logoImg{
-    width: 300px;
+.login-card {
+  width: 100%;
+  max-width: 420px;
 }
 
-.login {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-image: url('../../../assets/endless-constellation.svg');
+.calculator-btn {
+  top: 15px;
+  left: 15px;
+  cursor: pointer;
 }
 
-.border {
-    border-radius: 20px;
-    border: 2px solid black !important;
-    /* box-shadow: 0px 0px 0px black */
-}
-
-.kitchenLogo{
-        width: 41px;
-    border-radius: 6px;
-    cursor: pointer;
+.kitchenLogo {
+  width: 55px;
+  height: auto;
 }
