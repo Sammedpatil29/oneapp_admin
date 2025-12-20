@@ -66,6 +66,53 @@
     </div>
 
   </section>
+
+  <!-- Heatmap Controls -->
+<div class="heatmap-controls">
+
+  <div class="mode-toggle">
+    <button
+      [class.active]="viewMode === 'day'"
+      (click)="setViewMode('day')">Day</button>
+
+    <button
+      [class.active]="viewMode === 'week'"
+      (click)="setViewMode('week')">Week</button>
+
+    <button
+      [class.active]="viewMode === 'month'"
+      (click)="setViewMode('month')">Month</button>
+  </div>
+
+  <input 
+  style="    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;"
+    type="date"
+    [max]="todayStr"
+    [(ngModel)]="selectedDate"
+    (change)="onViewDateChange()"
+  />
+</div>
+<!-- Heatmap -->
+<div class="heatmap"
+     [ngClass]="{
+       'heatmap-day-view': viewMode === 'day',
+       'heatmap-week-view': viewMode === 'week',
+       'heatmap-month-view': viewMode === 'month'
+     }">
+
+  <div
+    class="heatmap-cell"
+    *ngFor="let day of heatmapDays"
+    [title]="day.date + ' • ' + day.percent + '%'"
+    [ngClass]="getHeatClass(day.percent)">
+    <small>{{ day.date | date: 'MMM dd'}}</small>
+  </div>
+
+</div>
+
+
   
   <!-- Controls Bar -->
 <div class="controls">
@@ -99,7 +146,8 @@
 
 
   <!-- TRACKER TABLE -->
-  <section class="table-wrapper">
+  @if (mockApiResponse['tasks'].length != 0) {
+    <section class="table-wrapper">
     <table class="tracker-table">
       <thead>
   <tr>
@@ -155,6 +203,9 @@
 
     </table>
   </section>
+  } @else {
+    <small class="add-task">Add Task</small>
+  }
 
 </div>
 

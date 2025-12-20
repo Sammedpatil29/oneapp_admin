@@ -422,3 +422,115 @@ th.today-col,
 td.today-col {
   min-width: 70px;
 }
+
+/* Heatmap controls */
+.heatmap-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 14px 0;
+  gap: 12px;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 6px;
+}
+
+.mode-toggle button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.mode-toggle button.active {
+  background: #22c55e;
+  color: white;
+  border-color: #22c55e;
+}
+
+/* Heatmap */
+.heatmap {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+/* DAY VIEW (single block, big) */
+.heatmap-day-view {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.heatmap-day-view .heatmap-cell {
+  height: 60px;
+  font-size: 14px;
+}
+
+/* WEEK VIEW (GitHub-style 7 days) */
+.heatmap-week-view {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.heatmap-week-view .heatmap-cell {
+  height: 46px;
+}
+
+/* MONTH VIEW (30 days compact grid) */
+.heatmap-month-view {
+  grid-template-columns: repeat(15, 1fr);
+}
+
+.heatmap-month-view .heatmap-cell {
+  height: 34px;
+  font-size: 11px;
+}
+
+/* Heatmap cell */
+.heatmap-cell {
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: transform 0.15s ease;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.05);
+}
+
+.heatmap-day {
+  height: 46px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* GitHub intensity colors */
+.hm-0 { background: #e5e7eb; color: #374151; }
+.hm-1 { background: #bbf7d0; color: #14532d; }
+.hm-2 { background: #86efac; color: #14532d; }
+.hm-3 { background: #4ade80; }
+.hm-4 { background: #22c55e; }
+
+.add-task {
+    border: 2px dotted black;
+    width: 100%;
+    /* display: block; */
+    border-radius: 10px;
+    height: 100px;
+    /* text-align: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: x-large;
+}
+

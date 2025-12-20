@@ -23,6 +23,10 @@ userEmoji = '🙂';
 newTaskName = '';
 newTaskTarget = 3;
 todayStr = this.format(new Date());
+viewMode: 'day' | 'week' | 'month' = 'week';
+selectedDate = this.todayStr;
+
+heatmapDays: any[] = [];
 
 mockApiResponse = {
   user: {
@@ -66,6 +70,7 @@ mockApiResponse = {
   ngOnInit() {
   this.initDates();
   this.loadFromApi(); // 👈 simulate API
+  this.buildHeatmap();
 }
 
   initDates() {
@@ -111,6 +116,7 @@ mockApiResponse = {
 
   toggle(task: any, date: string) {
     this.tracker.toggle(task.id, date);
+    this.setViewMode(this.viewMode); // refresh heatmap
   }
 
 //   toggle(task: any, date: string) {
@@ -336,5 +342,77 @@ editTask(task: any) {
   task.name = name.trim();
   task.weeklyTarget = Math.min(7, Math.max(1, Number(freq)));
 }
+
+setViewMode(mode: 'day' | 'week' | 'month') {
+  this.viewMode = mode;
+  this.buildHeatmap();
+}
+
+onViewDateChange() {
+  this.buildHeatmap();
+}
+
+buildHeatmap() {
+  this.heatmapDays = [];
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // normalize
+
+  const base = new Date(this.selectedDate);
+  base.setHours(0, 0, 0, 0);
+
+  const days =
+    this.viewMode === 'day' ? 1 :
+    this.viewMode === 'week' ? 7 : 30;
+
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(base);
+    d.setDate(base.getDate() - i);
+    d.setHours(0, 0, 0, 0);
+
+    // ❌ skip only future dates
+    if (d.getTime() > today.getTime()) continue;
+
+    const percent = this.dayCompletionPercent(d);
+
+    this.heatmapDays.push({
+      date: this.format(d),
+      label:
+        this.viewMode === 'day'
+          ? 'Today'
+          : this.viewMode === 'week'
+            ? d.toLocaleDateString('en-US', { weekday: 'short' })
+            : d.getDate().toString(),
+      percent
+    });
+  }
+}
+
+
+dayCompletionPercent(date: Date) {
+  let done = 0;
+  let total = 0;
+
+  this.tracker.tasks.forEach(task => {
+    if (!task.enabled) return;
+
+    total++;
+    if (this.tracker.isCompleted(task.id, this.format(date))) {
+      done++;
+    }
+  });
+
+  return total ? Math.round((done / total) * 100) : 0;
+}
+
+getHeatClass(percent: number) {
+  if (percent === 0) return 'hm-0';
+  if (percent <= 25) return 'hm-1';
+  if (percent <= 50) return 'hm-2';
+  if (percent <= 75) return 'hm-3';
+  return 'hm-4';
+}
+
+
 
 }
