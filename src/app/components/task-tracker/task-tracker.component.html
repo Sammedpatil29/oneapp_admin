@@ -78,15 +78,15 @@
   <div class="mode-toggle">
     <button
       [class.active]="viewMode === 'day'"
-      (click)="setViewMode('day')">Day</button>
+      (click)="setViewMode('day')">1 Day</button>
 
     <button
       [class.active]="viewMode === 'week'"
-      (click)="setViewMode('week')">Week</button>
+      (click)="setViewMode('week')">Last 7 Days</button>
 
     <button
       [class.active]="viewMode === 'month'"
-      (click)="setViewMode('month')">Month</button>
+      (click)="setViewMode('month')">Last 30 Days</button>
   </div>
 
   <input 

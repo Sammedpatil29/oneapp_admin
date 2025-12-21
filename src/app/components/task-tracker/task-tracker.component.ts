@@ -29,7 +29,7 @@ userEmoji = '🙂';
 newTaskName = '';
 newTaskTarget = 3;
 todayStr = this.format(new Date());
-viewMode: 'day' | 'week' | 'month' = 'week';
+viewMode: 'day' | 'week' | 'month' = 'month';
 selectedDate = this.todayStr;
 
 heatmapDays: any[] = [];
