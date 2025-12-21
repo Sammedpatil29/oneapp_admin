@@ -75,4 +75,8 @@ export class LoginComponent {
     this.router.navigate(['/calculator'])
   }
 
+  openTracker(){
+    this.router.navigate(['/task_tracker'])
+  }
+
 }

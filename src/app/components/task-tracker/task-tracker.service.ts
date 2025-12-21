@@ -10,7 +10,7 @@ export class TaskTrackerService {
     { id: 3, name: 'Reading', weeklyTarget: 3, enabled: true }
   ];
 
-  url = 'http://localhost:3000/';
+  url = 'https://task-tracker-backend-gb0d.onrender.com/';
 
   constructor(private http: HttpClient) {}
 
