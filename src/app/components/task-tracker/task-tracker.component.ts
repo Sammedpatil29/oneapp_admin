@@ -427,6 +427,7 @@ logout(){
 
 logIn(event:any){
   this.isLoggedIn = event;
+  this.getDashboard()
   console.log("Logged In:", this.isLoggedIn);
 }
 
