@@ -408,7 +408,7 @@
 
 /* Header emphasis */
 th.today-col {
-  background-color: #f7c2bb;
+  background-color: #1cd8166b !important ;
   font-weight: 800;
 }
 
@@ -499,7 +499,7 @@ td.today-col {
 }
 
 .heatmap-cell:hover {
-  transform: scale(1.05);
+  transform: scale(0.95);
 }
 
 .heatmap-day {

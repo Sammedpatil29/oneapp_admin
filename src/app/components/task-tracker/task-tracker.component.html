@@ -1,6 +1,7 @@
-<div class="page">
-
-  <header class="header">
+@if (!isLoading) {
+@if (isLoggedIn) {
+   
+     <header class="header py-3 px-4 z-3 bg-white">
   <div class="header-row">
     <div class="title">
       <h1>📈 Discipline Tracker</h1>
@@ -9,20 +10,18 @@
 
     <div class="user p-1">
         <div class="user">
-      <span class="user-name">{{ userName }}</span>
+      <span class="user-name">{{ userName | titlecase}}</span>
       <span class="user-emoji">{{ userEmoji }}</span>
     </div>
     <div class="user">
       <!-- <span class="user-name">Logout</span> -->
-      <span class="user-emoji" title="Logout">⛔</span>
+      <span class="user-emoji" title="Logout" (click)="logout()">⛔</span>
     </div>
     </div>
   </div>
 </header>
-
-
-  <!-- KPI GRID -->
-  <section class="kpi-grid advanced">
+<!-- KPI GRID -->
+  <section class="kpi-grid advanced py-1 px-4 position-sticky top-0 z-3 bg-white">
 
     <div class="kpi-card highlight">
       <span class="label">🎯 Discipline Score</span>
@@ -66,6 +65,12 @@
     </div>
 
   </section>
+    <div class="page">
+
+  
+
+
+  
 
   <!-- Heatmap Controls -->
 <div class="heatmap-controls">
@@ -137,7 +142,12 @@
   </div>
 
   <!-- Actions -->
-  <div class="actions">
+  <div class="actions align-items-center">
+    @if (isDataUpdating) {
+        <div class="spinner-border spinner-border-sm" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+    }
     <button class="btn add" (click)="addTaskPrompt()">➕ Add Task</button>
     <button class="btn export" (click)="exportCSV()">📤 Export</button>
   </div>
@@ -168,7 +178,7 @@
 
     <!-- Task name -->
     <td class="sticky-left task-name">
-      {{ task.enabled ? '✅' : '⏸️' }} {{ task.name }}
+      {{ task.enabled ? '✅' : '⏸️' }} {{ task.name | titlecase}}
     </td>
 
     <!-- Frequency -->
@@ -208,4 +218,12 @@
   }
 
 </div>
+   
 
+
+} @else {
+    <app-track-login (isLoggedIn)="logIn($event)"></app-track-login>
+}
+} @else {
+    <app-loader></app-loader>
+   }

@@ -5,10 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { TaskTrackerService } from './task-tracker.service';
 import { AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import Chart from 'chart.js/auto';
+import { TrackLoginComponent } from "../track-login/track-login.component";
+import { Router } from '@angular/router';
+import { LoaderComponent } from "../loader/loader.component";
 
 @Component({
   selector: 'app-task-tracker',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, TrackLoginComponent, LoaderComponent],
   templateUrl: './task-tracker.component.html',
   styleUrl: './task-tracker.component.css'
 })
@@ -18,6 +21,9 @@ export class TaskTrackerComponent implements OnInit {
   toDate = '';
   dates: string[] = [];
   showAddTask = false;
+  isLoggedIn:boolean = false;
+  isDataUpdating:boolean = false;
+  isLoading:boolean = true;
   userName = '';
 userEmoji = '🙂';
 newTaskName = '';
@@ -28,49 +34,17 @@ selectedDate = this.todayStr;
 
 heatmapDays: any[] = [];
 
-mockApiResponse = {
-  user: {
-    id: 101,
-    name: 'Sammed',
-    emoji: '😎'
-  },
-
-  tasks: [
-    {
-      id: 1,
-      name: 'Gym',
-      weeklyTarget: 5,
-      enabled: true
-    },
-    {
-      id: 2,
-      name: 'Coding',
-      weeklyTarget: 2,
-      enabled: true
-    },
-    {
-      id: 3,
-      name: 'Reading',
-      weeklyTarget: 3,
-      enabled: false
-    }
-  ],
-
-  completions: [
-    { taskId: 1, date: '2025-09-18', completed: true },
-    { taskId: 1, date: '2025-09-19', completed: true },
-    { taskId: 2, date: '2025-09-19', completed: true },
-    { taskId: 3, date: '2025-09-20', completed: false }
-  ]
-};
+mockApiResponse:any;
 
 
-  constructor(public tracker: TaskTrackerService) {}
+  constructor(public tracker: TaskTrackerService, private router: Router) {}
 
   ngOnInit() {
+  if(sessionStorage.getItem('trackJwt')){
+    this.isLoggedIn = true
+  }
   this.initDates();
-  this.loadFromApi(); // 👈 simulate API
-  this.buildHeatmap();
+  this.getDashboard()
 }
 
   initDates() {
@@ -83,20 +57,7 @@ mockApiResponse = {
     this.generateDates();
   }
 
-  loadFromApi() {
-  // 1️⃣ Set tasks
-  this.tracker.tasks = this.mockApiResponse.tasks;
 
-  // 2️⃣ Load completion data into service map
-  this.mockApiResponse.completions.forEach(c => {
-    const key = `${c.taskId}_${c.date}`;
-    this.tracker['store']?.set?.(key, c.completed);
-  });
-
-  // 3️⃣ (Optional) User info
-  this.userName = this.mockApiResponse.user.name;
-  this.userEmoji = this.mockApiResponse.user.emoji;
-}
 
 
   generateDates() {
@@ -115,9 +76,38 @@ mockApiResponse = {
   }
 
   toggle(task: any, date: string) {
-    this.tracker.toggle(task.id, date);
-    this.setViewMode(this.viewMode); // refresh heatmap
-  }
+
+  // 1️⃣ determine next state
+  const currentlyCompleted = this.tracker.isCompleted(task.id, date);
+  const completed = !currentlyCompleted;
+
+  const data = {
+    taskId: task.id,
+    date: date,
+    completed: completed
+  };
+
+  // 2️⃣ call API first
+  this.isDataUpdating = true
+  this.tracker.completions(data).subscribe({
+    next: (res: any) => {
+
+      // 3️⃣ update UI only after success
+      this.tracker.toggle(task.id, date);
+
+      // 4️⃣ refresh heatmap
+      this.setViewMode(this.viewMode);
+      this.isDataUpdating = false
+      console.log('Completion updated', res);
+    },
+    error: (err) => {
+      console.error(err);
+      this.isDataUpdating = false
+      alert('Failed to update completion');
+    }
+  });
+}
+
 
 //   toggle(task: any, date: string) {
 //   this.tracker.toggle(task.id, date);
@@ -292,16 +282,33 @@ addTaskPrompt() {
   const name = prompt('Enter task name');
   if (!name || !name.trim()) return;
 
-  const freq = prompt('Weekly frequency (1–7)', '3');
-  const weeklyTarget = Math.min(7, Math.max(1, Number(freq || 3)));
+  const freqInput = prompt('Weekly frequency (1–7)', '3');
+  const weeklyTarget = Math.min(7, Math.max(1, Number(freqInput || 3)));
 
-  this.tracker.tasks.push({
-    id: Date.now(),
+  const data = {
     name: name.trim(),
-    weeklyTarget,
-    enabled: true
+    weeklyTarget
+  };
+
+  this.isLoading = true;
+
+  this.tracker.addTask(data).subscribe({
+    next: (res: any) => {
+      this.isLoading = false;
+
+      // ✅ push only after API success
+      this.tracker.tasks.push(res);
+
+      alert('Task added successfully');
+    },
+    error: (err) => {
+      this.isLoading = false;
+      console.error(err);
+      alert('Failed to add task');
+    }
   });
 }
+
 
 exportCSV() {
   const rows: string[] = [];
@@ -413,6 +420,35 @@ getHeatClass(percent: number) {
   return 'hm-4';
 }
 
+logout(){
+  sessionStorage.removeItem('trackJwt')
+  this.isLoggedIn = false;
+}
 
+logIn(event:any){
+  this.isLoggedIn = event;
+  console.log("Logged In:", this.isLoggedIn);
+}
 
+getDashboard(){
+  this.isLoading = true
+  this.tracker.getDashboard().subscribe((res:any)=>{
+    this.mockApiResponse = res
+    this.tracker.tasks = this.mockApiResponse.tasks;
+
+  // 2️⃣ Load completion data into service map
+  this.mockApiResponse.completions.forEach((c:any) => {
+    const key = `${c.taskId}_${c.date}`;
+    this.tracker['store']?.set?.(key, c.completed);
+  });
+
+  // 3️⃣ (Optional) User info
+  this.userName = this.mockApiResponse.user.name;
+  this.userEmoji = this.mockApiResponse.user.emoji;
+  this.buildHeatmap();
+    this.isLoading  = false
+  }, error => {
+    this.isLoading  = false
+  })
+}
 }

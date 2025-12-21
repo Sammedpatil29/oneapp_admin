@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
@@ -8,6 +9,10 @@ export class TaskTrackerService {
     { id: 2, name: 'Coding', weeklyTarget: 2, enabled: true },
     { id: 3, name: 'Reading', weeklyTarget: 3, enabled: true }
   ];
+
+  url = 'http://localhost:3000/';
+
+  constructor(private http: HttpClient) {}
 
   // key = taskId_date
   private store = new Map<string, boolean>();
@@ -33,4 +38,43 @@ export class TaskTrackerService {
     const k = this.key(taskId, date);
     this.store.set(k, !this.store.get(k));
   }
+
+  registerUser(data: any) {
+    return this.http.post(this.url + 'auth/register', data);
+  }
+
+  loginUser(data: any) {
+    return this.http.post(this.url + 'auth/login', data);
+  }
+
+  getDashboard() {
+  // Get the token from wherever you stored it (usually localStorage)
+  const token = sessionStorage.getItem('trackJwt'); 
+
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.get(this.url + 'api/dashboard', { headers });
+}
+
+addTask(data:any){
+  const token = sessionStorage.getItem('trackJwt'); 
+console.log(token)
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.post(this.url + 'api/tasks', data, { headers },);
+}
+
+completions(data:any){
+  const token = sessionStorage.getItem('trackJwt'); 
+console.log(token)
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.post(this.url + 'api/completions', data, { headers },);
+}
 }
