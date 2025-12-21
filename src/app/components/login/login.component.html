@@ -69,9 +69,9 @@
 <!-- FLOATING CALCULATOR ICON -->
 <div
   class="position-fixed calculator-btn"
-  (click)="openCalculator()"
+  
 >
-  <img
+  <!-- <img
     class="kitchenLogo"
     src="assets/wired-flat-615-coffee-machine-hover-pinch (1).gif"
     alt=""
@@ -81,7 +81,17 @@
     class="kitchenLogo"
     src="assets/wired-flat-1-cloud-in-reveal (1).gif"
     alt=""
-  />
+  /> -->
+  <div class="user p-1">
+        <div class="user" (click)="openCalculator()">
+      <!-- <span class="user-name">Cloud Kitchen Calculator</span> -->
+      <span class="user-emoji" title="Cloud Kitchen Calculator">🧮</span>
+    </div>
+    <div class="user" (click)="openTracker()">
+      <!-- <span class="user-name">Task Tracker</span> -->
+      <span class="user-emoji" title="Task Tracker">📊</span>
+    </div>
+    </div>
 </div>
 
   

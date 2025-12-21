@@ -17,3 +17,23 @@
   width: 55px;
   height: auto;
 }
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.user-name {
+  font-size: 14px;
+}
+
+.user-emoji {
+  font-size: 18px;
+}
