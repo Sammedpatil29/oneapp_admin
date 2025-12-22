@@ -1,4 +1,5 @@
-@if (!isLoading) {
+<div #exportArea>
+  @if (!isLoading) {
 @if (isLoggedIn) {
    
      <header class="header py-3 px-4 z-3 bg-white">
@@ -9,10 +10,17 @@
     </div>
 
     <div class="user p-1">
+      @if (showWaterReminder) {
+        <div class="user">
+      <!-- <span class="user-name">Logout</span> -->
+      <span class="user-emoji" title="Logout">💧</span>
+    </div>
+      }
         <div class="user">
       <span class="user-name">{{ userName | titlecase}}</span>
       <span class="user-emoji">{{ userEmoji }}</span>
     </div>
+    
     <div class="user">
       <!-- <span class="user-name">Logout</span> -->
       <span class="user-emoji" title="Logout" (click)="logout()">⛔</span>
@@ -150,6 +158,7 @@
     }
     <button class="btn add" (click)="addTaskPrompt()">➕ Add Task</button>
     <button class="btn export" (click)="exportCSV()">📤 Export</button>
+    <button class="btn export" (click)="exportAsImage()">📸 Download JPG</button>
   </div>
 
 </div>
@@ -227,3 +236,4 @@
 } @else {
     <app-loader></app-loader>
    }
+</div>

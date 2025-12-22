@@ -8,6 +8,7 @@ import Chart from 'chart.js/auto';
 import { TrackLoginComponent } from "../track-login/track-login.component";
 import { Router } from '@angular/router';
 import { LoaderComponent } from "../loader/loader.component";
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-task-tracker',
@@ -16,7 +17,7 @@ import { LoaderComponent } from "../loader/loader.component";
   styleUrl: './task-tracker.component.css'
 })
 export class TaskTrackerComponent implements OnInit {
-
+@ViewChild('exportArea', { static: false }) exportArea!: ElementRef;
   fromDate = '';
   toDate = '';
   dates: string[] = [];
@@ -31,6 +32,9 @@ newTaskTarget = 3;
 todayStr = this.format(new Date());
 viewMode: 'day' | 'week' | 'month' = 'month';
 selectedDate = this.todayStr;
+showWaterReminder = false;
+waterInterval: any;
+waterAudio = new Audio('assets/ElevenLabs_2025-12-22T13_17_34_Rachel_pre_sp100_s50_sb75_se0_b_m2.mp3');
 
 heatmapDays: any[] = [];
 
@@ -41,6 +45,7 @@ mockApiResponse:any;
 
   ngOnInit() {
     let token = sessionStorage.getItem('trackJwt')
+    this.waterReminder()
   if(token){
     this.isLoggedIn = true
     this.getDashboard()
@@ -344,6 +349,25 @@ exportCSV() {
   window.URL.revokeObjectURL(url);
 }
 
+exportAsImage() {
+  const element = this.exportArea.nativeElement;
+
+  html2canvas(element, {
+    scale: 2,            // better quality
+    useCORS: true,
+    backgroundColor: '#ffffff'
+  }).then((canvas:any) => {
+    
+    const imageData = canvas.toDataURL('image/jpeg', 0.95);
+
+    const link = document.createElement('a');
+    link.href = imageData;
+    link.download = `discipline-tracker-${this.todayStr}.jpg`;
+    link.click();
+  });
+}
+
+
 editTask(task: any) {
   const name = prompt('Edit task name', task.name);
   if (!name) return;
@@ -434,6 +458,17 @@ logIn(event:any){
   console.log("Logged In:", this.isLoggedIn);
 }
 
+waterReminder(){
+  setInterval(()=>{
+    this.showWaterReminder = true
+    this.waterAudio.currentTime = 0;
+  this.waterAudio.play();
+  setTimeout(()=>{
+    this.showWaterReminder = false
+  }, 5000)
+  }, 15 * 60 * 1000)
+}
+
 getDashboard(){
   this.isLoading = true
   this.tracker.getDashboard().subscribe((res:any)=>{
@@ -455,4 +490,7 @@ getDashboard(){
     this.isLoading  = false
   })
 }
+
+
+
 }
