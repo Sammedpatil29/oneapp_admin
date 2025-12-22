@@ -40,11 +40,14 @@ mockApiResponse:any;
   constructor(public tracker: TaskTrackerService, private router: Router) {}
 
   ngOnInit() {
-  if(sessionStorage.getItem('trackJwt')){
+    let token = sessionStorage.getItem('trackJwt')
+  if(token){
     this.isLoggedIn = true
+    this.getDashboard()
   }
+  this.isLoading = false
   this.initDates();
-  this.getDashboard()
+  
 }
 
   initDates() {
