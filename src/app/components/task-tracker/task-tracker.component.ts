@@ -26,6 +26,7 @@ export class TaskTrackerComponent implements OnInit {
   isDataUpdating:boolean = false;
   isLoading:boolean = true;
   userName = '';
+  year = new Date().getFullYear()
 userEmoji = '🙂';
 newTaskName = '';
 newTaskTarget = 3;
