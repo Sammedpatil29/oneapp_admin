@@ -55,10 +55,10 @@ mockApiResponse:any;
   this.initDates();
 }
 
-@HostListener('window:focus', ['$event'])
-  onWindowFocus(event: any) {
-    this.getDashboard();   // refresh when tab becomes active again
-  }
+// @HostListener('window:focus', ['$event'])
+//   onWindowFocus(event: any) {
+//     this.getDashboard();  
+//   }
 
   initDates() {
     const today = new Date();
