@@ -31,7 +31,7 @@ userEmoji = '🙂';
 newTaskName = '';
 newTaskTarget = 3;
 todayStr = this.format(new Date());
-viewMode: 'day' | 'week' | 'month' = 'month';
+viewMode: 'day' | 'week' | 'month' = 'week';
 selectedDate = this.todayStr;
 showWaterReminder = false;
 waterInterval: any;
