@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskTrackerService } from './task-tracker.service';
@@ -53,8 +53,12 @@ mockApiResponse:any;
   }
   this.isLoading = false
   this.initDates();
-  
 }
+
+@HostListener('window:focus', ['$event'])
+  onWindowFocus(event: any) {
+    this.getDashboard();   // refresh when tab becomes active again
+  }
 
   initDates() {
     const today = new Date();
