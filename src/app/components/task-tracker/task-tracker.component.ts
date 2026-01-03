@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TaskTrackerService } from './task-tracker.service';
 import { AfterViewInit, ViewChild, ElementRef } from '@angular/core';
-import Chart from 'chart.js/auto';
 import { TrackLoginComponent } from "../track-login/track-login.component";
 import { Router } from '@angular/router';
 import { LoaderComponent } from "../loader/loader.component";
