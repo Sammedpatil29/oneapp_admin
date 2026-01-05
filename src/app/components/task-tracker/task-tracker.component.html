@@ -175,7 +175,7 @@
     <th class="sticky-left">⚙️</th>
     <th *ngFor="let d of dates"
     [class.today-col]="d === todayStr">
-  {{ d | date:'dd MMM' }}
+  <span *ngIf="d !== todayStr">{{ d | date:'dd MMM' }}</span>
   <span *ngIf="d === todayStr">📍(Today)</span>
 </th>   
   </tr>
