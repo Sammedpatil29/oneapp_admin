@@ -62,7 +62,7 @@ mockApiResponse:any;
   initDates() {
     const today = new Date();
     const start = new Date();
-    start.setDate(today.getDate() - 6);
+    start.setDate(today.getDate() - 15);
 
     this.fromDate = this.format(start);
     this.toDate = this.format(today);
