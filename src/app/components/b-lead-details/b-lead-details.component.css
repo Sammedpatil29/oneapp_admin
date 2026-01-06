@@ -1,0 +1,120 @@
+/* Layout Reset for Dialog */
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  height: 600px; /* Fixed height for the popup */
+  overflow: hidden;
+  background: #fff;
+}
+
+.dialog-header {
+  background: #1a2433; /* Brahmadev Navy */
+  color: #fff;
+  padding: 12px 24px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content h2 { margin: 0; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; }
+.close-btn { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+/* Grid Split */
+.main-dashboard-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr; /* Fixed left, flexible right */
+  height: calc(600px - 50px); /* Total height minus header */
+}
+
+/* Left Panel Styling */
+.lead-details-section {
+  padding: 24px;
+  background: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-header-row { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+
+.avatar-circle {
+  width: 50px; height: 50px;
+  background: #1a2433;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center; justify-content: center;
+  font-weight: 800; border: 2px solid #c5a35d; /* Brand Gold */
+}
+
+.lead-name { font-size: 1.25rem; font-weight: 800; margin: 0; color: #1a2433; }
+.sub-text { font-size: 0.8rem; color: #64748b; margin-top: 4px; }
+.divider { margin: 0 5px; }
+
+.form-container { flex: 1; }
+.input-group { margin-bottom: 15px; }
+.input-group label { display: block; font-size: 0.7rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; }
+
+.web-select, .web-input {
+  width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; outline: none; font-weight: 600; font-size: 0.9rem;
+}
+
+.meta-box-gray { background: #f1f5f9; padding: 12px; border-radius: 8px; font-size: 0.8rem; color: #475569; margin-top: 15px; }
+.meta-row { margin-bottom: 4px; }
+
+.action-footer { padding-top: 15px; }
+.btn-call-lead { width: 100%; padding: 12px; background: #1a2433; color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+/* Right Panel (Activity Log) */
+.activity-log-section {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.activity-header-bar {
+  padding: 15px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.activity-header-bar h3 { font-size: 1rem; margin: 0; font-weight: 800; color: #1a2433; }
+.activity-count { background: #f1f5f9; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+
+.chat-message-area {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: #fafbfc;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.msg-bubble-wrapper { align-self: flex-start; max-width: 90%; }
+.msg-bubble-wrapper.is-admin { align-self: flex-end; }
+
+.bubble-content { padding: 12px 16px; border-radius: 12px; background: #fff; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+.is-admin .bubble-content { background: #1a2433; color: #fff; border: none; }
+
+.bubble-meta { display: flex; justify-content: space-between; gap: 20px; font-size: 0.65rem; margin-bottom: 4px; font-weight: 700; opacity: 0.7; }
+.msg-text { font-size: 0.85rem; margin: 0; line-height: 1.4; }
+
+.chat-input-container {
+  padding: 16px 24px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+textarea { flex: 1; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; resize: none; outline: none; height: 45px; font-family: inherit; }
+.btn-update-activity { background: #c5a35d; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; height: 45px; }
+
+/* Loader */
+.loader-placeholder { height: 100%; display: flex; align-items: center; justify-content: center; }

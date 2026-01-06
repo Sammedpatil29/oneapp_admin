@@ -22,6 +22,11 @@ import { CreateNotificationsComponent } from './components/create-notifications/
 import { VisitsComponent } from './components/visits/visits.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
 import { TaskTrackerComponent } from './components/task-tracker/task-tracker.component';
+import { BrahmadevConstructionsComponent } from './components/brahmadev-constructions/brahmadev-constructions.component';
+import { BLayoutComponent } from './components/b-layout/b-layout.component';
+import { BLeadsComponent } from './components/b-leads/b-leads.component';
+import { BVisitsComponent } from './components/b-visits/b-visits.component';
+import { BQuoteComponent } from './components/b-quote/b-quote.component';
 
 export const routes: Routes = [
   {
@@ -113,6 +118,33 @@ export const routes: Routes = [
         ],
       },
     ],
+  },
+  {
+    path: 'brahmadev-constructions',
+    component: BrahmadevConstructionsComponent,
+  },
+  {
+    path: 'b-layout',
+    component: BLayoutComponent,
+    children: [
+      {
+    path: 'b-leads',
+    component: BLeadsComponent,
+  },
+      {
+    path: 'b-visits',
+    component: BVisitsComponent,
+  },
+      {
+    path: 'b-quote',
+    component: BQuoteComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'b-leads',
+    pathMatch: 'full',
+  },
+    ]
   },
   {
     path: '**',

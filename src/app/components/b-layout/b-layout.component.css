@@ -1,0 +1,110 @@
+:host {
+  --bg-dark: #1a2433;
+  --accent-gold: #c5a35d;
+  --pod-white: #ffffff;
+  --pill-bg: #f2f2f2;
+}
+
+.floating-nav-container {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-pill {
+  background: var(--pill-bg);
+  padding: 8px 12px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15),
+              inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+}
+
+.nav-item .pod {
+  width: 58px;
+  height: 58px;
+  background: var(--pod-white);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+              0 2px 6px rgba(0, 0, 0, 0.08);
+  border: 2px solid transparent;
+}
+
+/* Logo Specific Styling */
+.logo-pod {
+  background: var(--bg-dark) !important; /* Dark background for the logo center */
+  border: 2px solid var(--accent-gold) !important;
+}
+
+.nav-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.logout-text {
+  font-size: 0.5rem;
+  color: var(--accent-gold);
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.nav-item .label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Hover States */
+.nav-item:hover .pod {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.logout-item:hover .pod {
+  background: #cc0000 !important; /* Visual cue for logout */
+  border-color: #ffffff !important;
+}
+
+.logout-item:hover .logout-text {
+  color: #ffffff;
+}
+
+/* Active State for Nav Links */
+.nav-item.active .pod {
+  background: var(--bg-dark);
+  transform: scale(1.04);
+  border: 2px solid var(--accent-gold);
+}
+
+.nav-item.active .label {
+  color: #ffffff;
+}
+
+/* .nav-item:active .pod {
+  transform: scale(0.92);
+} */

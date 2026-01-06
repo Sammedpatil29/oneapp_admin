@@ -1,0 +1,178 @@
+/* 1. Reset & Layout */
+.full-width {
+  width: 100%;
+  max-width: 100% !important;
+  margin: 0;
+  padding: 0;
+  background: #fdfdfd;
+}
+
+/* 2. Compact Top Bar (Reduced Size) */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1000;
+  padding: 8px 16px;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+
+  .left-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+    color: #111;
+  }
+}
+
+/* 3. Horizontal Scroll - Hide Bar */
+.chip-scroll-wrapper {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 12px;
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar { display: none; }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  .chip {
+    flex: 0 0 auto;
+    padding: 6px 14px;
+    background: #f1f3f5;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: #555;
+    border: 1px solid transparent;
+    transition: 0.2s;
+
+    &.active {
+      background: #1a2433; 
+      color: #fff;
+      font-weight: 600;
+    }
+  }
+}
+
+/* 4. Compact Search */
+.search-container input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  font-size: 0.9rem;
+  outline: none;
+  &:focus { border-color: #c5a35d; } 
+}
+
+/* 5. Lead Cards & Grid Alignment */
+.main-content { padding: 16px; }
+
+.lead-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.lead-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #efefef;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  
+  .card-accent {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: #1a2433;
+  }
+}
+
+.card-body { padding: 16px; }
+
+/* Perfect Alignment Logic */
+.card-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 12px;
+  
+  &.header-row {
+    gap: 12px;
+    justify-content: flex-start;
+  }
+
+  &.info-row {
+    gap: 16px;
+    padding-top: 8px;
+    border-top: 1px dashed #f0f0f0;
+  }
+
+  &.footer-row {
+    margin-bottom: 0;
+    padding-top: 10px;
+  }
+}
+
+.avatar {
+  width: 42px; height: 42px;
+  background: #f0f4f8;
+  color: #1a2433;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+.name-box {
+  flex: 1;
+  .lead-name { font-size: 1rem; font-weight: 700; margin: 0; }
+  .tag { font-size: 0.7rem; color: #888; margin-right: 8px; }
+}
+
+.status-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: #e6fffa;
+  color: #2c7a7b;
+  text-transform: uppercase;
+  
+  &[data-status="Closed"] { background: #fff5f5; color: #c53030; }
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #444;
+  .icon { filter: grayscale(1); opacity: 0.7; }
+}
+
+.add-btn-circle {
+    border: none;
+    background-color: transparent;
+}

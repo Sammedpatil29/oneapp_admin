@@ -1,0 +1,90 @@
+<div class="dialog-container">
+  <header class="dialog-header">
+    <div class="header-content">
+      <h2>Lead Details</h2>
+      <button matButton mat-dialog-close>&times;</button>
+    </div>
+  </header>
+
+  <div class="dialog-body-content" *ngIf="!isLoading; else loader">
+    <div class="main-dashboard-grid">
+      
+      <aside class="lead-details-section">
+        <div class="detail-header-row">
+          <div class="avatar-circle">{{ lead?.name?.charAt(0) }}</div>
+          <div class="lead-meta">
+            <h1 class="lead-name">{{ lead?.name | titlecase }}</h1>
+            <div class="sub-text">
+              <span>📞 {{ lead?.contact }}</span>
+              <span class="divider">|</span>
+              <span>📍 {{ lead?.city }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <div class="input-group">
+            <label>Lead Status</label>
+            <select class="web-select" [(ngModel)]="lead.response" (change)="updateStatus(lead.response)">
+              <option *ngFor="let s of statusList" [value]="s">{{ s | titlecase }}</option>
+            </select>
+          </div>
+
+          <div class="input-group" *ngIf="lead.response !== 'new'">
+            <label>Site Visit Schedule</label>
+            <input type="datetime-local" class="web-input" 
+                   [value]="lead.visit_schedule"
+                   (change)="onDateTimeSelected($any($event.target).value)">
+          </div>
+
+          <div class="meta-box-gray">
+            <div class="meta-row"><strong>Source:</strong> {{ lead?.platform | uppercase }}</div>
+            <div class="meta-row"><strong>Date:</strong> {{ lead?.time | date:'dd MMM yyyy, HH:mm' }}</div>
+          </div>
+        </div>
+
+        <div class="action-footer">
+          <button class="btn-call-lead" (click)="callNow()">Call Lead</button>
+        </div>
+      </aside>
+
+      <section class="activity-log-section">
+        <div class="activity-header-bar">
+          <h3>Activity Log</h3>
+          <span class="activity-count">{{ lead?.comment?.length || 0 }} Notes</span>
+        </div>
+
+        <div class="chat-message-area">
+          <div *ngIf="lead?.comment?.length === 0" class="empty-state">No progress notes recorded.</div>
+          
+          <div class="msg-bubble-wrapper" *ngFor="let c of lead?.comment" [class.is-admin]="c.author !== 'System'">
+            <div class="bubble-content">
+              <div class="bubble-meta">
+                <span class="user-name">{{ c.author }}</span>
+                <span class="msg-time">{{ c.date | date:'dd MMM, hh:mm a' }}</span>
+              </div>
+              <p class="msg-text">{{ c.text }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-container">
+          <textarea [(ngModel)]="newComment" placeholder="Write a progress note..."></textarea>
+          <button class="btn-update-activity" (click)="saveChanges()" [disabled]="!newComment || isSending">
+            <span *ngIf="!isSending">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M120-160v-640l760 320-760 320Zm80-120 474-200-474-200v140l240 60-240 60v140Zm0 0v-400 400Z"/></svg>
+            </span>
+            <span class="spinner-sm" *ngIf="isSending"></span>
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <ng-template #loader>
+    <div class="loader-placeholder">
+      <div class="spinner"></div>
+    </div>
+  </ng-template>
+</div>

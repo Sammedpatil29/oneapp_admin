@@ -1,0 +1,71 @@
+<div class="page-container full-width">
+  <header class="sticky-header">
+    <div class="top-bar">
+      <div class="left-section">
+        <!-- <button class="icon-btn" (click)="back()"><svg>...</svg></button> -->
+        <h1 class="title">Business Leads</h1>
+      </div>
+      <button class="add-btn-circle" (click)="addLead()"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></button>
+    </div>
+
+    <div class="filter-controls">
+      <div class="chip-scroll-wrapper">
+        <div class="chip" [class.active]="searchTerm === ''" (click)="resetSearch()">
+          All ({{ leads?.length }})
+        </div>
+        <div class="chip" [class.active]="searchTerm === 'scheduled'" (click)="scheduledSearch()">
+          Scheduled
+        </div>
+        <div *ngFor="let item of response" class="chip" [class.active]="item === searchTerm" (click)="filterbyChips(item)">
+          {{ item | titlecase }} <span *ngIf="item === searchTerm">({{ filteredLeads?.length }})</span>
+        </div>
+      </div>
+      
+      <div class="search-container">
+        <input type="text" [(ngModel)]="searchTerm" (input)="handleSearch()" placeholder="Search name, city or contact...">
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="lead-grid">
+      <div class="lead-card" *ngFor="let lead of filteredLeads" (click)="viewLead(lead)">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <div class="card-row header-row">
+            <div class="avatar">{{ lead.name.charAt(0).toUpperCase() }}</div>
+            <div class="name-box">
+              <h2 class="lead-name">{{ lead.name | titlecase }}</h2>
+              <div class="meta-tags">
+                <span class="tag platform">{{ lead.platform || 'Web' }}</span>
+                <span class="tag schedule" *ngIf="lead.visit_schedule">
+                  {{ lead.visit_schedule | date: 'dd MMM' }}
+                </span>
+              </div>
+            </div>
+            <div class="status-pill" [attr.data-status]="lead.response">
+              {{ lead.response }}
+            </div>
+          </div>
+
+          <div class="card-row info-row">
+            <div class="info-item">
+              <span class="icon">📞</span>
+              <span class="text">{{ lead.contact }}</span>
+            </div>
+            <div class="info-item">
+              <span class="icon">📍</span>
+              <span class="text">{{ lead.city || 'N/A' | titlecase }}</span>
+            </div>
+          </div>
+
+          <div class="card-row footer-row">
+            <span class="date-text">
+              <span class="icon">🕒</span> {{ lead.time | date:'mediumDate' }} • {{ lead.time | date:'shortTime' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -79,4 +79,8 @@ export class LoginComponent {
     this.router.navigate(['/task_tracker'])
   }
 
+  openBrahmadev(){
+    this.router.navigate(['/brahmadev-constructions'])
+  }
+
 }

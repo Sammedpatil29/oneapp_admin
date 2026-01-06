@@ -1,0 +1,146 @@
+:host {
+  --primary-color: #1a1a1a;
+  --bg-color: #f4f7f6;
+  --text-muted: #6c757d;
+  --input-bg: #f1f3f5;
+  --white: #ffffff;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.login-card {
+  background: var(--white);
+  padding: 3rem 2rem;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+  text-align: center;
+}
+
+.header-section {
+  margin-bottom: 2.5rem;
+
+  .logo-box img {
+    height: 90px;
+    margin-bottom: 1rem;
+  }
+
+  .company-name {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+  }
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  background: var(--input-bg);
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  padding: 0 1rem;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+
+  &:focus-within {
+    border-color: var(--primary-color);
+    background: var(--white);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    color: #adb5bd;
+    margin-right: 0.75rem;
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 1rem 0;
+    font-size: 1rem;
+    outline: none;
+    color: #333;
+
+    &::placeholder {
+      color: #adb5bd;
+    }
+  }
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:hover:not(:disabled) {
+    background: #333;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.forgot-link {
+  display: block;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    color: var(--primary-color);
+  }
+}
+
+
+.loader {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-overlay {
+  text-align: center;
+  img { width: 120px; }
+}

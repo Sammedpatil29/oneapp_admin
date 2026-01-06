@@ -1,0 +1,45 @@
+<div class="layout-wrapper">
+  <main class="content-area">
+    <router-outlet></router-outlet>
+  </main>
+
+  <nav class="floating-nav-container">
+    <div class="nav-pill">
+      
+      <button class="nav-item" (click)="navigate('b-leads')" routerLink="/b-leads" routerLinkActive="active">
+        <div class="pod">
+          <span class="label">Leads</span>
+        </div>
+      </button>
+
+      
+
+      <button class="nav-item" (click)="navigate('b-visits')" routerLink="/b-visits" routerLinkActive="active">
+        <div class="pod">
+          <span class="label">Visits</span>
+        </div>
+      </button>
+
+
+      <button class="nav-item" (click)="navigate('b-quote')" routerLink="/b-visits" routerLinkActive="active">
+        <div class="pod">
+          <span class="label">Quote</span>
+        </div>
+      </button>
+
+      <button class="nav-item" (click)="navigate('b-quote')" routerLink="/b-visits" routerLinkActive="active">
+        <div class="pod">
+          <span class="label">Invoice</span>
+        </div>
+      </button>
+
+      <button class="nav-item logout-item" >
+        <div class="pod logo-pod">
+          <img src="assets/Brahmadev Constructions.png" alt="Logout" class="pod logo-pod">
+          <!-- <span class="logout-text">Logout</span> -->
+        </div>
+      </button> 
+
+    </div>
+  </nav>
+</div>
