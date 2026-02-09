@@ -34,17 +34,23 @@
     <th>Stock</th>
     <th>Brand</th>
     <th>Status</th>
+    <th>Discount</th>
+    <th>Max Quantity</th>
+    <th>Min Quantity</th>
   </tr>
  @for (item of groceryList; track $index) {
      <tr (click)="openEditDialog(item)" class="item-row">
     <td>{{$index + 1}}</td>
     <td>{{item.name}}</td>
     <td>{{item.category}}</td>
-    <td>{{item.quantity.amount}}&nbsp;{{item.quantity.unit}}</td>
-    <td><span class="text-decoration-line-through">&#8377;{{item.price.mrp}}</span>&nbsp;<span class="text-success">&#8377;{{item.price.ourPrice}}</span></td>
+    <td>{{item.unit}}&nbsp;{{item.unit_value}}</td>
+    <td><span class="text-decoration-line-through">&#8377;{{item.price - item.discount}}</span>&nbsp;<span class="text-success">&#8377;{{item.price}}</span></td>
     <td [ngClass]="getStockColor(item.stock)"><span>{{item.stock}}</span></td>
     <td>{{item.brand}}</td>
-    <td [ngClass]="getStatusColor(item.is_available)">{{getAvailability(item.is_available)}}</td>
+    <td [ngClass]="getStatusColor(item.is_active)">{{getAvailability(item.is_available)}}</td>
+    <td>{{item.discount}}</td>
+    <td>{{item.max_quantity}}</td>
+    <td>{{item.min_quantity}}</td>
   </tr>
  }
 </table>

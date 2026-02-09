@@ -15,6 +15,12 @@
         </div>
         <div class="col">
             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>SKU</mat-label>
+                <input matInput [(ngModel)]="sku" placeholder="SKU" value="sku">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Category</mat-label>
                 <input matInput [(ngModel)]="category" placeholder="Category" value="category">
             </mat-form-field>
@@ -31,10 +37,19 @@
                 <input matInput [(ngModel)]="brand" placeholder="brand" value="brand">
             </mat-form-field>
         </div>
+    </div>
+
+    <div class="row">
         <div class="col">
             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
-                <mat-label>Quantity</mat-label>
-                <input matInput [(ngModel)]="qAmount" placeholder="Quantity" value="qAmount">
+                <mat-label>Tags</mat-label>
+                <input matInput [(ngModel)]="tags" placeholder="Tags (comma separated)" value="tags">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Unit Value</mat-label>
+                <input matInput [(ngModel)]="unit_value" placeholder="Unit Value" value="unit_value">
             </mat-form-field>
         </div>
         <div class="col">
@@ -45,20 +60,35 @@
         </div>
         <div class="col">
             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
-                <mat-label>MRP</mat-label>
-                <input matInput [(ngModel)]="mrp" placeholder="MRP" value="mrp">
+                <mat-label>Price</mat-label>
+                <input matInput [(ngModel)]="price" placeholder="Price" value="price">
             </mat-form-field>
         </div>
-        <div class="col">
-            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
-                <mat-label>Our Price</mat-label>
-                <input matInput [(ngModel)]="ourPrice" placeholder="Our Price" value="ourPrice">
-            </mat-form-field>
-        </div>
+    </div>
+
+    <div class="row">
         <div class="col">
             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Discount</mat-label>
-                <input matInput [(ngModel)]="dAmount" placeholder="Discount" value="dAmount">
+                <input matInput [(ngModel)]="discount" placeholder="Discount" value="discount">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Min Quantity</mat-label>
+                <input matInput [(ngModel)]="min_quantity" placeholder="Min Quantity" value="min_quantity">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Max Quantity</mat-label>
+                <input matInput [(ngModel)]="max_quantity" placeholder="Max Quantity" value="max_quantity">
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Nutritional Info</mat-label>
+                <input matInput [(ngModel)]="nutritional_info" placeholder="Nutritional Info" value="nutritional_info">
             </mat-form-field>
         </div>
         <div class="col">
@@ -73,12 +103,19 @@
                 <input matInput [(ngModel)]="image_url" placeholder="Image Url" value="image_url">
             </mat-form-field>
         </div>
-        <div class="col">
+        <div class="col d-flex align-items-center">
             @if(image_url !== ''){
             <img style="width: 100px; height: 100px; border-radius: 15px" class="me-2" [src]="image_url"
                 alt="add image">
             }
-            is available? <input type="checkbox" [(ngModel)]="is_available">
+            <div class="d-flex flex-column ms-3">
+                <div class="mb-2">
+                    Is Active? <input type="checkbox" [(ngModel)]="is_active">
+                </div>
+                <div>
+                    Is Featured? <input type="checkbox" [(ngModel)]="is_featured">
+                </div>
+            </div>
         </div>
     </div>
 

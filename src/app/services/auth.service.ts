@@ -19,9 +19,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   createToken = 'https://oneapp-backend.onrender.com/api/adminuserlogin/admin-create-token/'
+  url = `https://oneapp-express-singapore.onrender.com`
 
 Login(params:any){
-  return this.http.post(this.createToken, params)
+  return this.http.post(`${this.url}/api/admin/login`, params)
 }
 
 isAuthenticated(): boolean {

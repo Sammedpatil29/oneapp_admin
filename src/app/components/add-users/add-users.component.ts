@@ -45,16 +45,12 @@ ngOnInit(): void {
 
 createUser(){
   let params = {
-    "token": sessionStorage.getItem('token'),
     "email": this.email,
-    "first_name": this.firstName,
-    "last_name": this.lastName,
-    "profile_image": "",
-    "phone": this.contact,
-    "is_active": this.isActive,
-    "is_verified": true,
-    "role": this.role,
-    "password_field": this.password
+      "password": this.password,
+      "first_name": this.firstName,
+      "last_name": this.lastName,
+      "phone": this.contact,
+      "role": this.role
 }
 this.isLoading = true
 this.commonService.createUser(params).subscribe((res)=>{

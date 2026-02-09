@@ -27,6 +27,8 @@ import { BLayoutComponent } from './components/b-layout/b-layout.component';
 import { BLeadsComponent } from './components/b-leads/b-leads.component';
 import { BVisitsComponent } from './components/b-visits/b-visits.component';
 import { BQuoteComponent } from './components/b-quote/b-quote.component';
+import { OrdersLayoutComponent } from './components/orders-layout/orders-layout.component';
+import { GroceryOrdersComponent } from './components/grocery-orders/grocery-orders.component';
 
 export const routes: Routes = [
   {
@@ -58,10 +60,6 @@ export const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
-      },
-      {
-        path: 'orders',
-        component: OrdersComponent,
       },
       {
         path: 'complaints',
@@ -117,6 +115,24 @@ export const routes: Routes = [
           }
         ],
       },
+      {
+        path: 'orders-layout',
+        component: OrdersLayoutComponent,
+        children: [
+          {
+            path: 'orders',
+            component: OrdersComponent,
+          },
+          {
+            path: 'grocery-orders',
+            component: GroceryOrdersComponent,
+          },
+          {
+            path: '',
+            component: GroceryOrdersComponent
+          }
+        ]
+      }
     ],
   },
   {

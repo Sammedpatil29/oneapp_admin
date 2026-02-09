@@ -35,8 +35,8 @@ export class GroceryComponent implements OnInit {
     };
     this.isLoading = true;
     this.commonService.getGroceryList(params).subscribe(
-      (res) => {
-        this.fullGroceryList = res;
+      (res:any) => {
+        this.fullGroceryList = res.data;
         this.groceryList = this.fullGroceryList;
         this.isLoading = false;
         console.log(this.groceryList);

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonService } from '../../services/common.service';
 import { CommonModule } from '@angular/common';
 import { EmptyDataComponent } from "../empty-data/empty-data.component";
@@ -21,10 +21,11 @@ export class ManageUsersComponent implements OnInit{
   allUsers: any;
   isUsersLoading: boolean = false
 
-  constructor(private http:HttpClient, private commonService: CommonService){}
+  constructor(private http:HttpClient, private commonService: CommonService, private cdr: ChangeDetectorRef){}
 
   ngOnInit(): void {
       this.getUsers()
+      this.cdr.detectChanges();
   }
 
   addNewUser(){
@@ -62,7 +63,7 @@ export class ManageUsersComponent implements OnInit{
     this.isUsersLoading = true
       this.commonService.getAllUsers(params).subscribe((res:any)=> {
         this.isUsersLoading = false
-          this.allUsers = res
+          this.allUsers = res.data
       }, error => {
         this.isUsersLoading = false
       })

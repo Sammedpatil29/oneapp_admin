@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -34,8 +34,10 @@ export class CommonService {
   deleteSupportTicketsUrl = 'https://oneapp-backend.onrender.com/api/ticket/admin-ticket-delete/'
   allVisitsUrl = 'https://brahmadev-backend.onrender.com/all-visits'
 
+  url = `https://oneapp-express-singapore.onrender.com`
+
   getServices(){
-    return this.http.get(this.serviceUrl)
+    return this.http.get(`${this.url}/service`)
   }
 
   getMetaData(){
@@ -43,15 +45,15 @@ export class CommonService {
   }
 
   updateService(params:any,id:any){
-    return this.http.put(`${this.serviceUrl}${id}/`, params)
+    return this.http.put(`${this.url}/service/${id}`, params)
   }
 
   createService(params:any){
-    return this.http.post(`${this.serviceUrl}`, params)
+    return this.http.post(`${this.url}/service`, params)
   }
 
   deleteService(id:any){
-    return this.http.delete(`${this.serviceUrl}${id}/`) 
+    return this.http.delete(`${this.url}/service/${id}/`) 
   }
 
   updateMetaData(params:any, id:any){
@@ -75,11 +77,11 @@ export class CommonService {
   }
 
   getPolygonData(){
-    return this.http.get(this.polygon)
+    return this.http.get(`${this.url}/api/metadata`)
   }
 
   updatePlygonData(params:any){
-    return this.http.put(this.polygon, params)
+    return this.http.patch(`${this.url}/api/metadata`, params)
   }
 
   getOrders(params:any){
@@ -107,15 +109,22 @@ export class CommonService {
   }
 
   getAllUsers(params:any){
-    return this.http.post(this.getUsersUrl, params)
+    return this.http.get(`${this.url}/api/admin/list`)
   }
 
   createUser(params:any){
-    return this.http.post(this.createUserUrl, params)
+    return this.http.post(`${this.url}/api/admin/create`, params)
   }
 
   updateUser(id:any, params:any){
-    return this.http.put(`${this.updateUserUrl}${id}/`, params)
+    return this.http.put(`${this.url}/api/admin/${id}/`, params)
+  }
+
+  getUserDetails(token:any){
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    })
+    return this.http.get(`${this.url}/api/admin/profile`, {headers: headers})
   }
 
   servicesCount(){
@@ -131,19 +140,19 @@ export class CommonService {
   } 
 
   getGroceryList(params:any){
-    return this.http.post(this.getGroceryListUrl, params)
+    return this.http.get(`${this.url}/api/grocery`, params)
   }
 
   createGroceryItem(params:any){
-    return this.http.post(this.createGroceryListUrl, params)
+    return this.http.post(`${this.url}/api/grocery`, params)
   }
 
   updateGroceryItem(id:any, params:any){
-    return this.http.put(`${this.updateGroceryListUrl}${id}/`, params)
+    return this.http.put(`${this.url}/api/grocery/${id}/`, params)
   }
 
   deleteGroceryItem(id:any, params:any){
-    return this.http.post(`${this.deleteGroceryListUrl}${id}/`, params)
+    return this.http.delete(`${this.url}/api/grocery/${id}/`, params)
   }
 
   sendNotification(params:any){

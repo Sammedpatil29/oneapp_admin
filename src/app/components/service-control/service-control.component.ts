@@ -30,9 +30,9 @@ isLoading: boolean = false
 
   getServices(){
     this.isLoading = true
-    this.commonService.getServices().subscribe((res)=>{
+    this.commonService.getServices().subscribe((res:any)=>{
       this.isLoading = false
-        this.services = res
+        this.services = res.data
         this.cdr.detectChanges();
         console.log(this.services)
     })

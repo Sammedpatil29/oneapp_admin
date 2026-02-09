@@ -1,0 +1,56 @@
+<div class="orders-wrapper">
+  <div class="container-header">
+    <h2 class="title">Order History</h2>
+    <span class="count-badge">{{orders.length}} Active Orders</span>
+  </div>
+
+  <div class="orders-grid">
+    <div class="order-card" *ngFor="let order of orders" (click)="viewOrder(order.id)">
+      
+      <div class="card-top-bar">
+        <div>
+          <span class="id-label">ORDER ID</span>
+          <span class="id-number">#{{order.id}}</span>
+        </div>
+        <div class="status-pill" [ngClass]="getStatusClass(order.status.status.status)">
+          {{ order.status.status.status }}
+        </div>
+      </div>
+
+      <div class="item-tray-section">
+        <p class="item-count-text">{{order.cart_items.length}} Items purchased</p>
+        <div class="horizontal-scroll">
+          <div class="thumb-container" *ngFor="let item of order.cart_items">
+            <img [src]="item.image" [alt]="item.name">
+            <span class="qty-tag">{{item.quantity}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="address-pill">
+        <i class="bi bi-geo-alt-fill text-danger"></i>
+        <p class="address-text">{{order.address.address}}</p>
+      </div>
+
+      <div class="payment-summary">
+        <div class="bill-row">
+          <span>Subtotal</span>
+          <span>₹{{order.bill_details.itemTotal}}</span>
+        </div>
+        <div class="bill-row">
+          <span>Delivery Fee</span>
+          <span>₹{{order.bill_details.deliveryFee}}</span>
+        </div>
+        <div class="bill-row total-row">
+          <span>Amount Paid</span>
+          <span style="font-size: 1.3rem;">₹{{order.bill_details.toPay}}</span>
+        </div>
+      </div>
+
+      <div class="date-footer">
+        <span>Paid via {{order.payment_details.mode | uppercase}}</span>
+        <span>{{order.createdAt | date:'dd MMM, yyyy'}}</span>
+      </div>
+    </div>
+  </div>
+</div>

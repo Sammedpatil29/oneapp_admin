@@ -30,10 +30,20 @@ export class InventoryComponent implements OnInit{
   getServices(){
   this.services = []
   this.isLoading = true
-    this.commonService.getServices().subscribe((res)=>{
-      this.services = res
+    this.commonService.getServices().subscribe((res:any)=>{
+      this.services = res.data
       this.isLoading = false 
     })
+  }
+
+  getRouterLink(item:any){
+    if(item.route.includes('/grocery')){
+      return '/layout/inventory/grocery'
+    } else if(item.route.includes('/property')){
+      return `/layout/inventory/property`
+    } else {
+      return `/layout/inventory/${item.route}`
+    }
   }
 
   getStatusClass(status: string): string {

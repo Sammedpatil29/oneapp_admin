@@ -57,7 +57,7 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
     console.log('polygon called')
     this.isMapDataLoading = true
     this.commonService.getPolygonData().subscribe((res: any)=>{
-      this.polygonCoords = res.polygon
+      this.polygonCoords = res.data.polygon
       this.areaColor = res.inside_color
       this.strokeColor = res.border_color
       this.initMap();
@@ -69,13 +69,7 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   updatePolygonData(){
     this.isMapUpdateLoading = true
     let params = {
-      "center": {
-        "lat": 16.715316578418758,
-        "lng": 75.05882421691895
-    },
-    "polygon": this.polygonCoords,
-    "inside_color": this.areaColor,
-    "border_color": this.strokeColor
+    "polygon": this.polygonCoords
     }
     this.commonService.updatePlygonData(params).subscribe((res)=> {
       console.log('coords updated successfully')

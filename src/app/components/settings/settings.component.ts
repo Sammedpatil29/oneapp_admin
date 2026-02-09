@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { CommonService } from '../../services/common.service';
 
 @Component({
   selector: 'app-settings',
@@ -14,15 +15,19 @@ export class SettingsComponent implements OnInit{
   token: any = ''
   role: any = ''
   phone: any = ''
-  constructor(private route: Router){
+  userDetails: any;
+  constructor(private route: Router, private commonService: CommonService){
   }
 
   ngOnInit(): void {
       this.token = sessionStorage.getItem('token')
-            const decoded = jwtDecode<any>(this.token)
-            this.role = decoded.role
-            this.phone = decoded.phone
-            console.log(this.role)
+      this.getUserDetails()
+  }
+
+  getUserDetails(){
+    this.commonService.getUserDetails(this.token).subscribe((res:any)=>{
+      this.userDetails = res.data
+    })
   }
   
 logOut(){

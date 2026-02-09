@@ -21,19 +21,19 @@ readonly dialog = inject(MatDialog);
   category = ''
   description = ''
   brand = ''
-  qAmount = ''
+  unit_value = ''
   unit = ''
-  mrp = ''
-  ourPrice = ''
-  dAmount = ''
-  dType = ''
-  d_valid_untill = ''
+  price = ''
+  discount = ''
   stock = ''
-  newStock = ''
   image_url = ''
-  is_available = true
-  rating = ''
-  tags = []
+  is_active = true
+  tags = ''
+  sku = ''
+  min_quantity = 1
+  max_quantity = 5
+  nutritional_info = ''
+  is_featured = false
   created_at = ''
   updated_at = ''
   isLoading: boolean = false
@@ -50,15 +50,19 @@ readonly dialog = inject(MatDialog);
       this.category = this.data.item.category
       this.description = this.data.item.description
       this.brand = this.data.item.brand
-      this.qAmount = this.data.item.quantity.amount
-      this.unit = this.data.item.quantity.unit
-      this.mrp = this.data.item.price.mrp
-      this.ourPrice = this.data.item.price.ourPrice
-      this.dAmount = this.data.item.discount.amount
+      this.unit_value = this.data.item.unit_value
+      this.unit = this.data.item.unit
+      this.price = this.data.item.price
+      this.discount = this.data.item.discount
       this.stock = this.data.item.stock
       this.image_url = this.data.item.image_url
-      this.is_available = this.data.item.is_available
-
+      this.is_active = this.data.item.is_active
+      this.sku = this.data.item.sku
+      this.min_quantity = this.data.item.min_quantity
+      this.max_quantity = this.data.item.max_quantity
+      this.nutritional_info = this.data.item.nutritional_info
+      this.is_featured = this.data.item.is_featured
+      this.tags = this.data.item.tags ? this.data.item.tags.join(', ') : ''
     }
   }
 
@@ -69,23 +73,19 @@ readonly dialog = inject(MatDialog);
     "category": this.category,
     "description": this.description,
     "brand": this.brand,
-    "quantity": {
-      "amount": this.qAmount,
-      "unit": this.unit
-    },
-    "price": {
-      "mrp": this.mrp,
-      "ourPrice": this.ourPrice
-    },
-    "discount": {
-      "amount": this.dAmount,
-      "type": this.dType,
-    },
+    "unit_value": this.unit_value,
+    "unit": this.unit,
+    "price": this.price,
+    "discount": this.discount,
     "stock": this.stock,
     "image_url": this.image_url,
-    "is_available": true,
-    "rating": '4.6',
-    "tags": ['grocery']
+    "is_active": this.is_active,
+    "tags": this.tags.split(',').map(t => t.trim()).filter(t => t !== ''),
+    "sku": this.sku,
+    "min_quantity": this.min_quantity,
+    "max_quantity": this.max_quantity,
+    "nutritional_info": this.nutritional_info,
+    "is_featured": this.is_featured
     }
     this.isLoading = true
     this.commonService.createGroceryItem(params).subscribe((res)=>{
@@ -119,23 +119,19 @@ readonly dialog = inject(MatDialog);
     "category": this.category,
     "description": this.description,
     "brand": this.brand,
-    "quantity": {
-      "amount": this.qAmount,
-      "unit": this.unit
-    },
-    "price": {
-      "mrp": this.mrp,
-      "ourPrice": this.ourPrice
-    },
-    "discount": {
-      "amount": this.dAmount,
-      "type": this.dType,
-    },
+    "unit_value": this.unit_value,
+    "unit": this.unit,
+    "price": this.price,
+    "discount": this.discount,
     "stock": this.stock,
     "image_url": this.image_url,
-    "is_available": true,
-    "rating": '4.6',
-    "tags": ['grocery']
+    "is_active": this.is_active,
+    "tags": this.tags.split(',').map(t => t.trim()).filter(t => t !== ''),
+    "sku": this.sku,
+    "min_quantity": this.min_quantity,
+    "max_quantity": this.max_quantity,
+    "nutritional_info": this.nutritional_info,
+    "is_featured": this.is_featured
     }
     this.itemUpdating = true
     this.commonService.updateGroceryItem(this.data.item.id,params).subscribe((res)=>{
