@@ -1,19 +1,20 @@
-<div class="orders-wrapper">
+@if(!isLoading){
+  <div class="orders-wrapper">
   <div class="container-header">
     <h2 class="title">Order History</h2>
     <span class="count-badge">{{orders.length}} Active Orders</span>
   </div>
 
   <div class="orders-grid">
-    <div class="order-card" *ngFor="let order of orders" (click)="viewOrder(order.id)">
+    <div class="order-card" *ngFor="let order of orders" (click)="viewOrder(order)" style="cursor: pointer">
       
       <div class="card-top-bar">
         <div>
           <span class="id-label">ORDER ID</span>
           <span class="id-number">#{{order.id}}</span>
         </div>
-        <div class="status-pill" [ngClass]="getStatusClass(order.status.status.status)">
-          {{ order.status.status.status }}
+        <div class="status-pill" [ngClass]="getStatusClass(order?.status)">
+          {{ order?.status }}
         </div>
       </div>
 
@@ -54,3 +55,6 @@
     </div>
   </div>
 </div>
+} @else {
+  <app-loader></app-loader>
+}

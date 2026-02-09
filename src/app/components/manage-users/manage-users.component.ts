@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonService } from '../../services/common.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { EmptyDataComponent } from "../empty-data/empty-data.component";
 import { LoaderComponent } from "../loader/loader.component";
 import {ChangeDetectionStrategy, inject} from '@angular/core';
@@ -21,10 +21,12 @@ export class ManageUsersComponent implements OnInit{
   allUsers: any;
   isUsersLoading: boolean = false
 
-  constructor(private http:HttpClient, private commonService: CommonService, private cdr: ChangeDetectorRef){}
+  constructor(private http:HttpClient, private commonService: CommonService, private cdr: ChangeDetectorRef, @Inject(PLATFORM_ID) private platformId: Object){}
 
   ngOnInit(): void {
-      this.getUsers()
+      if (isPlatformBrowser(this.platformId)) {
+        this.getUsers()
+      }
       this.cdr.detectChanges();
   }
 
@@ -58,7 +60,7 @@ export class ManageUsersComponent implements OnInit{
 
   getUsers(){
     let params = {
-      "token": sessionStorage.getItem('token')
+      "token": isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : ''
     }
     this.isUsersLoading = true
       this.commonService.getAllUsers(params).subscribe((res:any)=> {

@@ -156,7 +156,7 @@ export class CommonService {
   }
 
   sendNotification(params:any){
-    return this.http.post(`${this.sendNotificationUrl}`, params)
+    return this.http.post(`${this.url}/api/notifications/send-all`, params)
   }
 
   getAllSupportTickets(params:any){

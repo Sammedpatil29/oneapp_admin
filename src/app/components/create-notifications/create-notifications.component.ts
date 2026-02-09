@@ -54,23 +54,14 @@ export class CreateNotificationsComponent {
 
   sendNotification() {
     let params = {
-  "message": {
-    "notification": { 
-      "title": this.title, 
-      "body": this.body,
-      "image": this.imageUrl},
-    "data": { 
-      "screen": "offers" 
-    },
-    "android": {
-      "priority": 'HIGH',
-      "notification": {
-        "icon": this.smallIcon,
-        "color": 'black',
-        "channel_id": "default",
-        "sound": "default" } }
-  }
-};
+    "title": this.title,
+    "body": this.body,
+    "imageUrl": this.imageUrl,
+    "data": {
+      "screen": "grocery_home",
+      "promoCode": "SALE50"
+    }
+  };
 this.sendingNotification = true
     this.commonService.sendNotification(params).subscribe(
       (res) => {

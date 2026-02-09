@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import {jwtDecode} from 'jwt-decode';
 
 interface JwtPayload {
@@ -16,7 +17,7 @@ interface JwtPayload {
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   createToken = 'https://oneapp-backend.onrender.com/api/adminuserlogin/admin-create-token/'
   url = `https://oneapp-express-singapore.onrender.com`
@@ -26,6 +27,7 @@ Login(params:any){
 }
 
 isAuthenticated(): boolean {
+    if (isPlatformBrowser(this.platformId)) {
     const token = sessionStorage.getItem('token');
     if (!token) return false;
 
@@ -36,6 +38,8 @@ isAuthenticated(): boolean {
     } catch (err) {
       return false; // Invalid token
     }
+    }
+    return false;
   }
 
 }

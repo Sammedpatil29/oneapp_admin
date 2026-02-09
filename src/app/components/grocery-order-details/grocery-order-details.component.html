@@ -1,1 +1,159 @@
-<p>grocery-order-details works!</p>
+<div class="container-fluid p-0" *ngIf="order">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
+        <div>
+            <h4 class="mb-0">Order #{{order.id}}</h4>
+            <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <mat-form-field appearance="outline" style="width: 200px; font-size: 14px; margin-bottom: -1.25em;">
+                <mat-label>Assign Rider</mat-label>
+                <mat-select [value]="order.rider?.id" (selectionChange)="assignRider($event.value)">
+                    <mat-option *ngFor="let rider of riders" [value]="rider">{{rider}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="badge" [ngClass]="getStatusClass(order?.status)">
+                {{order?.status | uppercase}}
+            </div>
+        </div>
+    </div>
+
+    <mat-dialog-content>
+    <div class="row mb-4">
+        <!-- Customer Info -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Customer Details</strong>
+                </div>
+                <div class="card-body">
+                    <p class="mb-1"><strong>Name:</strong> {{order.User?.first_name}} {{order.User?.last_name}}</p>
+                    <p class="mb-1"><strong>Phone:</strong> {{order.User?.phone}}</p>
+                    <p class="mb-0"><strong>Email:</strong> {{order.User?.email}}</p>
+                    <p class="mb-0"><strong>Payment order Id:</strong> {{order?.razorpay_order_id}}</p>
+                    <p class="mb-0"><strong>Payment Id:</strong> {{order.razorpay_payment_id}}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Info -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Delivery Address</strong>
+                </div>
+                <div class="card-body">
+                    <p class="mb-1">
+                        <span class="badge bg-secondary me-2">{{order.address?.label}}</span>
+                        <a [href]="'https://www.google.com/maps/search/?api=1&query=' + order.address?.lat + ',' + order.address?.lng"
+                            target="_blank" class="text-decoration-none">
+                            <i class="bi bi-geo-alt-fill text-danger"></i> View on Map
+                        </a>
+                    </p>
+                    <p class="mb-1">{{order.address?.houseNo}}, {{order.address?.address}}</p>
+                    <p class="mb-0 text-muted" *ngIf="order.address?.landmark">Landmark: {{order.address?.landmark}}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bill Details -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Payment Info</strong>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Item Total</span>
+                        <span>₹{{order.bill_details?.itemTotal}}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Delivery Fee</span>
+                        <span [class.text-success]="order.bill_details?.deliveryFee == 0">
+                            {{order.bill_details?.deliveryFee == 0 ? 'FREE' : '₹' + order.bill_details?.deliveryFee}}
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2" *ngIf="order.bill_details?.handlingCharge > 0">
+                        <span>Handling Charge</span>
+                        <span>₹{{order.bill_details?.handlingCharge}}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2 text-success"
+                        *ngIf="order.bill_details?.totalSavings > 0">
+                        <span>Total Savings</span>
+                        <span>-₹{{order.bill_details?.totalSavings}}</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>To Pay ({{order.payment_details?.mode | uppercase}})</span>
+                        <span>₹{{order.bill_details?.toPay}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Items -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Items ({{order.cart_items?.length}})</strong>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of order.cart_items">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img [src]="item.image" alt="" style="width: 45px; height: 45px; object-fit: cover;"
+                                            class="rounded me-2 border">
+                                        <div>
+                                            <div class="fw-bold">{{item.name}}</div>
+                                            <small class="text-muted">{{item.weight}}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>₹{{item.sellingPrice}} <small class="text-muted text-decoration-line-through"
+                                        *ngIf="item.mrp > item.sellingPrice">₹{{item.mrp}}</small></td>
+                                <td>x{{item.quantity}}</td>
+                                <td class="text-end">₹{{item.total}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <strong>Rider Details</strong>
+                </div>
+                <div class="card-body">
+                    <div *ngIf="order.rider; else noRider">
+                        <p class="mb-1"><strong>Name:</strong> {{order.rider?.name}}</p>
+                        <p class="mb-1"><strong>Phone:</strong> {{order.rider?.phone}}</p>
+                        <p class="mb-0"><strong>Vehicle:</strong> {{order.rider?.vehicle_number}}</p>
+                    </div>
+                    <ng-template #noRider>
+                        <p class="text-muted mb-0">No rider assigned</p>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </mat-dialog-content>
+</div>
+<div class="d-flex justify-content-end gap-2" mat-dialog-actions>
+    <button mat-button class="btn btn-outline-danger" (click)="cancelOrder()">Cancel Order</button>
+    <button mat-button class="btn btn-primary" (click)="markPacked()">Mark Packed</button>
+    <button mat-button mat-dialog-close class="btn btn-secondary">Close</button>
+</div>
