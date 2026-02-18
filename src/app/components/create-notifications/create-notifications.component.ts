@@ -35,6 +35,16 @@ export class CreateNotificationsComponent {
 
   notifications = [
     {
+      title: '🎉 Day 1 Check-in: Done!',
+      body: 'Awesome job! 🙌 You\'re 1/14 days through the testing phase. One step closer to the finish line! 🏁',
+      imageUrl: '',
+    },
+    {
+      title: '📅 Progress Update: 1/14 Days',
+      body: 'You\'ve completed 1 day of 14 total. Keep it rolling! 💪',
+      imageUrl: '',
+    },
+    {
       title: '🍎 Stock up on health with today’s organic offers!',
       body: 'Get up to 30% off on fruits, veggies & more. Offer valid today only!',
       imageUrl: '',
