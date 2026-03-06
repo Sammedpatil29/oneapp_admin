@@ -7,7 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class OrdersService {
 
-  url = `https://oneapp-express-singapore.onrender.com`
+  url = `https://oneapp-express-700270095510.asia-south1.run.app`
 
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
