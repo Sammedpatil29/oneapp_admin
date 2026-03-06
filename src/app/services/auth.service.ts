@@ -20,7 +20,7 @@ export class AuthService {
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   createToken = 'https://oneapp-backend.onrender.com/api/adminuserlogin/admin-create-token/'
-  url = `https://oneapp-express-700270095510.asia-south1.run.app`
+  url = `https://oneapp-express-singapore.onrender.com`
 
 Login(params:any){
   return this.http.post(`${this.url}/api/admin/login`, params)

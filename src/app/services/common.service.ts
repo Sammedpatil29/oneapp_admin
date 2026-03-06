@@ -34,7 +34,7 @@ export class CommonService {
   deleteSupportTicketsUrl = 'https://oneapp-backend.onrender.com/api/ticket/admin-ticket-delete/'
   allVisitsUrl = 'https://brahmadev-backend.onrender.com/all-visits'
 
-  url = `https://oneapp-express-700270095510.asia-south1.run.app`
+  url = `https://oneapp-express-singapore.onrender.com`
 
   getServices(){
     return this.http.get(`${this.url}/service`)
