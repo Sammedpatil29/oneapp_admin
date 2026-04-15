@@ -8,9 +8,13 @@ RUN npm run build --configuration=production
 
 # Dynamically find the build output folder (handles Angular 16/17+ and SSR naming quirks)
 RUN mkdir -p /app/publish && \
-    INDEX_FILE=$(find /app/dist -type f \( -name "index.html" -o -name "index.csr.html" \) | head -n 1) && \
-    INDEX_DIR=$(dirname "$INDEX_FILE") && \
-    cp -a "$INDEX_DIR/." /app/publish/ && \
+    BROWSER_DIR=$(find /app/dist -type d -name "browser" | head -n 1) && \
+    if [ -n "$BROWSER_DIR" ]; then \
+        cp -a "$BROWSER_DIR/." /app/publish/; \
+    else \
+        CLIENT_DIR=$(dirname "$(find /app/dist -type f \( -name "polyfills*.js" -o -name "main*.js" \) | head -n 1)") && \
+        cp -a "$CLIENT_DIR/." /app/publish/; \
+    fi && \
     if [ -f "/app/publish/index.csr.html" ] && [ ! -f "/app/publish/index.html" ]; then \
         mv /app/publish/index.csr.html /app/publish/index.html; \
     fi
