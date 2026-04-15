@@ -6,6 +6,15 @@ RUN npm install
 COPY . .
 RUN npm run build --configuration=production
 
+# Dynamically find the build output folder (handles Angular 16/17+ and SSR naming quirks)
+RUN mkdir -p /app/publish && \
+    INDEX_FILE=$(find /app/dist -type f \( -name "index.html" -o -name "index.csr.html" \) | head -n 1) && \
+    INDEX_DIR=$(dirname "$INDEX_FILE") && \
+    cp -a "$INDEX_DIR/." /app/publish/ && \
+    if [ -f "/app/publish/index.csr.html" ] && [ ! -f "/app/publish/index.html" ]; then \
+        mv /app/publish/index.csr.html /app/publish/index.html; \
+    fi
+
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
 
@@ -17,14 +26,11 @@ RUN rm /etc/nginx/conf.d/default.conf
 # Ensure nginx.conf exists in your root directory!
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# 3. Copy the Angular build files
-# Using a wildcard (*) ensures we grab the contents even if the folder name 
-# is oneapp-admin or oneapp_admin.
-COPY --from=build /app/dist/oneapp_admin/browser/. /usr/share/nginx/html/
+# 3. Copy the dynamically located Angular build files
+COPY --from=build /app/publish /usr/share/nginx/html/
 
-# Fallback: If your Angular version doesn't use the /browser subfolder, 
-# uncomment the line below and comment the one above.
-# COPY --from=build /app/dist/oneapp-admin /usr/share/nginx/html/
+# 4. Ensure correct permissions so Nginx can read the files
+RUN chmod -R 755 /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
