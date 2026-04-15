@@ -15,8 +15,8 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # 3. Copy the Angular build files
-# Double check if your path is /app/dist/ngo/browser or just /app/dist/ngo
-COPY --from=build /app/dist/ngo/browser /usr/share/nginx/html
+# Double check if your path is /app/dist/oneapp-admin/browser or just /app/dist/oneapp-admin
+COPY --from=build /app/dist/oneapp_admin/browser /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
