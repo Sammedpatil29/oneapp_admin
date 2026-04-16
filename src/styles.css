@@ -1,4 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --mdc-dialog-container-shape: 8px; /* Adjust radius here */
+}/* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.cdk-overlay-backdrop-showing {
+  backdrop-filter: blur(8px); /* Adjust the blur intensity here */
+  background-color: rgba(0, 0, 0, 0.3) !important; /* Optional: Make the dark tint lighter */
+}

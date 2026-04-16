@@ -13,8 +13,7 @@ import { AddUsersComponent } from '../add-users/add-users.component';
   selector: 'app-manage-users',
   imports: [CommonModule, EmptyDataComponent, LoaderComponent, MatButtonModule, MatDialogModule],
   templateUrl: './manage-users.component.html',
-  styleUrl: './manage-users.component.css',
-   changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './manage-users.component.css'
 })
 export class ManageUsersComponent implements OnInit{
   readonly dialog = inject(MatDialog);
@@ -66,6 +65,7 @@ export class ManageUsersComponent implements OnInit{
       this.commonService.getAllUsers(params).subscribe((res:any)=> {
         this.isUsersLoading = false
           this.allUsers = res.data
+          this.cdr.detectChanges();
       }, error => {
         this.isUsersLoading = false
       })

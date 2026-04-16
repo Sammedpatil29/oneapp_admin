@@ -1,23 +1,32 @@
-<div class="container-fluid p-0" *ngIf="order">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
-        <div>
-            <h4 class="mb-0">Order #{{order.id}}</h4>
-            <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
-        </div>
-        <div class="d-flex align-items-center gap-3">
-            <mat-form-field appearance="outline" style="width: 200px; font-size: 14px; margin-bottom: -1.25em;">
-                <mat-label>Assign Rider</mat-label>
-                <mat-select [value]="order.rider?.id" (selectionChange)="assignRider($event.value)">
-                    <mat-option *ngFor="let rider of riders" [value]="rider">{{rider}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div class="badge" [ngClass]="getStatusClass(order?.status)">
-                {{order?.status | uppercase}}
+<!-- <div mat-dialog-title>
+        <div class="d-flex justify-content-between align-items-baseline">
+            <h2 class="mb-0">Order #{{order.id}}</h2>
+            <div class="d-flex align-items-center gap-2">
+                <mat-form-field appearance="outline" style="width: 180px; font-size: 13px; margin-bottom: -1.25em;">
+                    <mat-label>Assign Rider</mat-label>
+                    <mat-select [value]="order.rider?.id" (selectionChange)="assignRider($event.value)">
+                        <mat-option *ngFor="let rider of riders" [value]="rider">{{rider}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="badge" [ngClass]="getStatusClass(order?.status)">
+                    {{order?.status | uppercase}}
+                </div>
             </div>
         </div>
-    </div>
+        <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
+    </div> -->
+<div class="d-flex justify-content-between align-items-center gap-2 mx-4" mat-dialog-actions>
 
+    <h6 style="margin-bottom: 0px;">Order Id #{{order.id}}</h6>
+    <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
+    <div class="badge" [ngClass]="getStatusClass(order?.status)">
+        {{order?.status | uppercase}}
+    </div>
+</div>
+
+<div class="container-fluid p-0" *ngIf="order">
+    <!-- Header -->
+    
     <mat-dialog-content>
     <div class="row mb-4">
         <!-- Customer Info -->
@@ -152,8 +161,8 @@
 
     </mat-dialog-content>
 </div>
-<div class="d-flex justify-content-end gap-2" mat-dialog-actions>
-    <button mat-button class="btn btn-outline-danger" (click)="cancelOrder()">Cancel Order</button>
-    <button mat-button class="btn btn-primary" (click)="markPacked()">Mark Packed</button>
-    <button mat-button mat-dialog-close class="btn btn-secondary">Close</button>
+<div class="d-flex justify-content-end gap-2 me-4" mat-dialog-actions>
+    <button mat-button class="text-danger" (click)="cancelOrder()">Cancel Order</button>
+    <button mat-button class="text-success" (click)="markPacked()">Mark Packed</button>
+    <button mat-button mat-dialog-close class="text-secondary">Close</button>
 </div>

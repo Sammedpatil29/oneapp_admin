@@ -1,4 +1,4 @@
-<!-- @if (!isUsersLoading) { -->
+@if (!isUsersLoading) {
     <div class="d-flex justify-content-between align-items-center mt-3" style="top: 16px; z-index: 1">
   <h3 class="">Manage Users</h3>
   <button class="btn btn-dark" (click)="addNewUser()">Add New User</button>
@@ -34,6 +34,6 @@
 } @else {
     <app-empty-data></app-empty-data>
 }
-<!-- } @else {
+} @else {
     <app-loader></app-loader>
-} -->
+}
