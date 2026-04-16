@@ -1,5 +1,5 @@
 <div class="w-100 d-flex align-items-center justify-content-end p-2">
-    <div class="border me-2" style="border-radius: 7px; padding: 7px 12px; background-image: url(assets/cutcube.png)">You're a <b>{{role | titlecase}}</b></div>
+    <div class="border me-2" style="border-radius: 7px; padding: 7px 12px; background-image: url(assets/cutcube.png)">You're a <b>{{userDetails.role | titlecase}}</b></div>
     <button class="btn btn-outline-danger" (click)="logOut()" >Logout</button>
 </div>
 
@@ -7,7 +7,11 @@
     <div class="col-3"></div>
     <div class="col-6">
         <div class="details-block">
-            <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#5985E1"><path d="M453-280h60v-240h-60v240Zm26.98-314q14.02 0 23.52-9.2T513-626q0-14.45-9.48-24.22-9.48-9.78-23.5-9.78t-23.52 9.78Q447-640.45 447-626q0 13.6 9.48 22.8 9.48 9.2 23.5 9.2Zm.29 514q-82.74 0-155.5-31.5Q252-143 197.5-197.5t-86-127.34Q80-397.68 80-480.5t31.5-155.66Q143-709 197.5-763t127.34-85.5Q397.68-880 480.5-880t155.66 31.5Q709-817 763-763t85.5 127Q880-563 880-480.27q0 82.74-31.5 155.5Q817-252 763-197.68q-54 54.31-127 86Q563-80 480.27-80Z"/></svg>
+            <img *ngIf="userDetails.profile_image" [src]="userDetails.profile_image" alt="Profile Image" class="profile-image mb-2" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+            
+            <svg *ngIf="!userDetails.profile_image" xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#5985E1">
+                <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"/>
+            </svg>
             <h3 class="mt-2">{{userDetails.first_name | titlecase}}&nbsp;{{userDetails.last_name | titlecase}}</h3>
             <h3 class="mt-2">{{userDetails.phone}}</h3>
             <h3 class="mt-2">{{userDetails.email}}</h3>

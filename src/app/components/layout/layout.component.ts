@@ -5,6 +5,8 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { jwtDecode } from 'jwt-decode';
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { SettingsComponent } from '../settings/settings.component';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-layout',
@@ -17,6 +19,8 @@ export class LayoutComponent implements OnInit{
 role:string | null = ''
 token: any = ''
 year = new Date().getFullYear()
+version = environment.version
+
   constructor(private router: Router){
     // this.year = new Date().getFullYear()
   }

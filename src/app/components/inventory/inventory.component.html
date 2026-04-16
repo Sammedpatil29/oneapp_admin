@@ -15,7 +15,7 @@
                 <li class="">
                 <div
     class="list-item px-1"
-    [routerLink]="[`/layout/inventory/grocery`]"
+    [routerLink]="['/layout/inventory', item.title.toLowerCase()]"
     routerLinkActive="active-item"
     [title]="item.title"
   > 
