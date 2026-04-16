@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdersService {
 
-  url = `https://oneapp-express-singapore.onrender.com`
+  url = environment.apiUrl;
 
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }

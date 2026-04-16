@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import {jwtDecode} from 'jwt-decode';
+import { environment } from '../../environments/environment';
 
 interface JwtPayload {
   // Define the fields you expect
@@ -20,7 +21,7 @@ export class AuthService {
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   createToken = 'https://oneapp-backend.onrender.com/api/adminuserlogin/admin-create-token/'
-  url = `https://oneapp-express-singapore.onrender.com`
+  url = environment.apiUrl;
 
 Login(params:any){
   return this.http.post(`${this.url}/api/admin/login`, params)

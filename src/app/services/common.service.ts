@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class CommonService {
   deleteSupportTicketsUrl = 'https://oneapp-backend.onrender.com/api/ticket/admin-ticket-delete/'
   allVisitsUrl = 'https://brahmadev-backend.onrender.com/all-visits'
 
-  url = `https://oneapp-express-singapore.onrender.com`
+  url = environment.apiUrl;
 
   getServices(){
     return this.http.get(`${this.url}/service`)
