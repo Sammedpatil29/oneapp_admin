@@ -6,10 +6,11 @@ import { LoaderComponent } from "../loader/loader.component";
 import { ComplaintsComponent } from '../complaints/complaints.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TicketDialogComponent } from '../ticket-dialog/ticket-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-suggestions',
-  imports: [EmptyDataComponent, CommonModule, LoaderComponent, ComplaintsComponent],
+  imports: [EmptyDataComponent, CommonModule, LoaderComponent, ComplaintsComponent, FormsModule],
   templateUrl: './suggestions.component.html',
   styleUrl: './suggestions.component.css'
 })

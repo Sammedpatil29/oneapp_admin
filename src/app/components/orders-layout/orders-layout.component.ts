@@ -8,5 +8,11 @@ import { RouterOutlet } from "@angular/router";
   styleUrl: './orders-layout.component.css'
 })
 export class OrdersLayoutComponent {
+  isDropdownOpen: boolean = false;
+  selectedOption: string = 'Grocery';
 
+  selectOption(option: string) {
+    this.selectedOption = option;
+    this.isDropdownOpen = false;
+  }
 }

@@ -1,1 +1,15 @@
+<div class="d-flex justify-content-between align-items-center mb-2 mt-3">
+  <h3 class="ms-3">{{selectedOption}} Orders</h3>
+  <div class="dropdown me-3">
+    <button class="btn btn-dark dropdown-toggle" type="button" (click)="isDropdownOpen = !isDropdownOpen" [attr.aria-expanded]="isDropdownOpen ? 'true' : 'false'">
+      {{ selectedOption }}
+    </button>
+    <ul class="dropdown-menu" [class.show]="isDropdownOpen">
+      <li><a class="dropdown-item" href="javascript:void(0)" (click)="selectOption('Action')">Action</a></li>
+      <li><a class="dropdown-item" href="javascript:void(0)" (click)="selectOption('Another action')">Another action</a></li>
+      <li><a class="dropdown-item" href="javascript:void(0)" (click)="selectOption('Something else here')">Something else here</a></li>
+    </ul>
+  </div>
+</div>
+
 <router-outlet></router-outlet>

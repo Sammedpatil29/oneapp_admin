@@ -1,7 +1,7 @@
 @if (!isLoading) {
     @if(supportTickets.length > 0){
 <div class="row">
-    @for (item of filteredTickets; track $index) {
+    @for (item of filteredTickets.reverse(); track $index) {
         <div class="col-4">
         <div class="card mt-2" style="width: 100%; cursor: pointer; border-radius: 20px" (click)="viewTicket(item)">
   <div class="card-body">
