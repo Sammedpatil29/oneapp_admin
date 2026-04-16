@@ -29,6 +29,7 @@ import { BVisitsComponent } from './components/b-visits/b-visits.component';
 import { BQuoteComponent } from './components/b-quote/b-quote.component';
 import { OrdersLayoutComponent } from './components/orders-layout/orders-layout.component';
 import { GroceryOrdersComponent } from './components/grocery-orders/grocery-orders.component';
+import { DineoutComponent } from './components/dineout/dineout.component';
 
 export const routes: Routes = [
   {
@@ -94,11 +95,11 @@ export const routes: Routes = [
         component: InventoryComponent,
         children: [
           {
-            path: 'events',
+            path: 'local events',
             component: EventsComponent,
           },
           {
-            path: 'property',
+            path: 'properties',
             component: PropertyComponent,
           },
           {
@@ -106,8 +107,12 @@ export const routes: Routes = [
             component: GroceryComponent,
           },
           {
-            path: 'doctor',
+            path: 'doctor appointment',
             component: DoctorAppointmentComponent,
+          },
+          {
+            path: 'dineout',
+            component: DineoutComponent,
           },
           {
             path: '',

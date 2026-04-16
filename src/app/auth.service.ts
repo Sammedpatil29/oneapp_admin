@@ -3,9 +3,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
-import { CommonService } from './common.service';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { CommonService } from '../../src/app/services/common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,17 +14,11 @@ export class AuthService {
 
   // This observable will cache the result of our one-time authentication check.
   private authCheck$: Observable<boolean> | null = null;
-  private url = environment.apiUrl;
 
   constructor(
     private router: Router,
-    private commonService: CommonService,
-    private http: HttpClient
+    private commonService: CommonService
   ) { }
-
-  Login(params: any) {
-    return this.http.post(`${this.url}/api/admin/login`, params);
-  }
 
   /**
    * This is the core method for the auth guard. It performs an asynchronous
@@ -50,7 +42,6 @@ export class AuthService {
       const decoded: any = jwtDecode(token);
       if (decoded.exp * 1000 < Date.now()) {
         this.clearSession();
-        // Since authCheck$ is set in clearSession, we can return it.
         return this.authCheck$!;
       }
     } catch (error) {
@@ -60,8 +51,8 @@ export class AuthService {
 
     // Token exists and is not expired, now verify with the backend.
     this.authCheck$ = this.commonService.getUserDetails(token).pipe(
-      map((response: any) => {
-        if (response && response.success) {
+      map((response:any) => {
+        if (response && response?.success) {
           this.isAuthenticatedSubject.next(true);
           return true;
         }

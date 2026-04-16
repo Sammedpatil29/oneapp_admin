@@ -1,18 +1,23 @@
-import { CanActivateFn } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from './services/auth.service';
+import { map } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);  // Inject AuthService
   const router = inject(Router);  // Inject Router
-  
-  // Check if user is authenticated (i.e., if a valid token exists)
-  if (authService.isAuthenticated()) {
-    return true;  // Allow navigation if authenticated
-  } else {
-    // If not authenticated, redirect to login page
-    router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-    return false;  // Deny navigation
-  }
+
+  // IMPORTANT: For this to fix the flicker, your `AuthService.isAuthenticated()`
+  // method must be changed to return an Observable<boolean>.
+  // This observable should only emit `true` after it has successfully
+  // verified the user's session (e.g., with an API call on app load).
+  return authService.isAuthenticated().pipe(
+    map(isAuthenticated => {
+      if (isAuthenticated) {
+        return true; // Allow navigation
+      }
+      // If not authenticated, redirect to the login page
+      return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+    })
+  );
 };

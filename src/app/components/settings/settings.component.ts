@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { jwtDecode } from 'jwt-decode';
+import { RouterLink } from '@angular/router';
 import { CommonService } from '../../services/common.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-settings',
@@ -10,29 +10,32 @@ import { CommonService } from '../../services/common.service';
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
 })
-export class SettingsComponent implements OnInit{
+export class SettingsComponent implements OnInit {
 
-  token: any = ''
-  role: any = ''
-  phone: any = ''
+  token: string | null = '';
   userDetails: any;
-  constructor(private route: Router, private commonService: CommonService){
-  }
+
+  constructor(
+    private commonService: CommonService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
-      this.token = sessionStorage.getItem('token')
-      this.getUserDetails()
+    this.token = sessionStorage.getItem('token');
+    if (this.token) {
+      this.getUserDetails();
+    }
   }
 
-  getUserDetails(){
-    this.commonService.getUserDetails(this.token).subscribe((res:any)=>{
-      this.userDetails = res.data
-    })
+  getUserDetails() {
+    this.commonService.getUserDetails(this.token!).subscribe((res: any) => {
+      if (res.success) {
+        this.userDetails = res.data;
+      }
+    });
   }
-  
-logOut(){
-  localStorage.removeItem('role')
-  sessionStorage.removeItem('token')
-  this.route.navigate(['/login'])
-}
+
+  logOut() {
+    this.authService.logout();
+  }
 }
