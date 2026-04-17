@@ -1,7 +1,23 @@
 
 :root {
   --mdc-dialog-container-shape: 8px; /* Adjust radius here */
-}/* You can add global styles to this file, and also import other style files */
+
+  /* 1. Change the Border Radius */
+  --mdc-outlined-text-field-container-shape: 12px;
+
+  /* 2. Change Border Colors (Idle) */
+  --mdc-outlined-text-field-outline-color: rgba(0, 0, 0, 0.12);
+  
+  /* 3. Change Border & Label Colors (Focus) */
+  --mdc-outlined-text-field-focus-outline-color: #000000; /* Your Primary Color */
+  --mdc-outlined-text-field-focus-label-text-color: #010101;
+
+  /* 4. Adjust Padding/Density (Optional) */
+  --mat-form-field-container-height: 56px;
+  .mat-mdc-form-field-subscript-wrapper, .mat-mdc-form-field-bottom-align::before {
+    display: none;
+  }
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
