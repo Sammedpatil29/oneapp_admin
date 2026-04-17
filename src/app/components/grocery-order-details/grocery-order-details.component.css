@@ -6,3 +6,7 @@ small {
     color: #718096;
     font-size: 0.75rem;
 }
+
+.card-header {
+    background-color: #d7d9db !important;
+}
