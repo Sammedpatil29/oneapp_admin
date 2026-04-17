@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrdersService } from '../../services/orders.service';
 import { CommonService } from '../../services/common.service';
@@ -6,6 +6,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { GroceryOrderDetailsComponent } from '../grocery-order-details/grocery-order-details.component';
 import { LoaderComponent } from "../loader/loader.component";
+import { SocketService } from '../../services/socket.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-grocery-orders',
@@ -14,19 +16,31 @@ import { LoaderComponent } from "../loader/loader.component";
   templateUrl: './grocery-orders.component.html',
   styleUrls: ['./grocery-orders.component.css']
 })
-export class GroceryOrdersComponent implements OnInit {
+export class GroceryOrdersComponent implements OnInit, OnDestroy {
   
   // Data initialized from your provided JSON
   orders: any[] = [];
   isLoading: boolean = false
+  private orderSubscription: Subscription | undefined;
 
 
-  constructor(private ordersService: OrdersService, private dialog: MatDialog){
+  constructor(private ordersService: OrdersService, private dialog: MatDialog, private socketService: SocketService){
 
   }
 
   ngOnInit() {
     this.getOrders()
+    
+    this.orderSubscription = this.socketService.on<any>('new order').subscribe((newOrder) => {
+      if (newOrder) {
+        // Add the new order to the beginning of the list
+        this.orders.unshift(newOrder);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.orderSubscription?.unsubscribe();
   }
 
   getOrders(){
