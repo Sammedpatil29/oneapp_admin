@@ -3,7 +3,8 @@
     <button class="btn btn-outline-danger" (click)="logOut()" >Logout</button>
 </div>
 
-<div class="row">
+@if (!isLoading) {
+    <div class="row">
     <div class="col-3"></div>
     <div class="col-6">
         <div class="details-block">
@@ -20,3 +21,8 @@
     </div>
     <div class="col-3"></div>
 </div>
+} @else {
+    <app-loader></app-loader>
+}
+
+
