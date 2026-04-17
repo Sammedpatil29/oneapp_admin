@@ -61,7 +61,7 @@ export class ComplaintsComponent implements OnInit, OnChanges {
 
   filterTickets(): void {
     if (!this.searchTerm) {
-      this.filteredTickets = [...this.supportTickets];
+      this.filteredTickets = [...this.supportTickets.reverse()];
     } else {
       const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
       this.filteredTickets = this.supportTickets.filter((ticket: any) =>

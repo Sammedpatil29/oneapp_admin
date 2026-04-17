@@ -5,12 +5,17 @@
 <div class="d-flex p-2 fs-5 ms-4">
     <strong>ONE</strong>APP <br> <span class="text-secondary">ADMIN</span>
 </div>
+<div class="d-flex gap-2">
+  <div>
+  <img style="width: 38px" src="assets/wired-flat-236-alarm-clock-loop-cycle.gif" alt="">
+</div>
 @if(!isSettings()){
   <div class="d-flex align-items-center" style="cursor: pointer;" (click)="openSettings()">
   <div class="border me-2" style="border-radius: 7px; padding: 4px 12px"> <img class="me-1" style="width: 25px" src="../../../assets/system-solid-8-account-hover-account (1).gif" alt=""> 
 You're a <b>{{role | titlecase}}</b></div>
 </div>
 }
+</div>
 </div>
 </nav>
 <!-- navbar ends -->
