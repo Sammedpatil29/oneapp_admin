@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,11 +13,15 @@ import { MatSelect, MatOption } from "@angular/material/select";
   templateUrl: './grocery-order-details.component.html',
   styleUrl: './grocery-order-details.component.css'
 })
-export class GroceryOrderDetailsComponent {
+export class GroceryOrderDetailsComponent implements OnInit {
   order: any;
-  riders = ['sudu','kallappa','mallappa']
+  riders:any = []
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<GroceryOrderDetailsComponent>, private ordersService: OrdersService) {
     this.order = data.order;
+  }
+
+  ngOnInit(): void {
+    this.getRiders();
   }
 
   getStatusClass(status: string): string {
@@ -32,7 +36,12 @@ export class GroceryOrderDetailsComponent {
   }
 
   cancelOrder() {
-    // TODO: Implement cancel order logic
+    let params = {
+      "orderId": this.order.id,
+    }
+    this.ordersService.cancelOrder(params).subscribe((res:any)=>{
+      this.dialogRef.close();
+    })
   }
 
   markPacked() {
@@ -45,5 +54,32 @@ export class GroceryOrderDetailsComponent {
     })
   }
 
-  assignRider(rider:any){}
+  getRiders(){
+    this.ordersService.getRiders().subscribe((res:any)=>{
+      let onlineRiders = res
+      this.riders = [];
+      onlineRiders.forEach((rider:any)=>{
+        this.riders.push({
+          id: rider.id,
+          name: rider.name
+        })
+      })
+      console.log(this.riders)
+    })
+    
+  } 
+
+  assignRider(rider:any){
+    let params = {
+      "orderId": this.order.id,
+      "riderId": rider
+    }
+    this.ordersService.assignRider(params).subscribe((res:any)=>{
+      this.order = res.data
+    })
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
 }
