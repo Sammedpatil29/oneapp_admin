@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
@@ -27,9 +27,21 @@ showAlarm: boolean = false;
 private orderSubscription: Subscription | undefined;
 private audio: HTMLAudioElement | undefined;
 private alarmTimeout: any;
+isConnected: boolean = false;
+private connectSub: Subscription | undefined;
+private disconnectSub: Subscription | undefined;
 
   constructor(private router: Router, private socketService: SocketService){
     // this.year = new Date().getFullYear()
+  }
+
+  // Listen for browser tab visibility changes
+  @HostListener('document:visibilitychange', [])
+  onVisibilityChange() {
+    if (document.visibilityState === 'visible') {
+      // Reconnect the socket immediately when the user returns to this tab
+      this.socketService.connect();
+    }
   }
 
   ngOnInit(): void {
@@ -37,6 +49,14 @@ private alarmTimeout: any;
 
     this.orderSubscription = this.socketService.on<any>('new order').subscribe((data) => {
       this.triggerAlarm();
+    });
+
+    this.connectSub = this.socketService.on<any>('connect').subscribe(() => {
+      this.isConnected = true;
+    });
+
+    this.disconnectSub = this.socketService.on<any>('disconnect').subscribe(() => {
+      this.isConnected = false;
     });
 
     this.token = sessionStorage.getItem('token')
@@ -72,6 +92,8 @@ private alarmTimeout: any;
     this.orderSubscription?.unsubscribe();
     this.audio?.pause();
     if (this.alarmTimeout) clearTimeout(this.alarmTimeout);
+    this.connectSub?.unsubscribe();
+    this.disconnectSub?.unsubscribe();
   }
 
 openSettings(){

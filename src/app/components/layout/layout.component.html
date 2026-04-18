@@ -5,9 +5,12 @@
 <div class="d-flex p-2 fs-5 ms-4">
     <strong>ONE</strong>APP <br> <span class="text-secondary">ADMIN</span>
 </div>
-<div class="d-flex gap-2">
-  <div class="connected"></div>
-  <div class="disconnected"></div>
+<div class="d-flex gap-2 align-items-center">
+  @if(isConnected) {
+    <div class="connected" title="Looking for orders"></div>
+  } @else {
+    <div class="disconnected" title="disconnected"></div>
+  }
   @if(showAlarm) {
   <div>
   <img style="width: 38px" src="assets/wired-flat-236-alarm-clock-loop-cycle.gif" alt="">
