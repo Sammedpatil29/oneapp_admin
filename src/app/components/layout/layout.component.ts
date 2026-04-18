@@ -43,6 +43,10 @@ private alarmTimeout: any;
       const decoded = jwtDecode<any>(this.token)
       this.role = decoded.role
       console.log(this.role)
+
+    // Pre-load the audio instance once when the component initializes
+    this.audio = new Audio('assets/mixkit-urgent-digital-alarm-tone-loop-2973.wav');
+    this.audio.load();
   }
 
   triggerAlarm() {
@@ -55,8 +59,7 @@ private alarmTimeout: any;
       this.audio.currentTime = 0;
     }
 
-    this.audio = new Audio('assets/mixkit-urgent-digital-alarm-tone-loop-2973.wav'); // Ensure you have this sound file in your assets
-    this.audio.play().catch(err => console.error('Audio play failed (maybe blocked by browser):', err));
+    this.audio?.play().catch(err => console.error('Audio play failed (maybe blocked by browser):', err));
 
     this.alarmTimeout = setTimeout(() => {
       this.showAlarm = false;

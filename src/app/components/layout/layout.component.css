@@ -46,3 +46,17 @@ li.active {
 .scroll-container::-webkit-scrollbar {
   display: none;
 }
+
+.connected {
+  width: 15px;
+  height: 15px;
+  background-color: #28a745; /* Green color */
+  border-radius: 50%;
+}
+
+.disconnected {
+  width: 15px;
+  height: 15px;
+  background-color: #dc3545; /* Red color */
+  border-radius: 50%;
+}
