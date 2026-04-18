@@ -156,15 +156,15 @@
                     ">
                         <mat-label>Assign Rider</mat-label>
                         <mat-select [value]="order.rider?.id" (selectionChange)="assignRider($event.value)">
-                            <mat-option *ngFor="let rider of riders" [value]="rider">{{rider}}</mat-option>
+                            <mat-option *ngFor="let rider of riders" [value]="rider.id">{{rider.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="card-body">
-                    <div *ngIf="order.rider; else noRider">
-                        <p class="mb-1"><strong>Name:</strong> {{order.rider?.name}}</p>
-                        <p class="mb-1"><strong>Phone:</strong> {{order.rider?.phone}}</p>
-                        <p class="mb-0"><strong>Vehicle:</strong> {{order.rider?.vehicle_number}}</p>
+                    <div *ngIf="order.rider_details; else noRider">
+                        <p class="mb-1"><strong>Name:</strong> {{order.rider_details?.name}}</p>
+                        <p class="mb-1"><strong>Phone:</strong> {{order.rider_details?.contact}}</p>
+                        <p class="mb-0"><strong>Vehicle:</strong> {{order.rider_details?.vehicle_number}}</p>
                     </div>
                     <ng-template #noRider>
                         <p class="text-muted mb-0">No rider assigned</p>
@@ -177,7 +177,13 @@
     </mat-dialog-content>
 </div>
 <div class="d-flex justify-content-end gap-2 me-4" mat-dialog-actions>
-    <button matButton class="btn btn-outline-danger" (click)="cancelOrder()">Cancel Order</button>
-    <button matButton class="btn btn-outline-success" (click)="markPacked()">Mark Packed</button>
-    <button matButton mat-dialog-close class="btn btn-dark me-2">Cancel</button>
+    @if(order?.status.toLowerCase() !== 'cancelled' && order?.status.toLowerCase() !== 'delivered' && order?.status.toLowerCase() !== 'failed' && order?.status.toLowerCase() !== 'pending'){
+        <button matButton class="btn btn-outline-danger" (click)="cancelOrder()">Cancel Order</button>
+    }
+
+    @if(order?.status.toLowerCase() === 'new' || order?.status.toLowerCase() === 'confirmed'){
+        <button matButton class="btn btn-outline-success" (click)="markPacked()">Mark Packed</button>
+    }
+    
+    <button matButton mat-dialog-close class="btn btn-dark me-2">Close</button>
 </div>

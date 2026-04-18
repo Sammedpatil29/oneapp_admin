@@ -24,4 +24,25 @@ export class OrdersService {
     })
     return this.http.post(`${this.url}/api/grocery-order/update-status`, params, {headers: headers})
   }
+
+  cancelOrder(params:any){
+    const token = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : '';
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    })
+    return this.http.post(`${this.url}/api/grocery-order/cancel`, params, {headers: headers})
+  }
+
+  getRiders(){
+    const token = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : '';
+    return this.http.get(`${this.url}/api/rider/online`)
+  }
+
+  assignRider(params:any){
+    const token = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : '';
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    })
+    return this.http.post(`${this.url}/api/grocery-order/assign-rider`, params, {headers: headers})
+  }
 }
