@@ -45,7 +45,7 @@ private alarmTimeout: any;
       console.log(this.role)
 
     // Pre-load the audio instance once when the component initializes
-    this.audio = new Audio('assets/mixkit-urgent-digital-alarm-tone-loop-2973.wav');
+    this.audio = new Audio('assets/mixkit-urgent-digital-alarm-tone-loop-2973.mp3');
     this.audio.load();
   }
 
