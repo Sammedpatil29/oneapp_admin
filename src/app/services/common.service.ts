@@ -129,7 +129,7 @@ export class CommonService {
   }
 
   homedata(params:any){
-    return this.http.post("http://localhost:3000/api/admin/home", { params })
+    return this.http.post(`${this.url}/api/admin/home`, { params })
   }
 
   ordersCount(){
