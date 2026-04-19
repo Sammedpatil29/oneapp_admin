@@ -22,7 +22,11 @@
         <div class="col">
             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Category</mat-label>
-                <input matInput [(ngModel)]="category" placeholder="Category" value="category">
+                <mat-select [(ngModel)]="category" placeholder="Select Category">
+                    @for (cat of groceryCategories; track $index) {
+                        <mat-option [value]="cat.name">{{cat.name}}</mat-option>
+                    }
+                </mat-select>
             </mat-form-field>
         </div>
         <div class="col">
