@@ -39,6 +39,7 @@ readonly dialog = inject(MatDialog);
   isLoading: boolean = false
   itemUpdating: boolean = false
   isDeleting: boolean = false
+  groceryCategories: any[] = []
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService, private dialogRef: MatDialogRef<AddGroceryComponent>){
     console.log(data)
@@ -64,6 +65,7 @@ readonly dialog = inject(MatDialog);
       this.is_featured = this.data.item.is_featured
       this.tags = this.data.item.tags ? this.data.item.tags.join(', ') : ''
     }
+    this.getGroceryCategories()
   }
 
   createGroceryList(){
@@ -187,6 +189,15 @@ readonly dialog = inject(MatDialog);
     }
 
   }
+
+  getGroceryCategories(){
+    this.commonService.getGroceryCategories().subscribe((res:any)=>{
+      this.groceryCategories = res.data
+    }, error => {
+      console.log(error)
+    })
+  }
+
 
   // updateStock(){
   //   this.stock = String(Number(this.newStock) + Number(this.stock))

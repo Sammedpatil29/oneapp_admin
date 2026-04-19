@@ -43,8 +43,10 @@ export class GroceryOrdersComponent implements OnInit, OnDestroy {
     this.orderSubscription?.unsubscribe();
   }
 
-  getOrders(){
-    this.isLoading = true
+  getOrders(silent: boolean = false){
+    if (!silent) {
+      this.isLoading = true;
+    }
     this.ordersService.getOrders('grocery').subscribe((res:any)=>{
       this.orders = res.data
       this.isLoading = false
@@ -88,11 +90,8 @@ export class GroceryOrdersComponent implements OnInit, OnDestroy {
 
     // Fallback 2: Handle Dialog Close/Cancel
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) {
-        console.log('Dialog dismissed without action');
-      } else {
-        this.getOrders()
-      }
+     
+        this.getOrders(true);
     });
 
   } catch (error) {

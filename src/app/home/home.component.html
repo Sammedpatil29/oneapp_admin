@@ -1,10 +1,21 @@
 <div class="d-flex justify-content-between align-items-center mt-3">
   <h3 class="ms-3">Dashboard</h3>
-  @if (isDataLoading) {
-    <div class="spinner-grow fs-6 text-success me-3" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-  }
+  <div class="d-flex align-items-center gap-3 me-3">
+    @if (isDataLoading) {
+      <div class="spinner-grow fs-6 text-success" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+    }
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dense-date-picker">
+      <mat-label>Date Range</mat-label>
+      <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+        <input matStartDate placeholder="Start date" [(ngModel)]="startDate">
+        <input matEndDate placeholder="End date" [(ngModel)]="endDate" (ngModelChange)="onDateChange($event)">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
 </div>
 <!-- loading added -->
 @if (!isLoading) {
@@ -62,8 +73,9 @@
             <span>Live</span>
           </small>
           <div class="p-3 d-flex flex-column align-items-center justify-content-center flex-grow-1">
-            <h2>Todays Orders - 20</h2>
-            <h2>Todays Sales - 2000</h2>
+            <h2>Total Orders - {{homeData.totalOrders}}</h2>
+            <h2>Total Sales - {{homeData.totalSales}}</h2>
+            <!-- <h2>Riders Online - {{homeData.ridersOnline}}</h2> -->
           </div>
         </div>
       </div>
