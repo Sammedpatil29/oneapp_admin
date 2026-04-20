@@ -3,19 +3,16 @@
   {{ metaData | json }}
 </pre>
 </div> -->
-<h3 class="my-3 ms-3">
+<!-- <h3 class="my-3 ms-3">
     Main Changes
-</h3>
+</h3> -->
    <section>
 
-    <!-- accordion -->
-     <mat-accordion>
+    <!-- tabs -->
+     <mat-tab-group (selectedTabChange)="$event.index === 2 ? initMap() : null">
 
       <!-- metadata  -->
-    <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title> Meta Data </mat-panel-title>
-    </mat-expansion-panel-header>
+    <mat-tab label="Meta Data">
     @if(!isMetaDataLoading){
     <section class="mt-3" style="border-radius: 20px;">
     <div>
@@ -63,14 +60,11 @@
 } @else {
     <app-loader></app-loader>
 }
-  </mat-expansion-panel>
+  </mat-tab>
   <!-- metadata -->
 
   <!-- banners -->
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title> Banners </mat-panel-title>
-    </mat-expansion-panel-header>
+  <mat-tab label="Banners">
     @if (!isBannersLoading) {
     <section class="mt-3" style="border-radius: 20px;">
     <div class="d-flex justify-content-between align-items-center mt-3">
@@ -154,15 +148,12 @@
 } @else {
     <app-loader></app-loader>
 }
-  </mat-expansion-panel>
+  </mat-tab>
 <!-- banners -->
 
 <!-- service area  -->
-  <mat-expansion-panel (opened)="initMap()">
-    <mat-expansion-panel-header>
-      <mat-panel-title> Set Service Area </mat-panel-title>
-    </mat-expansion-panel-header>
-      <div class="d-flex justify-content-between align-items-center">
+  <mat-tab label="Set Service Area">
+      <div class="d-flex justify-content-between align-items-center mt-3">
         <div class="d-flex align-items-center">
           <div class="me-2">Stroke Color</div><input [(ngModel)]="strokeColor" type="color" id="colorPicker" name="colorPicker" value="strokeColor">
       <div class="mx-2">Area Color</div><input [(ngModel)]="areaColor" (input)="initMap()" type="color" id="colorPicker" name="colorPicker" value="areaColor">
@@ -182,16 +173,13 @@
     <div #mapContainer id="map" style="height: 500px; width: 100%; border-radius: 20px"></div>
 
 
-  </mat-expansion-panel>
+  </mat-tab>
   <!-- service area  -->
 
-</mat-accordion>
-<!-- accordion  -->
+</mat-tab-group>
+<!-- tabs  -->
    </section>
 
    <div style="height: 50px;">
 
    </div>
-
-
-

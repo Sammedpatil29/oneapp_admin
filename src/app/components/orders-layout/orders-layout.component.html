@@ -1,14 +1,26 @@
 <div class="d-flex justify-content-between align-items-center mb-2 mt-3">
   <h3 class="">{{selectedOption}} Orders</h3>
-  <div class="dropdown">
-    <button class="btn btn-dark dropdown-toggle" type="button" (click)="isDropdownOpen = !isDropdownOpen" [attr.aria-expanded]="isDropdownOpen ? 'true' : 'false'">
-      {{ selectedOption }}
-    </button>
-    <ul class="dropdown-menu" [class.show]="isDropdownOpen">
-      <li><a class="dropdown-item" href="javascript:void(0)" (click)="selectOption('Action')">Action</a></li>
-      <li><a class="dropdown-item" href="javascript:void(0)" (click)="selectOption('Another action')">Another action</a></li>
-      <li><a class="dropdown-item" href="javascript:void(0)" (click)="selectOption('Something else here')">Something else here</a></li>
-    </ul>
+  <div class="d-flex align-items-center gap-2">
+    <input type="text" class="form-control" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" placeholder="Search Orders">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dense-date-picker w-100">
+      <mat-label>Date Range</mat-label>
+      <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+        <input matStartDate placeholder="Start date" [(ngModel)]="startDate">
+        <input matEndDate placeholder="End date" [(ngModel)]="endDate" (ngModelChange)="onDateChange($event)">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <div class="dropdown">
+      <button class="btn btn-dark dropdown-toggle" type="button" (click)="isDropdownOpen = !isDropdownOpen" [attr.aria-expanded]="isDropdownOpen ? 'true' : 'false'">
+        {{ selectedOption }}
+      </button>
+      <ul class="dropdown-menu" [class.show]="isDropdownOpen">
+        @for (item of services; track $index) {
+          <li><a class="dropdown-item" href="javascript:void(0)" (click)="selectOption(item.title)">{{item.title}}</a></li>
+        }
+      </ul>
+    </div>
   </div>
 </div>
 
