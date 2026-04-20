@@ -19,33 +19,7 @@ bg: any;
 img: any;
 mode: any = 'add'
 selectedBrandId: any;
-brands: any[] = [
-  {
-    name: "Patanjali",
-    img: "brand",
-    bg: "#ffffff"
-  },
-  {
-    name: "Tata",
-    img: "brand",
-    bg: "#ffffff"
-  },
-  {
-    name: "Britannia",
-    img: "brand",
-    bg: "#ffffff"
-  },
-  {
-    name: "Britannia",
-    img: "brand",
-    bg: "#ffffff"
-  },
-  {
-    name: "Britannia",
-    img: "brand",
-    bg: "#ffffff"
-  }
-]
+brands: any[] = []
 
 constructor(private commonService: CommonService) { }
 

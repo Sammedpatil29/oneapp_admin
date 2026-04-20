@@ -192,6 +192,18 @@ export class CommonService {
     return this.http.post(`${this.url}/api/notifications/send-all`, params)
   }
 
+  createSavedNotification(params:any){
+    return this.http.post(`${this.url}/api/notifications`, params)
+  }
+
+  getSavedNotifications(){
+    return this.http.get(`${this.url}/api/notifications`)
+  }
+
+  deleteNotification(id:any){
+    return this.http.delete(`${this.url}/api/notifications/${id}/`)
+  }
+
   getAllSupportTickets(params:any){
     return this.http.post(`${this.getAllSupportTicketsUrl}`, params)
   }
