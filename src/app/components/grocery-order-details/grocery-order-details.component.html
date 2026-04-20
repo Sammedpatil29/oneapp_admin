@@ -104,7 +104,9 @@
     <!-- Items -->
     <div class="row">
         <div class="col-md-8">
-            <div class="card mb-4 border-0 shadow-sm">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-header bg-light">
                     <strong>Items ({{order.cart_items?.length}})</strong>
                 </div>
@@ -139,9 +141,31 @@
                     </table>
                 </div>
             </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <strong>Timeline</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="ms-2 mt-2">
+                                @for (item of order.timeline; track $index; let last = $last) {
+                                    <div class="position-relative ps-4" [class.pb-4]="!last" [style.border-left]="last ? '2px solid transparent' : '2px solid #dee2e6'">
+                                        <!-- Timeline Dot -->
+                                        <div class="position-absolute rounded-circle" [ngClass]="item.status.toLowerCase() == 'cancelled' ? 'bg-danger': 'bg-success' " style="width: 12px; height: 12px; left: -7px; top: 2px; outline: 3px solid white; z-index: 1;"></div>
+                                        <!-- Content -->
+                                        <p class="mb-0 fw-medium" style="font-size: 0.80rem; line-height: 1;">{{item.status}}</p>
+                                        <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">{{item.time | date:'short'}}</small>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm">
+            <div class="card border-0 shadow-sm">
                 <div class="card-header bg-light d-flex justify-content-between align-items-baseline">
                     <strong>Rider Details</strong>
                     <mat-form-field appearance="outline" style="
@@ -160,7 +184,8 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="card-body">
+                @if(!isAssigning){
+                    <div class="card-body">
                     <div *ngIf="order.rider_details; else noRider">
                         <p class="mb-1"><strong>Name:</strong> {{order.rider_details?.name}}</p>
                         <p class="mb-1"><strong>Phone:</strong> {{order.rider_details?.contact}}</p>
@@ -170,6 +195,11 @@
                         <p class="text-muted mb-0">No rider assigned</p>
                     </ng-template>
                 </div>
+                } @else {
+                    <div class="card-body w-100 d-flex justify-content-center align-items-center">
+                        <app-button-spinner></app-button-spinner>
+                    </div>
+                }
             </div>
         </div>
     </div>

@@ -1,0 +1,11 @@
+.dense-date-picker {
+  --mat-form-field-container-height: 40px;
+  --mat-form-field-container-vertical-padding: 4px;
+                      --mat-select-trigger-height: 14px;
+                      --mat-form-field-container-height: 40px;
+                      font-size: 14px;
+}
+
+::ng-deep .mat-date-range-input-container {
+    margin-top: 5px;
+}

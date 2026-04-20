@@ -8,6 +8,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
+import { GroceryCategoriesComponent } from '../grocery-categories/grocery-categories.component';
+import { groceryBrandsComponent } from '../grocery-brands/grocery-brands.component';
 
 @Component({
   selector: 'app-add-grocery',
@@ -40,6 +42,33 @@ readonly dialog = inject(MatDialog);
   itemUpdating: boolean = false
   isDeleting: boolean = false
   groceryCategories: any[] = []
+  brands: any[] = [
+  {
+    name: "Patanjali",
+    img: "brand",
+    bg: "#ffffff"
+  },
+  {
+    name: "Tata",
+    img: "brand",
+    bg: "#ffffff"
+  },
+  {
+    name: "Britannia",
+    img: "brand",
+    bg: "#ffffff"
+  },
+  {
+    name: "Britannia",
+    img: "brand",
+    bg: "#ffffff"
+  },
+  {
+    name: "Britannia",
+    img: "brand",
+    bg: "#ffffff"
+  }
+]
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService, private dialogRef: MatDialogRef<AddGroceryComponent>){
     console.log(data)
@@ -196,6 +225,25 @@ readonly dialog = inject(MatDialog);
     }, error => {
       console.log(error)
     })
+  }
+
+  openCategoriesDialog(){
+    console.log('open')
+    const dialogRef = this.dialog.open(GroceryCategoriesComponent, {
+      maxWidth: '75vw',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+        this.getGroceryCategories();
+    });
+  }
+
+  openBrandsDialog(){
+    console.log('open')
+    const dialogRef = this.dialog.open(groceryBrandsComponent, {
+      maxWidth: '75vw',
+    });
+
   }
 
 
