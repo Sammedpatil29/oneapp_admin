@@ -42,33 +42,7 @@ readonly dialog = inject(MatDialog);
   itemUpdating: boolean = false
   isDeleting: boolean = false
   groceryCategories: any[] = []
-  brands: any[] = [
-  {
-    name: "Patanjali",
-    img: "brand",
-    bg: "#ffffff"
-  },
-  {
-    name: "Tata",
-    img: "brand",
-    bg: "#ffffff"
-  },
-  {
-    name: "Britannia",
-    img: "brand",
-    bg: "#ffffff"
-  },
-  {
-    name: "Britannia",
-    img: "brand",
-    bg: "#ffffff"
-  },
-  {
-    name: "Britannia",
-    img: "brand",
-    bg: "#ffffff"
-  }
-]
+  brands: any[] = []
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService, private dialogRef: MatDialogRef<AddGroceryComponent>){
     console.log(data)
@@ -95,6 +69,7 @@ readonly dialog = inject(MatDialog);
       this.tags = this.data.item.tags ? this.data.item.tags.join(', ') : ''
     }
     this.getGroceryCategories()
+    this.getGroceryBrands()
   }
 
   createGroceryList(){
@@ -222,6 +197,14 @@ readonly dialog = inject(MatDialog);
   getGroceryCategories(){
     this.commonService.getGroceryCategories().subscribe((res:any)=>{
       this.groceryCategories = res.data
+    }, error => {
+      console.log(error)
+    })
+  }
+
+  getGroceryBrands(){
+    this.commonService.getGroceryBrands().subscribe((res:any)=>{
+      this.brands = res.data
     }, error => {
       console.log(error)
     })
