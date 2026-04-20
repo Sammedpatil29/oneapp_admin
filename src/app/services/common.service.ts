@@ -172,6 +172,22 @@ export class CommonService {
     return this.http.put(`${this.url}/api/grocery-categories/${id}/`, params)
   }
 
+  getGroceryBrands(){
+    return this.http.get(`${this.url}/api/grocery-brands`)
+  }
+
+  addNewBrand(params:any){
+    return this.http.post(`${this.url}/api/grocery-brands`, params)
+  }
+
+  deleteBrand(id:any){
+    return this.http.delete(`${this.url}/api/grocery-brands/${id}/`)
+  }
+
+  updateBrand(id:any, params:any){
+    return this.http.put(`${this.url}/api/grocery-brands/${id}/`, params)
+  }
+
   sendNotification(params:any){
     return this.http.post(`${this.url}/api/notifications/send-all`, params)
   }
