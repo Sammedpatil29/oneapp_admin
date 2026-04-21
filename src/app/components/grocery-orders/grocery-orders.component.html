@@ -1,9 +1,10 @@
 @if(!isLoading){
   <div class="orders-wrapper">
 
-
+@if(orders.length > 0){
   <div class="orders-grid">
-    <div class="order-card border-start border-4"
+    
+      <div class="order-card border-start border-4"
          *ngFor="let order of orders"
          (click)="viewOrder(order)"
          style="cursor: pointer"
@@ -50,7 +51,11 @@
         <span>{{order.createdAt | date:'short'}}</span>
       </div>
     </div>
+    
   </div>
+  } @else {
+        <app-empty-data></app-empty-data>
+    }
 </div>
 } @else {
   <app-loader></app-loader>

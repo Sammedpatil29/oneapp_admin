@@ -9,8 +9,10 @@
 <mat-dialog-content class="mat-typography pt-0">
     <div class="row mt-2">
         <!-- Categories List (Left Side) -->
-        <div class="col-7 pe-4" style="max-height: 400px; overflow-y: auto;">
+        
+            <div class="col-7 pe-4" style="max-height: 400px; overflow-y: auto;">
             <h6 class="mb-3 text-muted">Current Categories</h6>
+            @if(!isLoading){
             <div class="list-group">
                 @for (cat of categories; track $index) {
                 <div class="list-group-item d-flex align-items-center justify-content-between p-2 cursor-pointer" (click)="selectCategory(cat)">
@@ -22,7 +24,13 @@
                 </div>
                 }
             </div>
+            } @else {
+            <div class="w-100 d-flex justify-content-center h-75 align-items-center">
+                <app-button-spinner></app-button-spinner>
+            </div>
+        }
         </div>
+        
 
         <!-- Add Category Form (Right Side) -->
         <div class="col-5 d-flex flex-column border-start ps-4">
@@ -46,9 +54,21 @@
             <div class="d-flex gap-1">
                 @if(mode == 'update'){
                 <button class="btn btn-outline-danger align-self-end mt-1 w-100" (click)="deleteCategory()">Delete</button>
-                <button class="btn btn-dark align-self-end mt-1 w-100" (click)="updateCategory()">Update</button>
+                <button class="btn btn-dark align-self-end mt-1 w-100" (click)="updateCategory()">
+                    @if(isSaving){
+                    <app-button-spinner></app-button-spinner>
+                    } @else {
+                    Update
+                    }
+                </button>
                 } @else {
-                <button class="btn btn-dark align-self-end mt-1 w-100" (click)="addCategory()" [disabled]="!name || !bg || !img">Save Category</button>
+                <button class="btn btn-dark align-self-end mt-1 w-100" (click)="addCategory()" [disabled]="!name || !bg || !img">
+                    @if(isSaving){
+                    <app-button-spinner></app-button-spinner>
+                    } @else {
+                    Save Category
+                    }
+                </button>
                 }
             
             </div>

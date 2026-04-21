@@ -11,7 +11,8 @@
         <!-- Brands List (Left Side) -->
         <div class="col-7 pe-4" style="max-height: 400px; overflow-y: auto;">
             <h6 class="mb-3 text-muted">Current Brands</h6>
-            <div class="list-group">
+            @if(!isLoading){
+                <div class="list-group">    
                 @for (brand of brands; track $index) {
                 <div class="list-group-item d-flex align-items-center justify-content-between p-2 cursor-pointer" (click)="selectBrand(brand)">
                     <div class="d-flex align-items-center">
@@ -22,6 +23,11 @@
                 </div>
                 }
             </div>
+            } @else {
+                <div class="w-100 h-75 d-flex justify-content-center align-items-center">
+                    <app-button-spinner></app-button-spinner>
+                </div>
+            }
         </div>
 
         <!-- Add Brand Form (Right Side) -->
@@ -46,9 +52,21 @@
             <div class="d-flex gap-1">
                 @if(mode == 'update'){
                 <button class="btn btn-outline-danger align-self-end mt-1 w-100" (click)="deleteBrand()">Delete</button>
-                <button class="btn btn-dark align-self-end mt-1 w-100" (click)="updateBrand()">Update</button>
+                <button class="btn btn-dark align-self-end mt-1 w-100" (click)="updateBrand()">
+                    @if(isSaving){
+                    <app-button-spinner></app-button-spinner>
+                    } @else {
+                    Update
+                    }
+                </button>
                 } @else {
-                <button class="btn btn-dark align-self-end mt-1 w-100" (click)="addBrand()" [disabled]="!name || !bg || !img">Save Brand</button>
+                <button class="btn btn-dark align-self-end mt-1 w-100" (click)="addBrand()" [disabled]="!name || !bg || !img">
+                    @if(isSaving){
+                    <app-button-spinner></app-button-spinner>
+                    } @else {
+                    Add Brand
+                    }
+                </button>
                 }
             
             </div>

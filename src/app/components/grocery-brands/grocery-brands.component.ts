@@ -5,11 +5,12 @@ import { MatFormField, MatLabel } from "@angular/material/input";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonService } from '../../services/common.service';
+import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 
 
 @Component({
   selector: 'app-grocery-brands',
-  imports: [MatDialogContent, MatFormField, MatLabel, FormsModule, MatDialogActions, MatInputModule, MatFormFieldModule, MatDialogClose, MatDialogTitle],
+  imports: [MatDialogContent, MatFormField, MatLabel, FormsModule, MatDialogActions, MatInputModule, MatFormFieldModule, MatDialogClose, MatDialogTitle, ButtonSpinnerComponent],
   templateUrl: './grocery-brands.component.html',
   styleUrl: './grocery-brands.component.css'
 })
@@ -20,6 +21,8 @@ img: any;
 mode: any = 'add'
 selectedBrandId: any;
 brands: any[] = []
+isLoading: boolean = false
+isSaving: boolean = false
 
 constructor(private commonService: CommonService) { }
 
@@ -33,21 +36,27 @@ addBrand(){
     bg: this.bg,
     img: this.img
   }
+  this.isSaving = true
   this.commonService.addNewBrand(params).subscribe((res:any)=>{
     this.name = ''
     this.bg = ''
     this.img = ''
+    this.isSaving = false
     this.getBrands()
   }, error => {
     console.log(error)
+    this.isSaving = false
   })
 }
 
 getBrands(){
+  this.isLoading = true
   this.commonService.getGroceryBrands().subscribe((res:any)=>{
     this.brands = res.data
+    this.isLoading = false
   }, error => {
     console.log(error)
+    this.isLoading = false
   })
 }
 
@@ -65,13 +74,16 @@ updateBrand(){
     bg: this.bg,
     img: this.img
   }
+  this.isSaving = true
   this.commonService.updateBrand(this.selectedBrandId, params).subscribe((res:any)=>{
     this.name = ''
     this.bg = ''
     this.img = ''
     this.mode = 'add'
+    this.isSaving = false
     this.getBrands()
   }, error => {    console.log(error)
+      this.isSaving = false
   })
 }
 
