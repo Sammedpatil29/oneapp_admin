@@ -9,11 +9,12 @@ import { LoaderComponent } from "../loader/loader.component";
 import { SocketService } from '../../services/socket.service';
 import { Subscription } from 'rxjs';
 import { OrdersSearchService } from '../../services/orders-search.service';
+import { EmptyDataComponent } from "../empty-data/empty-data.component";
 
 @Component({
   selector: 'app-grocery-orders',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, LoaderComponent],
+  imports: [CommonModule, MatDialogModule, LoaderComponent, EmptyDataComponent],
   templateUrl: './grocery-orders.component.html',
   styleUrls: ['./grocery-orders.component.css']
 })
