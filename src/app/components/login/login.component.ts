@@ -84,9 +84,9 @@ export class LoginComponent {
   }
 
   bypassLogin(){
-    this.mobileNumber = '9591420068'
-    this.password = '123456'
-    this.logIn()
+    // this.mobileNumber = '9591420068'
+    // this.password = '123456'
+    // this.logIn()
   }
 
 }
