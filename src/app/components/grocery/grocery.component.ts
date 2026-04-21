@@ -9,6 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
+import { GroceryCategoriesComponent } from '../grocery-categories/grocery-categories.component';
+import { groceryBrandsComponent } from '../grocery-brands/grocery-brands.component';
 
 @Component({
   selector: 'app-grocery',
@@ -159,5 +161,19 @@ exportToExcel(): void {
     });
   }
 }
+
+openCategoriesDialog(){
+  const dialogRef = this.dialog.open(GroceryCategoriesComponent, {
+    maxWidth: '75vw',
+  });
+}
+
+openBrandsDialog(){
+    console.log('open')
+    const dialogRef = this.dialog.open(groceryBrandsComponent, {
+      maxWidth: '75vw',
+    });
+
+  }
 
 }

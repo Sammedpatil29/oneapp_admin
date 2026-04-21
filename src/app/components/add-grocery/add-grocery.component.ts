@@ -8,6 +8,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
+import { GroceryCategoriesComponent } from '../grocery-categories/grocery-categories.component';
+import { groceryBrandsComponent } from '../grocery-brands/grocery-brands.component';
 
 @Component({
   selector: 'app-add-grocery',
@@ -39,6 +41,8 @@ readonly dialog = inject(MatDialog);
   isLoading: boolean = false
   itemUpdating: boolean = false
   isDeleting: boolean = false
+  groceryCategories: any[] = []
+  brands: any[] = []
 
   constructor( @Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService, private dialogRef: MatDialogRef<AddGroceryComponent>){
     console.log(data)
@@ -64,6 +68,8 @@ readonly dialog = inject(MatDialog);
       this.is_featured = this.data.item.is_featured
       this.tags = this.data.item.tags ? this.data.item.tags.join(', ') : ''
     }
+    this.getGroceryCategories()
+    this.getGroceryBrands()
   }
 
   createGroceryList(){
@@ -187,6 +193,42 @@ readonly dialog = inject(MatDialog);
     }
 
   }
+
+  getGroceryCategories(){
+    this.commonService.getGroceryCategories().subscribe((res:any)=>{
+      this.groceryCategories = res.data
+    }, error => {
+      console.log(error)
+    })
+  }
+
+  getGroceryBrands(){
+    this.commonService.getGroceryBrands().subscribe((res:any)=>{
+      this.brands = res.data
+    }, error => {
+      console.log(error)
+    })
+  }
+
+  openCategoriesDialog(){
+    console.log('open')
+    const dialogRef = this.dialog.open(GroceryCategoriesComponent, {
+      maxWidth: '75vw',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+        this.getGroceryCategories();
+    });
+  }
+
+  openBrandsDialog(){
+    console.log('open')
+    const dialogRef = this.dialog.open(groceryBrandsComponent, {
+      maxWidth: '75vw',
+    });
+
+  }
+
 
   // updateStock(){
   //   this.stock = String(Number(this.newStock) + Number(this.stock))

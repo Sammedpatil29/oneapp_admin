@@ -1,0 +1,79 @@
+<div class="d-flex justify-content-between align-items-center">
+    <h2 mat-dialog-title class="ps-3 pt-2">
+    Grocery Brands
+</h2>
+<h2 mat-dialog-title matButton mat-dialog-close class="ps-3 pt-2">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+</h2>
+</div>
+<mat-dialog-content class="mat-typography pt-0">
+    <div class="row mt-2">
+        <!-- Brands List (Left Side) -->
+        <div class="col-7 pe-4" style="max-height: 400px; overflow-y: auto;">
+            <h6 class="mb-3 text-muted">Current Brands</h6>
+            @if(!isLoading){
+                <div class="list-group">    
+                @for (brand of brands; track $index) {
+                <div class="list-group-item d-flex align-items-center justify-content-between p-2 cursor-pointer" (click)="selectBrand(brand)">
+                    <div class="d-flex align-items-center">
+                        <img [src]="brand.img" alt="icon" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;" class="me-3 border">
+                        <span class="fw-medium">{{brand.name}}</span>
+                    </div>
+                    <div [style.background-color]="brand.bg" style="width: 24px; height: 24px; border-radius: 50%; border: 1px solid #ccc;" title="{{brand.bg}}"></div>
+                </div>
+                }
+            </div>
+            } @else {
+                <div class="w-100 h-75 d-flex justify-content-center align-items-center">
+                    <app-button-spinner></app-button-spinner>
+                </div>
+            }
+        </div>
+
+        <!-- Add Brand Form (Right Side) -->
+        <div class="col-5 d-flex flex-column border-start ps-4">
+            @if(mode == 'update'){
+            <h6 class="mb-3 text-muted">Update Brand</h6>
+            } @else {
+            <h6 class="mb-3 text-muted">Add New Brand</h6>
+            }
+            <mat-form-field class="w-100 mb-2" appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="name" placeholder="Item Name">
+            </mat-form-field>
+            <mat-form-field class="w-100 mb-2" appearance="outline">
+                <mat-label>Image URL</mat-label>
+                <input matInput [(ngModel)]="img" placeholder="Image URL">
+            </mat-form-field>
+            <mat-form-field class="w-100 mb-2" appearance="outline">
+                <mat-label>Background Color</mat-label>
+                <input matInput [(ngModel)]="bg" type="color" placeholder="Background Color">
+            </mat-form-field>
+            <div class="d-flex gap-1">
+                @if(mode == 'update'){
+                <button class="btn btn-outline-danger align-self-end mt-1 w-100" (click)="deleteBrand()">Delete</button>
+                <button class="btn btn-dark align-self-end mt-1 w-100" (click)="updateBrand()">
+                    @if(isSaving){
+                    <app-button-spinner></app-button-spinner>
+                    } @else {
+                    Update
+                    }
+                </button>
+                } @else {
+                <button class="btn btn-dark align-self-end mt-1 w-100" (click)="addBrand()" [disabled]="!name || !bg || !img">
+                    @if(isSaving){
+                    <app-button-spinner></app-button-spinner>
+                    } @else {
+                    Add Brand
+                    }
+                </button>
+                }
+            
+            </div>
+        </div>
+
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions class="d-flex justify-content-end">
+<button matButton mat-dialog-close class="btn btn-outline-dark me-2 w-100">Close</button>
+</mat-dialog-actions>

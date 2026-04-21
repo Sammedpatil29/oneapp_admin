@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { LoaderComponent } from "../loader/loader.component";
 import { MatInputModule } from "@angular/material/input";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './create-notifications.component.html',
   styleUrl: './create-notifications.component.css',
 })
-export class CreateNotificationsComponent {
+export class CreateNotificationsComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   isLoading: boolean = false;
   view: any;
@@ -33,34 +33,11 @@ export class CreateNotificationsComponent {
   bgColor = '#050303ff'
 
 
-  notifications = [
-    {
-      title: '🎉 Day 1 Check-in: Done!',
-      body: 'Awesome job! 🙌 You\'re 1/14 days through the testing phase. One step closer to the finish line! 🏁',
-      imageUrl: '',
-    },
-    {
-      title: '📅 Progress Update: 1/14 Days',
-      body: 'You\'ve completed 1 day of 14 total. Keep it rolling! 💪',
-      imageUrl: '',
-    },
-    {
-      title: '🍎 Stock up on health with today’s organic offers!',
-      body: 'Get up to 30% off on fruits, veggies & more. Offer valid today only!',
-      imageUrl: '',
-    },
-    {
-      title: '🛒 Fresh Deals Just for You!',
-      body: 'Get up to 50% off on fruits, veggies & more. Offer valid today only!',
-      imageUrl:
-        'https://res.cloudinary.com/dvwggnqnw/image/upload/v1748684804/Untitled_lerp8s.png',
-    },
-    {
-      title: '🥦 Fresh picks of the day!',
-      body: 'Get up to 30% off on fruits, vOffer valid today only!',
-      imageUrl: '',
-    },
-  ];
+  notifications:any[] = []
+
+ngOnInit(): void {
+  this.getSavedNotifications()
+}
 
   sendNotification() {
     let params = {
@@ -142,6 +119,70 @@ this.sendingNotification = true
     //     }
     //   );
   }
+
+  saveNotification(){
+    let params = {
+      "title": this.title,
+      "body": this.body,
+      "imageUrl": this.imageUrl,
+    }
+    this.savingNotification = true
+    this.commonService.createSavedNotification(params).subscribe((res:any)=>{
+      this.title = ''
+      this.body = ''      
+      this.imageUrl = ''
+      this.savingNotification = false
+      this.getSavedNotifications()
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'success',
+          body: 'Notification saved successfully',
+          type: 'success',
+        },
+      });
+  }, error => {    this.savingNotification = false
+     this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'error',
+          body: 'Error while saving Notification',
+          type: 'error',
+        },
+      });
+  })
+}
+
+deleteNotification(id:any){
+  let params = {
+    "token": sessionStorage.getItem('token')  }
+  this.commonService.deleteNotification(id).subscribe((res:any)=>{
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'success',
+        body: 'Notification deleted successfully',
+        type: 'success',
+      },
+    });
+    this.getSavedNotifications()
+  }, error => {    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'error',
+        body: 'Error while deleting Notification',
+        type: 'error',
+      },
+    });
+  })
+}
+
+
+getSavedNotifications(){
+  this.commonService.getSavedNotifications().subscribe((res:any)=>{
+    this.notifications = res.data
+  }, error => {
+    console.log(error)
+  })
+}
+
+
 
   duplicateNotification(item: any) {
     this.title = item.title;

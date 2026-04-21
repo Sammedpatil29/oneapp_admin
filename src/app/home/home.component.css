@@ -1,16 +1,45 @@
-.card {
-    height: 200px;
-    border-radius: 20px;
+/* Reduces the height of the datepicker form field */
+.dense-date-picker {
+  --mat-form-field-container-height: 40px;
+  --mat-form-field-container-vertical-padding: 4px;
+                      --mat-select-trigger-height: 14px;
+                      --mat-form-field-container-height: 40px;
 }
 
-.indicator{
-    width: 10px;
-    height: 10px;
-    background-color: red;
-    border-radius: 50%;
+::ng-deep .mat-date-range-input-container {
+    margin-top: 5px;
 }
 
-.spinner-grow {
-    --bs-spinner-width: 1rem;
-    --bs-spinner-height: 1rem;
+.indicator {
+  width: 10px;
+  height: 10px;
+  background-color: #ff3401;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.indicator::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #f00000;
+  animation: pulse 2s infinite;
+  opacity: 0.6;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
 }

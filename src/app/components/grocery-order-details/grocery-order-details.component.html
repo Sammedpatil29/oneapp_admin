@@ -1,23 +1,32 @@
-<div class="container-fluid p-0" *ngIf="order">
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center" mat-dialog-title>
-        <div>
-            <h4 class="mb-0">Order #{{order.id}}</h4>
-            <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
-        </div>
-        <div class="d-flex align-items-center gap-3">
-            <mat-form-field appearance="outline" style="width: 200px; font-size: 14px; margin-bottom: -1.25em;">
-                <mat-label>Assign Rider</mat-label>
-                <mat-select [value]="order.rider?.id" (selectionChange)="assignRider($event.value)">
-                    <mat-option *ngFor="let rider of riders" [value]="rider">{{rider}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <div class="badge" [ngClass]="getStatusClass(order?.status)">
-                {{order?.status | uppercase}}
+<!-- <div mat-dialog-title>
+        <div class="d-flex justify-content-between align-items-baseline">
+            <h2 class="mb-0">Order #{{order.id}}</h2>
+            <div class="d-flex align-items-center gap-2">
+                <mat-form-field appearance="outline" style="width: 180px; font-size: 13px; margin-bottom: -1.25em;">
+                    <mat-label>Assign Rider</mat-label>
+                    <mat-select [value]="order.rider?.id" (selectionChange)="assignRider($event.value)">
+                        <mat-option *ngFor="let rider of riders" [value]="rider">{{rider}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="badge" [ngClass]="getStatusClass(order?.status)">
+                    {{order?.status | uppercase}}
+                </div>
             </div>
         </div>
-    </div>
+        <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
+    </div> -->
+<div class="d-flex justify-content-between align-items-center gap-2 mx-4" mat-dialog-actions>
 
+    <h6 style="margin-bottom: 0px;">Order Id #{{order.id}}</h6>
+    <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
+    <div class="badge" [ngClass]="getStatusClass(order?.status)">
+        {{order?.status | uppercase}}
+    </div>
+</div>
+
+<div class="container-fluid p-0" *ngIf="order">
+    <!-- Header -->
+    
     <mat-dialog-content>
     <div class="row mb-4">
         <!-- Customer Info -->
@@ -95,7 +104,9 @@
     <!-- Items -->
     <div class="row">
         <div class="col-md-8">
-            <div class="card mb-4 border-0 shadow-sm">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card mb-4 border-0 shadow-sm">
                 <div class="card-header bg-light">
                     <strong>Items ({{order.cart_items?.length}})</strong>
                 </div>
@@ -130,30 +141,79 @@
                     </table>
                 </div>
             </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <strong>Timeline</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="ms-2 mt-2">
+                                @for (item of order.timeline; track $index; let last = $last) {
+                                    <div class="position-relative ps-4" [class.pb-4]="!last" [style.border-left]="last ? '2px solid transparent' : '2px solid #dee2e6'">
+                                        <!-- Timeline Dot -->
+                                        <div class="position-absolute rounded-circle" [ngClass]="item.status.toLowerCase() == 'cancelled' ? 'bg-danger': 'bg-success' " style="width: 12px; height: 12px; left: -7px; top: 2px; outline: 3px solid white; z-index: 1;"></div>
+                                        <!-- Content -->
+                                        <p class="mb-0 fw-medium" style="font-size: 0.80rem; line-height: 1;">{{item.status}}</p>
+                                        <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">{{item.time | date:'short'}}</small>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-header bg-light">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-baseline">
                     <strong>Rider Details</strong>
+                    <mat-form-field appearance="outline" style="
+                    top: -6px !important;
+                      width: 180px; 
+                      font-size: 12px; 
+                      margin-bottom: -1.25em;
+                      --mat-form-field-container-vertical-padding: 4px;
+                      --mat-select-trigger-height: 14px;
+                      --mat-form-field-container-height: 40px;
+                      position: relative;
+                    ">
+                        <mat-label>Assign Rider</mat-label>
+                        <mat-select [value]="order.rider?.id" (selectionChange)="assignRider($event.value)">
+                            <mat-option *ngFor="let rider of riders" [value]="rider.id">{{rider.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
-                <div class="card-body">
-                    <div *ngIf="order.rider; else noRider">
-                        <p class="mb-1"><strong>Name:</strong> {{order.rider?.name}}</p>
-                        <p class="mb-1"><strong>Phone:</strong> {{order.rider?.phone}}</p>
-                        <p class="mb-0"><strong>Vehicle:</strong> {{order.rider?.vehicle_number}}</p>
+                @if(!isAssigning){
+                    <div class="card-body">
+                    <div *ngIf="order.rider_details; else noRider">
+                        <p class="mb-1"><strong>Name:</strong> {{order.rider_details?.name}}</p>
+                        <p class="mb-1"><strong>Phone:</strong> {{order.rider_details?.contact}}</p>
+                        <p class="mb-0"><strong>Vehicle:</strong> {{order.rider_details?.vehicle_number}}</p>
                     </div>
                     <ng-template #noRider>
                         <p class="text-muted mb-0">No rider assigned</p>
                     </ng-template>
                 </div>
+                } @else {
+                    <div class="card-body w-100 d-flex justify-content-center align-items-center">
+                        <app-button-spinner></app-button-spinner>
+                    </div>
+                }
             </div>
         </div>
     </div>
 
     </mat-dialog-content>
 </div>
-<div class="d-flex justify-content-end gap-2" mat-dialog-actions>
-    <button mat-button class="btn btn-outline-danger" (click)="cancelOrder()">Cancel Order</button>
-    <button mat-button class="btn btn-primary" (click)="markPacked()">Mark Packed</button>
-    <button mat-button mat-dialog-close class="btn btn-secondary">Close</button>
+<div class="d-flex justify-content-end gap-2 me-4" mat-dialog-actions>
+    @if(order?.status.toLowerCase() !== 'cancelled' && order?.status.toLowerCase() !== 'delivered' && order?.status.toLowerCase() !== 'failed' && order?.status.toLowerCase() !== 'pending'){
+        <button matButton class="btn btn-outline-danger" (click)="cancelOrder()">Cancel Order</button>
+    }
+
+    @if(order?.status.toLowerCase() === 'new' || order?.status.toLowerCase() === 'confirmed'){
+        <button matButton class="btn btn-outline-success" (click)="markPacked()">Mark Packed</button>
+    }
+    
+    <button matButton mat-dialog-close class="btn btn-dark me-2">Close</button>
 </div>

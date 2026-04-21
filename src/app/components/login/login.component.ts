@@ -83,4 +83,10 @@ export class LoginComponent {
     this.router.navigate(['/brahmadev-constructions'])
   }
 
+  bypassLogin(){
+    // this.mobileNumber = '9591420068'
+    // this.password = '123456'
+    // this.logIn()
+  }
+
 }

@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-4">
         <h5 class="text-center">Send Notification</h5>
-        <mat-form-field class="example-full-width mt-1 w-100" appearance="outline">
+        <mat-form-field class="example-full-width mt-1 w-100 mb-2" appearance="outline">
                 <mat-label>Notification Title</mat-label>
                 <input matInput [(ngModel)]="title" placeholder="Title for Notification" value="">
             </mat-form-field>
@@ -15,7 +15,7 @@
                 <mat-label>Notification Body</mat-label>
                 <input matInput [(ngModel)]="body" placeholder="Body for Notification" value="">
             </mat-form-field> -->
-            <mat-form-field class="example-full-width mt-1 w-100" appearance="outline">
+            <mat-form-field class="example-full-width mt-1 w-100 mb-2" appearance="outline">
   <mat-label>Notification Body</mat-label>
   <textarea matInput [(ngModel)]="body"
             cdkTextareaAutosize
@@ -23,7 +23,7 @@
             cdkAutosizeMinRows="1"
             cdkAutosizeMaxRows="5"></textarea>
 </mat-form-field>
-        <mat-form-field class="example-full-width mt-1 w-100" appearance="outline">
+        <mat-form-field class="example-full-width mt-1 w-100 mb-2" appearance="outline">
                 <mat-label>Image Url</mat-label>
                 <input matInput [(ngModel)]="imageUrl" placeholder="Image Url" value="">
             </mat-form-field>
@@ -53,7 +53,7 @@
             <!-- select other options block ends -->
 
             <div class="w-100 d-flex justify-content-center gap-2">
-                 <button class="btn btn-outline-dark w-100" style="cursor: not-allowed;" [disabled]="true" (click)="sendNotification()">
+                 <button class="btn btn-outline-dark w-100" style="cursor: pointer;" [disabled]="title == '' || sendingNotification" (click)="saveNotification()">
                     @if (savingNotification) {
                     <app-button-spinner></app-button-spinner>
                 } @else {
@@ -147,8 +147,9 @@
                 </div>
                 <div class="col-11">
                         <div class="me-2 position-relative">
+                            <button class="position-absolute border-0 bg-transparent" style="right: -20px; top: -20px" (click)="deleteNotification(item.id); $event.stopPropagation()"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="red"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></button>
                         <div class="d-flex justify-content-between">
-                        <small>OneApp • 1m</small>
+                        <small>OneApp • {{item.createdAt | date:'medium'}}</small>
                         <div><svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#000000"><path d="m480-538.85-189 189L253.85-387 480-613.15 706.15-387 669-349.85l-189-189Z"/></svg></div>
                         </div>
                         <h6 class="mt-2 text-wrap">{{item.title}}</h6>

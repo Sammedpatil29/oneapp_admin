@@ -1,71 +1,86 @@
 <div class="d-flex justify-content-between align-items-center mt-3">
   <h3 class="ms-3">Dashboard</h3>
-  @if (isDataLoading) {
-    <div class="spinner-grow fs-6 text-success me-3" role="status">
-  <span class="visually-hidden">Loading...</span>
-</div>
-  }
+  <div class="d-flex align-items-center gap-3 me-3">
+    @if (isDataLoading) {
+      <div class="spinner-grow fs-6 text-success" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+    }
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dense-date-picker">
+      <mat-label>Date Range</mat-label>
+      <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+        <input matStartDate placeholder="Start date" [(ngModel)]="startDate">
+        <input matEndDate placeholder="End date" [(ngModel)]="endDate" (ngModelChange)="onDateChange($event)">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
 </div>
 <!-- loading added -->
 @if (!isLoading) {
-  <div class="">
-  <div class="row g-1 mt-2">
-    <div class="col-4">
-      <div class="card">
-    <google-chart
-    [title]="servicesChart.title"
-    [type]="servicesChart.type"
-    [data]="servicesChart.data"
-    [options]="servicesChart.options"   
-    [height]="200">   
-  </google-chart>
-</div>
-    </div>
-    <div class="col-4">
-      <div class="card">
-         <google-chart
-    [title]="chart.title"
-    [type]="chart.type"
-    [data]="chart.data"
-    [options]="chart.options"   
-    [height]="200">   
-  </google-chart>
+  <div>
+    <div class="row g-1 mt-2">
+      <div class="col-4">
+        <div class="card h-100">
+          <google-chart
+            [title]="servicesChart.title"
+            [type]="servicesChart.type"
+            [data]="servicesChart.data"
+            [options]="servicesChart.options"   
+            [height]="200">   
+          </google-chart>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card h-100">
+          <google-chart
+            [title]="chart.title"
+            [type]="chart.type"
+            [data]="chart.data"
+            [options]="chart.options"   
+            [height]="200">   
+          </google-chart>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card h-100">
+          <google-chart
+            [title]="salesChart.title"
+            [type]="salesChart.type"
+            [data]="salesChart.data"
+            [options]="salesChart.options"   
+            [height]="200">   
+          </google-chart>
+        </div>
       </div>
     </div>
-    <div class="col-4">
-      <div class="card">
-         <google-chart
-    [title]="salesChart.title"
-    [type]="salesChart.type"
-    [data]="salesChart.data"
-    [options]="salesChart.options"   
-    [height]="200">   
-  </google-chart>
+    <div class="row g-1 mt-2">
+      <div class="col-8">
+        <div class="card h-100">
+          <google-chart
+            [type]="lineChart.type"
+            [data]="lineChart.data"
+            [options]="lineChart.options"
+            [height]="200">
+          </google-chart>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card h-100 d-flex flex-column">
+          <small class="p-2 d-flex align-items-baseline">
+            <div class="indicator me-1"></div>
+            <span>Live</span>
+          </small>
+          <div class="p-3 d-flex flex-column align-items-center justify-content-center flex-grow-1">
+            <h2>Total Orders - {{homeData.totalOrders}}</h2>
+            <h2>Total Sales - {{homeData.totalSales}}</h2>
+            <!-- <h2>Riders Online - {{homeData.ridersOnline}}</h2> -->
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="row g-1 mt-2">
-    <div class="col-8">
-  <div class="card">
-    <google-chart
-      [type]="lineChart.type"
-      [data]="lineChart.data"
-      [options]="lineChart.options"
-      [height]="200">
-    </google-chart>
-  </div>
-</div>
-<div class="col-4">
-  <div class="card">
-    <small class="p-2 d-flex align-items-baseline"> <div class="indicator me-1"></div> <span>Live</span></small>
-    <div class="p-3 d-flex flex-column align-items-center justify-content-center">
-    <h2>Todays Orders - 20</h2>
-    <h2>Todays Sales - 2000</h2>
-  </div>
-  </div>
-</div>
-  </div>
-</div>
 } @else {
   <app-loader></app-loader>
 }

@@ -1,4 +1,4 @@
-import { Component, inject, Input, input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { EmptyDataComponent } from "../empty-data/empty-data.component";
 import { CommonService } from '../../services/common.service';
 import { LoaderComponent } from "../loader/loader.component";
@@ -14,7 +14,7 @@ import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
   templateUrl: './complaints.component.html',
   styleUrl: './complaints.component.css'
 })
-export class ComplaintsComponent implements OnInit{
+export class ComplaintsComponent implements OnInit, OnChanges {
   readonly dialog = inject(MatDialog);
   @Input() searchTerm: string = '';
   
@@ -28,6 +28,12 @@ export class ComplaintsComponent implements OnInit{
       this.getAllTickets()
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchTerm'] && !changes['searchTerm'].firstChange) {
+      this.filterTickets();
+    }
+  }
+
   getAllTickets(){
     let params = {
       "token": sessionStorage.getItem('token')
@@ -38,8 +44,8 @@ export class ComplaintsComponent implements OnInit{
       this.isLoading = true
     }
     this.commonService.getAllSupportTickets(params).subscribe(res => {
-        this.supportTickets = res
-        this.filteredTickets = this.supportTickets.reverse()
+        this.supportTickets = res;
+        this.filterTickets();
         this.isLoading = false
     }, error => {
       this.isLoading = false
@@ -51,6 +57,20 @@ export class ComplaintsComponent implements OnInit{
                   },
                 });
     })
+  }
+
+  filterTickets(): void {
+    if (!this.searchTerm) {
+      this.filteredTickets = [...this.supportTickets.reverse()];
+    } else {
+      const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
+      this.filteredTickets = this.supportTickets.filter((ticket: any) =>
+        (ticket.subject && ticket.subject.toLowerCase().includes(lowerCaseSearchTerm)) ||
+        (ticket.user_name && ticket.user_name.toLowerCase().includes(lowerCaseSearchTerm)) ||
+        (ticket.status && ticket.status.toLowerCase().includes(lowerCaseSearchTerm)) ||
+        (ticket.ticket_id && ticket.ticket_id.toString().toLowerCase().includes(lowerCaseSearchTerm))
+      );
+    }
   }
 
  viewTicket(item:any){
