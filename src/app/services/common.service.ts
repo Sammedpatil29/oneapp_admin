@@ -205,7 +205,7 @@ export class CommonService {
   }
 
   getAllSupportTickets(params:any){
-    return this.http.post(`${this.getAllSupportTicketsUrl}`, params)
+    return this.http.post(`${this.url}/api/ticket/admin-ticket-list`, params)
   }
 
   createSupportTickets(params:any){

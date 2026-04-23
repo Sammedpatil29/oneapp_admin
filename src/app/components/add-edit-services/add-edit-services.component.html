@@ -106,9 +106,21 @@
   <div>
     <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Cancel</button>
   @if (data.type == 'edit') {
-    <button matButton [mat-dialog-close]="true" class="btn btn-dark" cdkFocusInitial (click)="updateServices()">Save</button>
+    <button matButton [mat-dialog-close]="true" class="btn btn-dark" cdkFocusInitial (click)="updateServices()">
+        @if(isUpdating){
+            <app-button-spinner></app-button-spinner>
+        } @else {
+            Save
+        }
+    </button>
   } @else {
-    <button matButton [mat-dialog-close]="true" class="btn btn-dark" cdkFocusInitial (click)="createService()">Create</button>
+    <button matButton [mat-dialog-close]="true" class="btn btn-dark" cdkFocusInitial (click)="createService()">
+        @if(isSaving){
+            <app-button-spinner></app-button-spinner>
+        } @else {
+            Save
+        }
+    </button>
   }
   </div>
 </mat-dialog-actions>
