@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {ChangeDetectionStrategy, inject} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
@@ -9,10 +9,13 @@ import { CommonService } from '../../services/common.service';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
+import { DialogRef } from '@angular/cdk/dialog';
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-add-edit-services',
-  imports: [MatDialogModule, CommonModule, MatButtonModule,FormsModule, MatFormFieldModule, MatInputModule,MatFormFieldModule, MatSelectModule, FormsModule],
+  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, ButtonSpinnerComponent],
   templateUrl: './add-edit-services.component.html',
   styleUrl: './add-edit-services.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,8 +35,11 @@ selectedCities = []
 imgUrl = ''
 category: any
 selectedCategory = ''
+isSaving: boolean = false
+isUpdating: boolean = false
+isDeleting: boolean = false
 
-  constructor( @Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService){
+  constructor( @Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService, private dialog: MatDialog, private dialogRef: MatDialogRef<AddEditServicesComponent>){
     console.log(data)
   }
 
@@ -80,10 +86,28 @@ selectedCategory = ''
     "status": this.selectedStatus,
     "className": JSON.parse(this.className)
     }
+    this.isUpdating = true
     this.commonService.updateService(params,this.data.item.id).subscribe((res)=>{
-      console.log('updated')
+    
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'success',
+        body: 'Item updated successfully',
+        type: 'success',
+      },
+    });
+          this.isUpdating = false
+    this.dialogRef.close();
     }, error => {
       console.log('error occured')
+      this.isUpdating = false
+this.dialog.open(AlertdialogComponent, {
+  data: {
+    title: 'error',
+    body: 'Failed to update Item',
+    type: 'error',
+  },
+});
     })
   }
 
@@ -100,8 +124,26 @@ selectedCategory = ''
     "status": this.selectedStatus,
     "className": JSON.parse(this.className)
     }
+    this.isSaving = true
     this.commonService.createService(params).subscribe((res)=> {
-      alert('created successfully')
+        this.isSaving = false
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'success',
+            body: 'Item added successfully',
+            type: 'success',
+          },
+        });
+        this.dialogRef.close();
+    }, error => {
+      this.isSaving = false
+this.dialog.open(AlertdialogComponent, {
+  data: {
+    title: 'error',
+    body: 'Failed to add Item',
+    type: 'error',
+  },
+});
     })
   }
 
