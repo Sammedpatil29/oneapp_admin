@@ -227,6 +227,10 @@ readonly dialog = inject(MatDialog);
       maxWidth: '75vw',
     });
 
+    dialogRef.afterClosed().subscribe((result) => {
+        this.getGroceryBrands();
+    });
+
   }
 
 
