@@ -31,7 +31,7 @@ export class CreateNotificationsComponent implements OnInit {
   selectedColor: string = '';
   smallIcon = 'oneapp'
   bgColor = '#050303ff'
-
+isLoadingNotifications: boolean = false;
 
   notifications:any[] = []
 
@@ -175,10 +175,13 @@ deleteNotification(id:any){
 
 
 getSavedNotifications(){
+  this.isLoadingNotifications = true
   this.commonService.getSavedNotifications().subscribe((res:any)=>{
     this.notifications = res.data
+    this.isLoadingNotifications = false
   }, error => {
     console.log(error)
+    this.isLoadingNotifications = false
   })
 }
 

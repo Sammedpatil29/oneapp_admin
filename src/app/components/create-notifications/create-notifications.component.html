@@ -138,7 +138,8 @@
         </div>
     <div class="col-4">
         <h5 class="text-center">Past Notifications</h5>
-        <div class="scroll-container px-1 pb-2" style="height: 72vh; overflow-y: scroll; overflow-x: hidden;">
+        @if(!isLoadingNotifications){
+            <div class="scroll-container px-1 pb-2" style="height: 72vh; overflow-y: scroll; overflow-x: hidden;">
             @for (item of notifications; track $index) {
             <div class="notification pastNotification mt-2" (click)="duplicateNotification(item)">
             <div class="row">
@@ -167,6 +168,11 @@
         </div>
         }
         </div>
+        } @else {
+            <div class="w-100 d-flex h-75 justify-content-center align-items-center">
+                <app-button-spinner></app-button-spinner>
+            </div>
+        }
     </div>
    
 </div>
