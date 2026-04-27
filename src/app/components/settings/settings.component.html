@@ -1,28 +1,86 @@
-<div class="w-100 d-flex align-items-center justify-content-end p-2">
-    <div class="border me-2" style="border-radius: 7px; padding: 7px 12px; background-image: url(assets/cutcube.png)">You're a <b>{{userDetails.role | titlecase}}</b></div>
-    <button class="btn btn-outline-danger" (click)="logOut()" >Logout</button>
+<div class="w-100 d-flex align-items-center justify-content-between p-3 bg-light border-bottom mb-4">
+    <h4 class="mb-0 text-dark ms-2">Account Settings</h4>
+    <div class="d-flex align-items-center">
+        <div class="border me-3 shadow-sm bg-white" style="border-radius: 7px; padding: 7px 12px; background-image: url(assets/cutcube.png)">
+            You're a <b class="text-primary">{{userDetails.role | titlecase}}</b>
+        </div>
+        <button class="btn btn-outline-danger shadow-sm" (click)="logOut()">Logout</button>
+    </div>
 </div>
 
 @if (!isLoading) {
+<div class="container-fluid px-4">
     <div class="row">
-    <div class="col-3"></div>
-    <div class="col-6">
-        <div class="details-block">
-            <img *ngIf="userDetails.profile_image" [src]="userDetails.profile_image" alt="Profile Image" class="profile-image mb-2" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
-            
-            <svg *ngIf="!userDetails.profile_image" xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#5985E1">
-                <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"/>
-            </svg>
-            <h3 class="mt-2">{{userDetails.first_name | titlecase}}&nbsp;{{userDetails.last_name | titlecase}}</h3>
-            <h3 class="mt-2">{{userDetails.phone}}</h3>
-            <h3 class="mt-2">{{userDetails.email}}</h3>
+        <!-- Left Column: Profile Summary Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center d-flex flex-column align-items-center py-5">
+                    @if (userDetails.profile_image) {
+                        <img [src]="userDetails.profile_image" alt="Profile Image" class="profile-image mb-3 shadow-sm" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid #f8f9fa;">
+                    } @else {
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 130px; height: 130px; border: 4px solid #f8f9fa;">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="65px" viewBox="0 -960 960 960" width="65px" fill="#5985E1">
+                                <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"/>
+                            </svg>
+                        </div>
+                    }
+                    <h4 class="mt-2 fw-bold">{{userDetails.first_name | titlecase}} {{userDetails.last_name | titlecase}}</h4>
+                    <p class="text-muted mb-0">{{userDetails.email}}</p>
+                    <p class="text-muted mb-3">Since {{userDetails.date_joined | date:'dd/MM/yyyy'}}</p>
+                    <span class="badge bg-primary px-3 py-2 rounded-pill text-uppercase">{{userDetails.role}}</span>
+                </div>
+            </div>
         </div>
-        <small class="float-end">*Contact <b>Admin</b> to update your details. </small>
+
+        <!-- Right Column: Details & Settings Cards -->
+        <div class="col-md-8 mb-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0 fw-bold">Personal Information</h6>
+                    <small class="text-muted fst-italic">*Contact <b>Admin</b> to update details.</small>
+                </div>
+                <div class="card-body px-4 py-4">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-3 text-muted">Full Name</div>
+                        <div class="col-sm-9 fw-medium fs-6">{{userDetails.first_name | titlecase}} {{userDetails.last_name | titlecase}}</div>
+                    </div>
+                    <hr class="text-muted opacity-25">
+                    <div class="row mb-3 align-items-center">
+                        <div class="col-sm-3 text-muted">Email Address</div>
+                        <div class="col-sm-9 fw-medium fs-6">{{userDetails.email}}</div>
+                    </div>
+                    <hr class="text-muted opacity-25">
+                    <div class="row align-items-center">
+                        <div class="col-sm-3 text-muted">Phone Number</div>
+                        <div class="col-sm-9 fw-medium fs-6">{{userDetails.phone}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extra Placeholder Settings to fill layout -->
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white border-bottom py-3">
+                            <h6 class="mb-0 fw-bold">Security & Preferences</h6>
+                        </div>
+                        <div class="card-body px-4 py-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <h6 class="mb-1">Account Password</h6>
+                                    <p class="text-muted small mb-0">Keep your account secure by regularly updating your password.</p>
+                                </div>
+                                <button class="btn btn-sm btn-outline-secondary" disabled title="Contact Admin to change">Change Password</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-3"></div>
 </div>
 } @else {
+<div class="d-flex justify-content-center align-items-center" style="height: 60vh;">
     <app-loader></app-loader>
+</div>
 }
-
-

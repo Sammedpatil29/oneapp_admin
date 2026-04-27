@@ -24,3 +24,10 @@ tr:nth-child(even) {
     background-color: black;
     color: white;
 }
+
+.header {
+  position: sticky;
+    top: 0px;
+    background-color: white;
+    z-index: 999;
+}
