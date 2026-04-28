@@ -1,1 +1,58 @@
+<div class="d-flex justify-content-between align-items-center pt-3">
+  <h3 class="">Properties List</h3>
+  <div class="d-flex align-items-center">
+        <input type="text" class="form-control w-50 me-2" [(ngModel)]="searchTerm" (input)="searchProperties()" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Item">
+    
+<!-- <button class="btn me-2" [ngClass]="!lowSet ? 'btn-dark' : 'btn-danger'" (click)="showLowInventory()">
+    @if(lowSet === false){
+        Low
+    } @else {
+        Reset
+    }
+</button> -->
+  <!-- <button class="btn btn-dark" (click)="exportToExcel()"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg></button> -->
+  <button class="btn btn-dark ms-2 text-nowrap" title="add item" (click)="openDialog(null, 'add', null)">Add New Property</button>
+  </div>
+</div>
+
+@if(!isLoading){
+@if(filteredProperties.length > 0){
+<div class="row mt-3" style="--bs-gutter-x: 0.5rem">
+  @for(property of filteredProperties; track $index){
+    <div class="col-md-4 col-lg-3 mb-2" (click)="openDialog(property.id, 'edit', property)">
+      <div class="card h-100 shadow-sm" style="cursor: pointer; overflow: hidden;">
+        <div class="position-relative">
+          <img [src]="property.media.cover_image" class="card-img-top" alt="Property Image" style="height: 200px; object-fit: cover;">
+          <span class="badge bg-dark position-absolute top-0 start-0 m-2">{{ property.listing_type }}</span>
+        </div>
+        <div class="card-body pb-2">
+          <div class="d-flex justify-content-start align-items-center mb-2">
+            <span class="badge border text-dark">{{ property.property_type }} - {{ property.sub_type }}</span>
+          </div>
+          <h5 class="card-title text-truncate mb-1" [title]="property.property_name">{{ property.property_name }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted text-truncate" style="font-size: 0.85rem;" [title]="property.location.city + ', ' + property.location.district">
+            <svg class="me-1" xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#6c757d"><path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-75.5-184.5T480-812q-89 0-164.5 75.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"/></svg>
+            {{ property.location.city }}, {{ property.location.district }}
+          </h6>
+          <h4 class="mt-3 mb-3 fw-bold">&#8377;{{ property.financials.base_price  }}</h4>
+          
+          <div class="d-flex justify-content-between text-muted small mb-3">
+            <span><strong class="text-dark">{{ property.specifications.bhk_count }}</strong> BHK</span>
+            <span><strong class="text-dark">{{ property.specifications.bathrooms }}</strong> Baths</span>
+            <span class="text-truncate" style="max-width: 45%;"><strong class="text-dark">{{ property.specifications.total_area }}</strong> {{ property.specifications.area_unit }}</span>
+          </div>
+        </div>
+        <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center pt-0 pb-3">
+          <small class="text-muted">Status: <span class="text-success fw-bold">{{ property.status }}</span></small>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+} @else {
 <app-empty-data></app-empty-data>
+}
+
+} @else {
+<app-loader></app-loader>
+}
