@@ -214,6 +214,7 @@ readonly dialog = inject(MatDialog);
     console.log('open')
     const dialogRef = this.dialog.open(GroceryCategoriesComponent, {
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -225,6 +226,7 @@ readonly dialog = inject(MatDialog);
     console.log('open')
     const dialogRef = this.dialog.open(groceryBrandsComponent, {
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {

@@ -156,7 +156,7 @@
         }
     </div>
     <div>
-        <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Cancel</button>
+        <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Close</button>
         @if (data.type == 'edit') {
         <button matButton class="btn btn-dark" cdkFocusInitial [disabled]="isLoading || itemUpdating || name == '' || category == '' || description == '' || brand == '' || unit_value == '' || unit == '' || price == '' || discount == '' || min_quantity == null || max_quantity == null || stock == '' || image_url == ''" (click)="updateGroceryList()">
             @if (itemUpdating) {

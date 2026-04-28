@@ -42,6 +42,7 @@ isLoading: boolean = false
     const dialogRef = this.dialog.open(AddEditServicesComponent, {
       data: {item: item, type: 'edit'},
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -56,6 +57,7 @@ isLoading: boolean = false
     const dialogRef = this.dialog.open(AddEditServicesComponent, {
       data: {type: 'add'},
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe(result => {

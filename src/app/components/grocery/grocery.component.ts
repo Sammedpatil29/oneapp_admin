@@ -89,6 +89,7 @@ export class GroceryComponent implements OnInit {
     const dialogRef = this.dialog.open(AddGroceryComponent, {
       data: { type: 'add' },
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -103,6 +104,7 @@ export class GroceryComponent implements OnInit {
     const dialogRef = this.dialog.open(AddGroceryComponent, {
       data: { item: item, type: 'edit' },
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -165,6 +167,7 @@ exportToExcel(): void {
 openCategoriesDialog(){
   const dialogRef = this.dialog.open(GroceryCategoriesComponent, {
     maxWidth: '75vw',
+    disableClose: true,
   });
 }
 
@@ -172,6 +175,7 @@ openBrandsDialog(){
     console.log('open')
     const dialogRef = this.dialog.open(groceryBrandsComponent, {
       maxWidth: '75vw',
+      disableClose: true,
     });
 
   }
