@@ -79,7 +79,7 @@ export class PropertyComponent implements OnInit {
       "survey_number": "104/A"
     },
     "media": {
-      "cover_image": "https://dummyimage.com/400x400/000/fff",
+      "cover_image": "https://dummyimage.com/400x400/1f77b4/fff",
       "gallery": ["https://api.pintuapp.com/v1/assets/prop_9912_ext.webp"],
       "floor_plan_url": "https://api.pintuapp.com/v1/assets/prop_9912_plan.pdf",
       "video_tour_url": null
@@ -153,7 +153,7 @@ export class PropertyComponent implements OnInit {
       "survey_number": "882/1"
     },
     "media": {
-      "cover_image": "https://dummyimage.com/400x400/000/fff",
+      "cover_image": "https://dummyimage.com/400x400/ff7f0e/fff",
       "gallery": [],
       "floor_plan_url": null,
       "video_tour_url": "https://vimeo.com/example_warehouse"
@@ -227,7 +227,7 @@ export class PropertyComponent implements OnInit {
       "survey_number": "N/A"
     },
     "media": {
-      "cover_image": "https://dummyimage.com/400x400/000/fff",
+      "cover_image": "https://dummyimage.com/400x400/2ca02c/fff",
       "gallery": ["https://api.pintuapp.com/v1/assets/prop_4456_int1.webp"],
       "floor_plan_url": null,
       "video_tour_url": null
@@ -301,7 +301,7 @@ export class PropertyComponent implements OnInit {
       "survey_number": "112/4/C"
     },
     "media": {
-      "cover_image": "https://dummyimage.com/400x400/000/fff",
+      "cover_image": "https://dummyimage.com/400x400/d62728/fff",
       "gallery": ["https://api.pintuapp.com/v1/assets/prop_1122_river.webp"],
       "floor_plan_url": null,
       "video_tour_url": "https://youtube.com/watch?v=drone_farm"
@@ -375,7 +375,7 @@ export class PropertyComponent implements OnInit {
       "survey_number": "221/9"
     },
     "media": {
-      "cover_image": "https://dummyimage.com/400x400/000/fff",
+      "cover_image": "https://dummyimage.com/400x400/9467bd/fff",
       "gallery": ["https://api.pintuapp.com/v1/assets/prop_3399_view.webp"],
       "floor_plan_url": "https://api.pintuapp.com/v1/assets/prop_3399_plan.pdf",
       "video_tour_url": null
