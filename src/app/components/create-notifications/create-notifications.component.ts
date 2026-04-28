@@ -32,6 +32,7 @@ export class CreateNotificationsComponent implements OnInit {
   smallIcon = 'oneapp'
   bgColor = '#050303ff'
 isLoadingNotifications: boolean = false;
+isDeleting: boolean = false;
 
   notifications:any[] = []
 
@@ -154,6 +155,7 @@ this.sendingNotification = true
 deleteNotification(id:any){
   let params = {
     "token": sessionStorage.getItem('token')  }
+    this.isDeleting = true
   this.commonService.deleteNotification(id).subscribe((res:any)=>{
     this.dialog.open(AlertdialogComponent, {
       data: {
@@ -162,6 +164,7 @@ deleteNotification(id:any){
         type: 'success',
       },
     });
+    this.isDeleting = false
     this.getSavedNotifications()
   }, error => {    this.dialog.open(AlertdialogComponent, {
       data: {
@@ -170,6 +173,7 @@ deleteNotification(id:any){
         type: 'error',
       },
     });
+      this.isDeleting = false
   })
 }
 
