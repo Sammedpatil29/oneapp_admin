@@ -128,7 +128,8 @@ export class GroceryOrdersComponent implements OnInit, OnDestroy {
         body: `Viewing details for Order #${id}`,
         id: id,
         order: order
-      }
+      },
+      disableClose: true
     });
 
     // Fallback 2: Handle Dialog Close/Cancel
