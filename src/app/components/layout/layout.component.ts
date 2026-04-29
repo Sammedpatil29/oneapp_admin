@@ -111,4 +111,22 @@ openSettings(){
 isSettings(){
   return this.router.url == '/layout/settings';
 }
+
+connected = {
+  title: 'success',
+  body: 'Socket is connected and Looking for orders...',
+  type: 'success'
+}
+
+disconnected = {
+  title: 'error',
+  body: 'Socket is disconnected',
+  type: 'error'
+}
+
+openAlert(data:any){
+  this.dialog.open(AlertdialogComponent, {
+    data: data
+  });
+}
 }

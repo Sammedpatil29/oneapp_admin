@@ -1,4 +1,7 @@
-<div class="w-100 d-flex align-items-center justify-content-between p-3 bg-light border-bottom mb-4">
+
+
+@if (!isLoading) {
+    <div class="w-100 d-flex align-items-center justify-content-between p-3 bg-light border-bottom mb-4">
     <h4 class="mb-0 text-dark ms-2">Account Settings</h4>
     <div class="d-flex align-items-center">
         <div class="border me-3 shadow-sm bg-white" style="border-radius: 7px; padding: 7px 12px; background-image: url(assets/cutcube.png)">
@@ -7,8 +10,6 @@
         <button class="btn btn-outline-danger shadow-sm" (click)="logOut()">Logout</button>
     </div>
 </div>
-
-@if (!isLoading) {
 <div class="container-fluid px-4">
     <div class="row">
         <!-- Left Column: Profile Summary Card -->

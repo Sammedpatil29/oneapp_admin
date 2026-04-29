@@ -12,9 +12,9 @@
 </div>
   }
   @if(isConnected) {
-    <div class="connected" title="Looking for orders"></div>
+    <div class="connected" style="cursor: pointer;" title="Looking for orders" (click)="openAlert(connected)"></div>
   } @else {
-    <div class="disconnected" title="disconnected"></div>
+    <div class="disconnected" title="disconnected" (click)="openAlert(disconnected)"></div>
   }
 @if(!isSettings()){
   <div class="d-flex align-items-center" style="cursor: pointer;" (click)="openSettings()">
