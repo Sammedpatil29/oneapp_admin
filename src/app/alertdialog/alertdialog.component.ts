@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Inject, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, inject, OnInit} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -16,7 +16,7 @@ import {
   styleUrl: './alertdialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlertdialogComponent {
+export class AlertdialogComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   title: string;
@@ -27,5 +27,15 @@ export class AlertdialogComponent {
     this.title = data.title;
     this.body = data.body;
     this.type = data.type;
+  }
+
+  ngOnInit(): void {
+    this.playSound();
+  }
+
+  playSound() {
+    const audio = new Audio('assets/dialog-open.mp3'); 
+    audio.load();
+    audio.play().catch(err => console.error('Audio playback failed:', err));
   }
 }

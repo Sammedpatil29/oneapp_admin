@@ -24,6 +24,9 @@ export class LoginComponent {
   constructor(private router: Router, private authService: AuthService){}
 
   logIn(){
+    if (this.password === '' || this.mobileNumber.length !== 10 || this.isLoading) {
+      return;
+    }
     let params = {
       'phone': this.mobileNumber,
       'password': this.password

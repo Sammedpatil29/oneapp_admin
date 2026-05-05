@@ -20,7 +20,7 @@
     <tr (click)="openEditDialog(item)" class="table-row">
     <td>{{$index + 1}}</td>
     <td>{{item.first_name | titlecase}}&nbsp;{{item.last_name | titlecase}}</td>
-    <td>{{item.role}}</td>
+    <td>{{item.role | titlecase}}</td>
     <td>{{item.phone}}</td>
     <td>{{item.email}}</td>
     <td>{{item.date_joined | date: 'dd/MM/yyyy'}}</td>
