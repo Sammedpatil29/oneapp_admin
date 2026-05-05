@@ -7,6 +7,7 @@ import { MatFormField, MatLabel } from "@angular/material/input";
 import { MatSelect, MatOption } from "@angular/material/select";
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
+import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 import { error } from 'console';
 
 @Component({
@@ -148,5 +149,27 @@ export class GroceryOrderDetailsComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  openMap(type:any){
+    // Adjust the properties below based on your actual order object structure
+    let lat:any; 
+    let lng:any;
+    
+    if(type == 'customer'){
+       lat = Number(this.order?.address?.lat); 
+       lng = Number(this.order?.address?.lng);
+    } else {
+       lat = this.order?.rider_details?.current_lat; 
+       lng = this.order?.rider_details?.current_lng;
+    }
+ 
+    if (lat && lng) {
+      this.dialog.open(MapDialogComponent, {
+        minWidth: '80vw',
+        autoFocus: false,
+        data: { lat: lat, lng: lng, type: type }
+      });
+    }
   }
 }

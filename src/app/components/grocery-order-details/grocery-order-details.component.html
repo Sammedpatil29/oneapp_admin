@@ -54,7 +54,7 @@
                 <div class="card-body">
                     <p class="mb-1">
                         <span class="badge bg-secondary me-2">{{order.address?.label}}</span>
-                        <a [href]="'https://www.google.com/maps/search/?api=1&query=' + order.address?.lat + ',' + order.address?.lng"
+                        <a (click)="openMap('customer')"
                             target="_blank" class="text-decoration-none">
                             <i class="bi bi-geo-alt-fill text-danger"></i> View on Map
                         </a>
@@ -190,7 +190,7 @@
                         <p class="mb-1"><strong>Name:</strong> {{order.rider_details?.name}}</p>
                         <p class="mb-1"><strong>Phone:</strong> {{order.rider_details?.contact}}</p>
                         <p class="mb-0"><strong>Vehicle:</strong> {{order.rider_details?.vehicle_number}}</p>
-                        <button class="btn btn-dark btn-sm" disabled> view on map
+                        <button class="btn btn-dark btn-sm" (click)="openMap('rider')"> view on map
                         </button>
                     </div>
                     <ng-template #noRider>
