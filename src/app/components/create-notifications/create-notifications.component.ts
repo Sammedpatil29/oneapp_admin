@@ -153,7 +153,15 @@ this.sendingNotification = true
 }
 
 deleteNotification(id:any){
-  let params = {
+  this.dialog.open(AlertdialogComponent, {
+    data: {
+      title: 'Confirm Delete',
+      body: `Are you sure to delete notification #${id}`,
+      type: 'warning'
+    }
+  }).afterClosed().subscribe(result => {
+    if (result === 'true' || result === true) {
+      let params = {
     "token": sessionStorage.getItem('token')  }
     this.isDeleting = true
   this.commonService.deleteNotification(id).subscribe((res:any)=>{
@@ -175,8 +183,15 @@ deleteNotification(id:any){
     });
       this.isDeleting = false
   })
+    }
+  })
 }
 
+clear(){
+  this.title = ''
+  this.body = ''
+  this.imageUrl = ''
+}
 
 getSavedNotifications(){
   this.isLoadingNotifications = true
