@@ -1,0 +1,91 @@
+@if (!isUsersLoading) {
+    <div class="d-flex justify-content-between align-items-center mt-3" style="top: 16px; z-index: 1">
+  <h3 class="">Manage Riders</h3>
+  <button class="btn btn-dark" (click)="addNewUser()">Add New User</button>
+</div>
+
+@if (riders?.length > 0) {
+    <div class="table-responsive mt-2">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Sl. No</th>
+            <th>Profile</th>
+            <th>Contact</th>
+            <th>Vehicle Info</th>
+            <th>Location</th>
+            <th>Performance</th>
+            <th>Verification</th>
+            <th>Timeline</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of riders; track $index) {
+            <tr (click)="openEditDialog(item)" class="table-row" style="cursor: pointer;">
+              <td>{{$index + 1}}</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  @if (item.image_url) {
+                    <img [src]="item.image_url" alt="profile" class="rounded-circle border" width="40" height="40" style="object-fit: cover;">
+                  } @else {
+                    <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center text-white" style="width: 40px; height: 40px;">
+                      {{item.name ? (item.name.charAt(0) | uppercase) : 'R'}}
+                    </div>
+                  }
+                  <div>
+                    <div class="fw-bold">{{item.name | titlecase}}</div>
+                    <small class="text-muted">{{item.role | titlecase}} | {{item.id | slice:0:8}}</small>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="text-nowrap"><i class="bi bi-telephone"></i> {{item.contact}}</div>
+                <small class="text-muted text-nowrap" title="Socket ID">SID: {{item.socket_id || 'N/A'}}</small>
+              </td>
+              <td>
+                <div class="fw-medium text-nowrap">{{item.vehicle_model || 'N/A'}} ({{item.vehicle_number || 'N/A'}})</div>
+                <small class="text-muted text-nowrap">{{item.vehicle_type | titlecase}} • {{item.fuel_type | uppercase}}</small>
+              </td>
+              <td>
+                <small class="text-nowrap d-block">Lat: {{item.current_lat || 'N/A'}}</small>
+                <small class="text-nowrap d-block">Lng: {{item.current_lng || 'N/A'}}</small>
+              </td>
+              <td class="text-nowrap">
+                <div>⭐ {{item.rating || 'N/A'}}</div>
+                <small class="text-muted">🏍️ {{item.total_rides || 0}} | 💰 ₹{{item.earnings || 0}}</small>
+              </td>
+              <td>
+                <div>
+                  <span class="badge" [ngClass]="item.is_verified ? 'bg-success' : 'bg-warning text-dark'">
+                    {{item.is_verified ? 'Verified' : 'Pending'}}
+                  </span>
+                </div>
+                @if (item.verification_message) {
+                  <small class="text-danger d-block mt-1">{{item.verification_message}}</small>
+                }
+                @if (item.kyc_docs) {
+                  <small class="text-primary d-block mt-1">Docs Available</small>
+                }
+              </td>
+              <td class="text-nowrap">
+                <small class="d-block"><strong>Join:</strong> {{item.join_date | date: 'dd/MM/yyyy'}}</small>
+                <small class="d-block"><strong>Active:</strong> {{item.last_active | date: 'dd/MM/yy HH:mm'}}</small>
+                <small class="text-muted d-block" style="font-size: 0.7rem;">C: {{item.createdAt | date: 'shortDate'}} | U: {{item.updatedAt | date: 'shortDate'}}</small>
+              </td>
+              <td>
+                <span class="badge" [ngClass]="item.status === 'online' ? 'bg-success' : 'bg-secondary'">
+                  {{item.status | titlecase}}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+} @else {
+    <app-empty-data></app-empty-data>
+}
+} @else {
+    <app-loader></app-loader>
+}

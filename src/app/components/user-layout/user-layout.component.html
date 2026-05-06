@@ -1,0 +1,23 @@
+<router-outlet></router-outlet>
+<div class="position-fixed end-0 m-4 z-3" style="bottom: 10px;">
+  
+  @if (isDropdownOpen) {
+    <!-- Custom Dropup Menu using List Group -->
+    <div class="bg-white border rounded shadow mb-2 position-absolute bottom-100 end-0" style="min-width: 160px; overflow: hidden;">
+      <div class="list-group list-group-flush">
+        @for (item of services; track $index) {
+          <button type="button" class="list-group-item list-group-item-action text-center border-0" (click)="selectOption(item.title)">
+            {{item.display}}
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Floating Button -->
+  <button class="btn btn-dark shadow d-flex align-items-center gap-2" type="button" (click)="isDropdownOpen = !isDropdownOpen">
+    <span>{{ selectedOption || 'Select Option' }}</span>
+    <span style="font-size: 0.8rem;">&#9652;</span> <!-- Native Up Arrow -->
+  </button>
+  
+</div>
