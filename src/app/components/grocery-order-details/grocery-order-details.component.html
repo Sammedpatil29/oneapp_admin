@@ -54,7 +54,7 @@
                 <div class="card-body">
                     <p class="mb-1">
                         <span class="badge bg-secondary me-2">{{order.address?.label}}</span>
-                        <a [href]="'https://www.google.com/maps/search/?api=1&query=' + order.address?.lat + ',' + order.address?.lng"
+                        <a (click)="openMap('customer')"
                             target="_blank" class="text-decoration-none">
                             <i class="bi bi-geo-alt-fill text-danger"></i> View on Map
                         </a>
@@ -179,7 +179,7 @@
                       position: relative;
                     ">
                         <mat-label>Assign Rider</mat-label>
-                        <mat-select [value]="order.rider?.id" (selectionChange)="assignRider($event.value)">
+                        <mat-select [value]="order.rider?.id" [disabled]="order?.status.toLowerCase() !== 'delivered' && order?.status.toLowerCase() == 'cancelled'" (selectionChange)="assignRider($event.value)">
                             <mat-option *ngFor="let rider of riders" [value]="rider.id">{{rider.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -190,7 +190,7 @@
                         <p class="mb-1"><strong>Name:</strong> {{order.rider_details?.name}}</p>
                         <p class="mb-1"><strong>Phone:</strong> {{order.rider_details?.contact}}</p>
                         <p class="mb-0"><strong>Vehicle:</strong> {{order.rider_details?.vehicle_number}}</p>
-                        <button class="btn btn-dark btn-sm" disabled> view on map
+                        <button class="btn btn-dark btn-sm" (click)="openMap('rider')"> view on map
                         </button>
                     </div>
                     <ng-template #noRider>

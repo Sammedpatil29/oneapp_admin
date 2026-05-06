@@ -38,6 +38,10 @@ export class OrdersService {
     return this.http.get(`${this.url}/api/rider/online`)
   }
 
+  getAllRiders(){
+    return this.http.get(`${this.url}/api/rider/all`)
+  }
+
   assignRider(params:any){
     const token = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : '';
     let headers = new HttpHeaders({

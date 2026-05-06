@@ -34,7 +34,11 @@
         <div class="col">
             <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
                 <mat-label>Role</mat-label>
-                <input matInput [(ngModel)]="role"  placeholder="Role" value="role">
+                <mat-select [(ngModel)]="role" placeholder="Role">
+                    @for (item of roles; track item) {
+                        <mat-option [value]="item">{{item | titlecase}}</mat-option>
+                    }
+                </mat-select>
             </mat-form-field>
         </div>
         <div class="col">

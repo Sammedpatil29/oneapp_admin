@@ -47,7 +47,7 @@
       </div>
 
       <div class="date-footer d-flex justify-content-between align-items-center text-muted" style="font-size: 0.8rem; padding-top: 4px; border-top: 1px solid #eee;">
-        <span>Paid via {{order.payment_details.mode | uppercase}}</span>
+        <span>Payment mode <b [ngStyle]="{color: order.payment_details.mode == 'online'? 'green' : '#ff000087' }">{{order.payment_details.mode | uppercase}}</b></span>
         <span>{{order.createdAt | date:'short'}}</span>
       </div>
     </div>

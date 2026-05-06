@@ -1,6 +1,6 @@
 @if (!isUsersLoading) {
     <div class="d-flex justify-content-between align-items-center mt-3" style="top: 16px; z-index: 1">
-  <h3 class="">Manage Users</h3>
+  <h3 class="">Manage Admin Users</h3>
   <button class="btn btn-dark" (click)="addNewUser()">Add New User</button>
 </div>
 
@@ -20,7 +20,7 @@
     <tr (click)="openEditDialog(item)" class="table-row">
     <td>{{$index + 1}}</td>
     <td>{{item.first_name | titlecase}}&nbsp;{{item.last_name | titlecase}}</td>
-    <td>{{item.role}}</td>
+    <td>{{item.role | titlecase}}</td>
     <td>{{item.phone}}</td>
     <td>{{item.email}}</td>
     <td>{{item.date_joined | date: 'dd/MM/yyyy'}}</td>
