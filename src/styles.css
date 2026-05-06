@@ -26,3 +26,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   backdrop-filter: blur(8px); /* Adjust the blur intensity here */
   background-color: rgba(0, 0, 0, 0.3) !important; /* Optional: Make the dark tint lighter */
 }
+
+.btn {
+  --bs-btn-border-radius: 3px 13px !important;
+}
