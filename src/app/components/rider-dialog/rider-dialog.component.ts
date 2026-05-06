@@ -28,6 +28,12 @@ export class RiderDialogComponent implements OnInit{
   vehicle_model = ''
   status = 'offline'
   is_verified: boolean = false
+  image_url = ''
+  join_date = ''
+  verification_message = ''
+  rating: number | null = null
+  total_rides: number | null = null
+  earnings: number = 0
   isLoading: boolean = false
   riderUpdating: boolean = false
   isDeleting: boolean = false
@@ -51,6 +57,12 @@ ngOnInit(): void {
       this.vehicle_model = this.data.item.vehicle_model || '';
       this.status = this.data.item.status || 'offline';
       this.is_verified = this.data.item.is_verified || false;
+      this.image_url = this.data.item.image_url || '';
+      this.join_date = this.data.item.join_date || '';
+      this.verification_message = this.data.item.verification_message || '';
+      this.rating = this.data.item.rating || null;
+      this.total_rides = this.data.item.total_rides || null;
+      this.earnings = this.data.item.earnings || 0;
     }
 }
 
@@ -64,7 +76,13 @@ createRider(){
       "fuel_type": this.fuel_type,
       "vehicle_model": this.vehicle_model,
       "status": this.status,
-      "is_verified": this.is_verified
+      "is_verified": this.is_verified,
+      "image_url": this.image_url,
+      "join_date": this.join_date,
+      "verification_message": this.verification_message,
+      "rating": this.rating,
+      "total_rides": this.total_rides,
+      "earnings": this.earnings
 }
 this.isLoading = true
 // Replace with your actual create rider service method if it differs
@@ -101,7 +119,13 @@ updateRider(){
     "fuel_type": this.fuel_type,
     "vehicle_model": this.vehicle_model,
     "status": this.status,
-    "is_verified": this.is_verified
+    "is_verified": this.is_verified,
+    "image_url": this.image_url,
+    "join_date": this.join_date,
+    "verification_message": this.verification_message,
+    "rating": this.rating,
+    "total_rides": this.total_rides,
+    "earnings": this.earnings
   }
   this.riderUpdating = true
   // Replace with your actual update rider service method if it differs

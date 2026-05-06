@@ -47,7 +47,7 @@ export class RiderUsersComponent implements OnInit{
   }
 
   openEditDialog(item:any){
-    const dialogRef = this.dialog.open(AddUsersComponent, {
+    const dialogRef = this.dialog.open(RiderDialogComponent, {
         data: {item: item, type: 'edit'},
         maxWidth: '75vw',
         disableClose: true,
