@@ -84,25 +84,25 @@ export const routes: Routes = [
       {
         path: 'manageUsers',
         component: UserLayoutComponent,
-        children: [
-          {
-            path: 'manage-users',
-            component: NormalUsersComponent,
-          },
-          {
-            path: 'admin-users',
-            component: ManageUsersComponent,
-          },
-          {
-            path: 'rider-users',
-            component: RiderUsersComponent,
-          },
-          {
-            path: '',
-            redirectTo: 'admin-users',
-            pathMatch: 'full',
-          }
-        ]
+        // children: [
+        //   {
+        //     path: 'manage-users',
+        //     component: NormalUsersComponent,
+        //   },
+        //   {
+        //     path: 'admin-users',
+        //     component: ManageUsersComponent,
+        //   },
+        //   {
+        //     path: 'rider-users',
+        //     component: RiderUsersComponent,
+        //   },
+        //   {
+        //     path: '',
+        //     redirectTo: 'admin-users',
+        //     pathMatch: 'full',
+        //   }
+        // ]
       },
       {
         path: 'visits',

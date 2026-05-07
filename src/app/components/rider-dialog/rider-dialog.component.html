@@ -1,0 +1,146 @@
+<h2 mat-dialog-title>
+    @if(data.type == 'edit'){
+        Edit Rider
+    } @else {
+        Add New Rider
+    }
+</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="row">
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="name" placeholder="John Doe">
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Contact</mat-label>
+                <input matInput [(ngModel)]="contact" placeholder="9876543210">
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Vehicle Model</mat-label>
+                <input matInput [(ngModel)]="vehicle_model" placeholder="Ola S1 X">
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Vehicle Number</mat-label>
+                <input matInput [(ngModel)]="vehicle_number" placeholder="KA01AB1234">
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Vehicle Type</mat-label>
+                <mat-select [(ngModel)]="vehicle_type">
+                    @for (item of vehicleTypes; track $index) {
+                        <mat-option [value]="item">{{item | titlecase}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Fuel Type</mat-label>
+                <mat-select [(ngModel)]="fuel_type">
+                    @for (item of fuelTypes; track $index) {
+                        <mat-option [value]="item">{{item | uppercase}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select [(ngModel)]="status">
+                    @for (item of statuses; track $index) {
+                        <mat-option [value]="item">{{item | titlecase}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Image URL</mat-label>
+                <input matInput [(ngModel)]="image_url" placeholder="https://example.com/image.jpg">
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Join Date</mat-label>
+                <input matInput type="date" [(ngModel)]="join_date">
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Verification Message</mat-label>
+                <input matInput [(ngModel)]="verification_message" placeholder="Verification notes">
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Rating</mat-label>
+                <input matInput type="number" [(ngModel)]="rating" placeholder="4.5">
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Total Rides</mat-label>
+                <input matInput type="number" [(ngModel)]="total_rides" placeholder="100">
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <mat-form-field class="example-full-width mt-3 w-100" appearance="outline">
+                <mat-label>Earnings</mat-label>
+                <input matInput type="number" [(ngModel)]="earnings" placeholder="5000">
+            </mat-form-field>
+        </div>
+
+        <div class="col-md-6 d-flex align-items-center mt-3">
+            is verified? <input type="checkbox" class="ms-2" [(ngModel)]="is_verified">
+        </div>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="p-4 d-flex justify-content-between bg-light rounded-bottom">
+    <div>
+        @if (data.type == 'edit') {
+            <button matButton class="btn btn-outline-danger me-2" (click)="deleteRider()">
+                @if (isDeleting) {
+                    <app-button-spinner></app-button-spinner>
+                } @else {
+                    Delete
+                }
+            </button>
+        }
+        @if (count > 2) {
+            <i>*click <span class="text-danger">{{10 - count}}</span> more times to delete</i>
+        }
+    </div>
+    <div>
+        <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Close</button>
+        @if (data.type == 'edit') {
+            <button matButton class="btn btn-dark" cdkFocusInitial (click)="updateRider()">
+                @if (riderUpdating) {
+                    <app-button-spinner></app-button-spinner>
+                } @else {
+                    Save
+                }
+            </button>
+        } @else {
+            <button matButton class="btn btn-dark" [disabled]="isLoading" cdkFocusInitial (click)="createRider()">
+                @if (isLoading) {
+                    <app-button-spinner></app-button-spinner>
+                } @else {
+                    Create
+                }
+            </button>
+        }
+    </div>
+</mat-dialog-actions>

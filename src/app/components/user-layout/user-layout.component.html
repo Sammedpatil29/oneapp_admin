@@ -1,4 +1,11 @@
-<router-outlet></router-outlet>
+@if(selectedOption == 'Admin Users'){
+    <app-manage-users></app-manage-users>
+} @else if (selectedOption == 'Users') {
+    <app-normal-users></app-normal-users>
+} @else {
+    <app-rider-users></app-rider-users>
+}
+
 <div class="position-fixed end-0 m-4 z-3" style="bottom: 10px;">
   
   @if (isDropdownOpen) {

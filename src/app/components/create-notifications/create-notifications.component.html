@@ -53,18 +53,21 @@
             <!-- select other options block ends -->
 
             <div class="w-100 d-flex justify-content-center gap-2">
+                <button class="btn btn-outline-dark w-25" style="cursor: pointer;" [disabled]="title == '' || savingNotification" (click)="clear()">
+                    Clear
+                 </button>
                  <button class="btn btn-outline-dark w-100" style="cursor: pointer;" [disabled]="title == '' || savingNotification" (click)="saveNotification()">
                     @if (savingNotification) {
                     <app-button-spinner></app-button-spinner>
                 } @else {
-                    Save Notification
+                    <span class="text-truncate">Save Notification</span>
                 }
                  </button>
                  <button class="btn btn-dark w-100" [disabled]="title == '' || sendingNotification" (click)="sendNotification()">
                     @if (sendingNotification) {
                     <app-button-spinner></app-button-spinner>
                 } @else {
-                    Send Notification
+                    <span class="text-truncate">Send Notification</span>
                 }
                  </button>
             </div>
