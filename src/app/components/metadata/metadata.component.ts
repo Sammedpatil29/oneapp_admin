@@ -83,7 +83,10 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
 
   getMetaData(){
     this.isMetaDataLoading = true
-    this.commonService.getMetaData().subscribe(res => {
+      let params = {
+        "fields": ["categories", "cities", "status"]
+      }
+    this.commonService.getMetaData(params).subscribe(res => {
         this.metaData = res
         this.latest_version = this.metaData.latest_version
         this.download_link = this.metaData.download_link

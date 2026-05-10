@@ -51,6 +51,7 @@
                 <mat-label>Background Color</mat-label>
                 <input matInput [(ngModel)]="bg" type="color" placeholder="Background Color">
             </mat-form-field>
+            
             <div class="d-flex gap-1">
                 @if(mode == 'update'){
                 <button class="btn btn-outline-danger align-self-end mt-1 w-100" (click)="deleteCategory()">Delete</button>
@@ -72,6 +73,11 @@
                 }
             
             </div>
+            @if (img) {
+                <div class="w-100 d-flex align-items-center justify-content-center mt-3">
+                <img [src]="img" style="width: 100px;" alt="Category Image" class="img-fluid">
+            </div>
+            }
         </div>
 
     </div>

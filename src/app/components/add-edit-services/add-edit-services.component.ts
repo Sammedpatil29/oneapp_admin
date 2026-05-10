@@ -62,14 +62,17 @@ isDeleting: boolean = false
   }
 
   getMetaData(){
-    this.commonService.getMetaData().subscribe(res => {
+    let params = {
+      "fields": ["categories", "cities", "status"]
+    }
+    this.commonService.getMetaData(params).subscribe((res:any) => {
       console.log(res)
       this.metaData = res
-      let data = JSON.parse(this.metaData.video)
-      this.cities = data.cities
-      this.status = data.status
-      this.category = data.categories
-      console.log(this.cities)
+      // let data = JSON.parse(this.metaData.video)
+      this.cities = res.data?.locations
+      this.status = res.data.status
+      this.category = res.data.categories
+      console.log(this.status)
     })
   }
 

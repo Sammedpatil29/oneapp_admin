@@ -4,7 +4,7 @@
     <div class="w-100 d-flex align-items-center justify-content-between p-3 bg-light border-bottom mb-4">
     <h4 class="mb-0 text-dark ms-2">Account Settings</h4>
     <div class="d-flex align-items-center">
-        <div class="border me-3 shadow-sm bg-white" style="border-radius: 7px; padding: 7px 12px; background-image: url(assets/cutcube.png)">
+        <div class="border me-3 shadow-sm bg-white" style="border-radius: 7px; padding: 7px 12px; background-image: url(assets/cutcube.png)" (click)="openDialog()">
             You're a <b class="text-primary">{{userDetails.role | titlecase}}</b>
         </div>
         <button class="btn btn-outline-danger shadow-sm" (click)="logOut()">Logout</button>

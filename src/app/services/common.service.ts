@@ -41,8 +41,8 @@ export class CommonService {
     return this.http.get(`${this.url}/service`)
   }
 
-  getMetaData(){
-    return this.http.get(this.metaDataUrl)
+  getMetaData(params:any){
+    return this.http.post(this.url + '/api/metadata/query', params)
   }
 
   updateService(params:any,id:any){
