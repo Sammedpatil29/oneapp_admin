@@ -62,4 +62,14 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
+
+  openDialog(){
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'Contact Support',
+        body: 'This is your Role',
+        type: 'info'
+      }
+    });
+  }
 }

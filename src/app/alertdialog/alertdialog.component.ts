@@ -8,10 +8,11 @@ import {
   MatDialogContent,
   MatDialogTitle,
 } from '@angular/material/dialog';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-alertdialog',
-  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule],
+  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatButtonModule, DragDropModule],
   templateUrl: './alertdialog.component.html',
   styleUrl: './alertdialog.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
