@@ -22,7 +22,7 @@ export class GroceryOrderDetailsComponent implements OnInit {
   riders:any = []
   isAssigning: boolean = false;
   readonly dialog = inject(MatDialog);
-
+  isTicketOpen: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<GroceryOrderDetailsComponent>, private ordersService: OrdersService) {
     this.order = data.order;
@@ -171,5 +171,15 @@ export class GroceryOrderDetailsComponent implements OnInit {
         data: { lat: lat, lng: lng, type: type }
       });
     }
+  }
+
+  openDialog(){
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'Contact Support',
+        body: 'No open Tickets for this order',
+        type: 'success'
+      }
+    });
   }
 }

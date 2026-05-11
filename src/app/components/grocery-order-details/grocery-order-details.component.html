@@ -16,12 +16,23 @@
         <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
     </div> -->
 <div class="d-flex justify-content-between align-items-center gap-2 mx-4" mat-dialog-actions>
-
-    <h6 style="margin-bottom: 0px;">Order Id #{{order.id}}</h6>
+<div class="d-flex justify-content-center align-items-center">
+        <h6 style="margin-bottom: 0px;">Order Id #{{order.id}}</h6> &nbsp;
+    
+</div>
     <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
-    <div class="badge" [ngClass]="getStatusClass(order?.status)">
+    <span>
+        @if(isTicketOpen){
+            <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#cc0ec6"><path d="m368-320 112-84 110 84-42-136 112-88H524l-44-136-44 136H300l110 88-42 136ZM160-160q-33 0-56.5-23.5T80-240v-135q0-11 7-19t18-10q24-8 39.5-29t15.5-47q0-26-15.5-47T105-556q-11-2-18-10t-7-19v-135q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v135q0 11-7 19t-18 10q-24 8-39.5 29T800-480q0 26 15.5 47t39.5 29q11 2 18 10t7 19v135q0 33-23.5 56.5T800-160H160Z"/></svg></span>
+            &nbsp;
+        } @else {
+            <span (click)="openDialog()" class="cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#a3a3a3"><path d="m368-320 112-84 110 84-42-136 112-88H524l-44-136-44 136H300l110 88-42 136ZM160-160q-33 0-56.5-23.5T80-240v-135q0-11 7-19t18-10q24-8 39.5-29t15.5-47q0-26-15.5-47T105-556q-11-2-18-10t-7-19v-135q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v135q0 11-7 19t-18 10q-24 8-39.5 29T800-480q0 26 15.5 47t39.5 29q11 2 18 10t7 19v135q0 33-23.5 56.5T800-160H160Z"/></svg></span>
+            &nbsp;  
+        }
+        <div class="badge" [ngClass]="getStatusClass(order?.status)">
         {{order?.status | uppercase}}
     </div>
+    </span>
 </div>
 
 <div class="container-fluid p-0" *ngIf="order">
