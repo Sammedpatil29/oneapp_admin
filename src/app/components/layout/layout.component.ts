@@ -66,6 +66,7 @@ private disconnectSub: Subscription | undefined;
 
     // Pre-load the audio instance once when the component initializes
     this.audio = new Audio('assets/mixkit-urgent-digital-alarm-tone-loop-2973.mp3');
+    this.audio.loop = true;
     this.audio.load();
   }
 
@@ -79,12 +80,15 @@ private disconnectSub: Subscription | undefined;
       this.audio.currentTime = 0;
     }
 
-    this.audio?.play().catch(err => console.error('Audio play failed (maybe blocked by browser):', err));
+    if (this.audio) {
+      this.audio.loop = true;
+      this.audio.play().catch(err => console.error('Audio play failed (maybe blocked by browser):', err));
+    }
+  }
 
-    this.alarmTimeout = setTimeout(() => {
-      this.showAlarm = false;
+  stopAlarm(){
+    this.showAlarm = false;
       this.audio?.pause();
-    }, 10000); // Stop after 10 seconds
   }
 
   ngOnDestroy(): void {
