@@ -11,6 +11,10 @@
     <!-- tabs -->
      <mat-tab-group (selectedTabChange)="$event.index === 2 ? initMap() : null">
 
+      <mat-tab label="Services">
+    <app-service-control></app-service-control>
+  </mat-tab>
+
       <!-- metadata  -->
     <mat-tab label="Meta Data">
     @if(!isMetaDataLoading){
@@ -175,6 +179,8 @@
 
   </mat-tab>
   <!-- service area  -->
+
+  
 
 </mat-tab-group>
 <!-- tabs  -->
