@@ -113,6 +113,10 @@ export class CommonService {
     return this.http.get(`${this.url}/api/admin/list`)
   }
 
+  getAllNormalUsers(params:any){
+    return this.http.get(`${this.url}/users`)
+  }
+
   createUser(params:any){
     return this.http.post(`${this.url}/api/admin/create`, params)
   }

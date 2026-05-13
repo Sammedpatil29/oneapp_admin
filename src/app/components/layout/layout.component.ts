@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, HostListener, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
@@ -31,8 +31,23 @@ isConnected: boolean = false;
 private connectSub: Subscription | undefined;
 private disconnectSub: Subscription | undefined;
 
-  constructor(private router: Router, private socketService: SocketService){
+  private audioUnlocked: boolean = false;
+
+  constructor(private router: Router, private socketService: SocketService, private cdr: ChangeDetectorRef){
     // this.year = new Date().getFullYear()
+  }
+
+  // Unlock audio context for strict browsers (like Safari) on first user interaction
+  @HostListener('document:click')
+  unlockAudio() {
+    if (!this.audioUnlocked && this.audio && !this.showAlarm) {
+      this.audio.muted = true;
+      this.audio.play().then(() => {
+        this.audio?.pause();
+        if (this.audio) { this.audio.currentTime = 0; this.audio.muted = false; }
+        this.audioUnlocked = true;
+      }).catch(() => {});
+    }
   }
 
   // Listen for browser tab visibility changes
@@ -53,10 +68,12 @@ private disconnectSub: Subscription | undefined;
 
     this.connectSub = this.socketService.on<any>('connect').subscribe(() => {
       this.isConnected = true;
+      this.cdr.detectChanges();
     });
 
     this.disconnectSub = this.socketService.on<any>('disconnect').subscribe(() => {
       this.isConnected = false;
+      this.cdr.detectChanges();
     });
 
     this.token = sessionStorage.getItem('token')
@@ -72,18 +89,16 @@ private disconnectSub: Subscription | undefined;
 
   triggerAlarm() {
     this.showAlarm = true;
+    this.cdr.detectChanges(); // Ensure the UI updates immediately if called outside Angular Zone
 
     // Clear previous timer and audio if an alarm is already playing
     if (this.alarmTimeout) clearTimeout(this.alarmTimeout);
     if (this.audio) {
       this.audio.pause();
       this.audio.currentTime = 0;
-    }
-
-    if (this.audio) {
-      this.audio.loop = true;
       this.audio.play().catch(err => console.error('Audio play failed (maybe blocked by browser):', err));
     }
+
   }
 
   stopAlarm(){

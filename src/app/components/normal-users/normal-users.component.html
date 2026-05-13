@@ -1,1 +1,50 @@
+@if (!isUsersLoading) {
+  <div class="d-flex justify-content-between align-items-center mt-3" style="top: 16px; z-index: 1">
+    <h3 class="">Manage Normal Users</h3>
+    <div class="d-flex gap-2">
+      <input type="text" class="form-control" placeholder="Search users..." [(ngModel)]="searchQuery" (input)="onSearch()">
+      <button class="btn btn-dark text-nowrap" (click)="addNewUser()">Add New User</button>
+    </div>
+  </div>
+
+  @if (filteredUsers?.length > 0) {
+    <div class="mt-2">
+      <table>
+        <tr>
+          <th>Sl. No</th>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Contact</th>
+          <th>Email</th>
+          <th>Fcm Token</th>
+          <th>Total Savings</th>
+          <th>Join Date</th>
+          <th>Status</th>
+        </tr>
+        @for (item of filteredUsers; track $index) {
+          <tr (click)="openEditDialog(item)" class="table-row">
+            <td>{{$index + 1}}</td>
+            <td>{{item.first_name | titlecase}}&nbsp;{{item.last_name | titlecase}}</td>
+            <td>{{item.role | titlecase}}</td>
+            <td>{{item.phone}}</td>
+            <td>{{item.email || item.username}}</td>
+            <td class="text-center">
+                @if(item.fcm_token){
+                    ✅
+                } @else {
+                    ❌
+                }
+            </td>
+            <td>{{item.total_savings | currency:'INR'}}</td>
+            <td>{{item.date_joined | date: 'dd/MM/yyyy'}}</td>
+            <td [ngClass]="getStatusColor(item.is_active)">{{getStatus(item.is_active)}}</td>
+          </tr>
+        }
+      </table>
+    </div>
+  } @else {
     <app-empty-data></app-empty-data>
+  }
+} @else {
+  <app-loader></app-loader>
+}
