@@ -8,7 +8,7 @@ import { AddGroceryComponent } from '../add-grocery/add-grocery.component';
 
 @Component({
   selector: 'app-property-dialog',
-  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatButton, FormsModule],
+  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatFormField, MatLabel, MatInput, MatSelect, MatOption, FormsModule],
   templateUrl: './property-dialog.component.html',
   styleUrl: './property-dialog.component.css'
 })

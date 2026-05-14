@@ -19,7 +19,7 @@
     routerLinkActive="active-item"
     [title]="item.title"
   > 
-    <h5 class="pt-3 pb-2">{{item.title}}</h5>
+    <h5 class="pt-3 pb-2 text-truncate">{{item.title}}</h5>
     <div class="indicator" [ngClass]="getStatusClass(item.status)" [title]="item.status"></div>
   </div>
             </li>

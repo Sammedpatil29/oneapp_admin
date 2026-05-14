@@ -9,7 +9,7 @@ import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-settings',
-  imports: [RouterLink, CommonModule, LoaderComponent, MatDialogModule],
+  imports: [ CommonModule, LoaderComponent, MatDialogModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
 })
