@@ -65,10 +65,10 @@
                 <div class="card-body">
                     <p class="mb-1">
                         <span class="badge bg-secondary me-2">{{order.address?.label}}</span>
-                        <a (click)="openMap('customer')"
-                            target="_blank" class="text-decoration-none">
+                        <span (click)="openMap('customer')"
+                            class="text-primary" style="cursor: pointer;">
                             <i class="bi bi-geo-alt-fill text-danger"></i> View on Map
-                        </a>
+                    </span>
                     </p>
                     <p class="mb-1">{{order.address?.houseNo}}, {{order.address?.address}}</p>
                     <p class="mb-0 text-muted" *ngIf="order.address?.landmark">Landmark: {{order.address?.landmark}}</p>

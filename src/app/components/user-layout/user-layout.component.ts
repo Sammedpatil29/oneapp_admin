@@ -8,7 +8,7 @@ import { RiderUsersComponent } from "../rider-users/rider-users.component";
   selector: 'app-user-layout',
   templateUrl: './user-layout.component.html',
   styleUrls: ['./user-layout.component.css'],
-  imports: [RouterOutlet, ManageUsersComponent, NormalUsersComponent, RiderUsersComponent]
+  imports: [ManageUsersComponent, NormalUsersComponent, RiderUsersComponent]
 })
 export class UserLayoutComponent implements OnInit{
   isDropdownOpen: boolean = false;

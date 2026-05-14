@@ -17,7 +17,7 @@ import { get } from 'http';
 
 @Component({
   selector: 'app-home',
-  imports: [LoaderComponent, GoogleChartsModule, ButtonSpinnerComponent, CommonModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FormsModule],
+  imports: [LoaderComponent, GoogleChartsModule, CommonModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

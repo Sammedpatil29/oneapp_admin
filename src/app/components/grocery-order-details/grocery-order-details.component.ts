@@ -156,21 +156,25 @@ export class GroceryOrderDetailsComponent implements OnInit {
     let lat:any; 
     let lng:any;
     
-    if(type == 'customer'){
-       lat = Number(this.order?.address?.lat); 
-       lng = Number(this.order?.address?.lng);
-    } else {
-       lat = this.order?.rider_details?.current_lat; 
-       lng = this.order?.rider_details?.current_lng;
-    }
+       const rider = {
+        lat : Number(this.order?.rider_details?.current_lat), 
+       lng : Number(this.order?.rider_details?.current_lng)
+       }
+       
+       const customer = {
+        lat : Number(this.order?.address?.lat),
+       lng : Number(this.order?.address?.lng)
+       }
  
-    if (lat && lng) {
       this.dialog.open(MapDialogComponent, {
         minWidth: '80vw',
         autoFocus: false,
-        data: { lat: lat, lng: lng, type: type }
+        data: {
+          rider: rider,
+          customer: customer,
+          type: type
+        }
       });
-    }
   }
 
   openDialog(){

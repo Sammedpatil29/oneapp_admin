@@ -12,7 +12,7 @@ import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-service-control',
-  imports: [RouterLink, LoaderComponent, MatButtonModule, MatDialogModule, CommonModule],
+  imports: [LoaderComponent, MatButtonModule, MatDialogModule, CommonModule],
   templateUrl: './service-control.component.html',
   styleUrl: './service-control.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
