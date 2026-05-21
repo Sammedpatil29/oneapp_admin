@@ -33,6 +33,7 @@ import { DineoutComponent } from './components/dineout/dineout.component';
 import { UserLayoutComponent } from './components/user-layout/user-layout.component';
 import { RiderUsersComponent } from './components/rider-users/rider-users.component';
 import { NormalUsersComponent } from './components/normal-users/normal-users.component';
+import { ValidationComponent } from './components/validation/validation.component';
 
 export const routes: Routes = [
   {
@@ -80,6 +81,10 @@ export const routes: Routes = [
       {
         path: 'metadata',
         component: MetadataComponent,
+      },
+      {
+        path: 'validation',
+        component: ValidationComponent,
       },
       {
         path: 'manageUsers',

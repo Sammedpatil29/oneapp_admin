@@ -13,10 +13,11 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 import { MatTabGroup, MatTab } from "@angular/material/tabs";
 import { ServiceControlComponent } from "../service-control/service-control.component";
+import { SidebarSettingsComponent } from "../sidebar-settings/sidebar-settings.component";
 
 @Component({
   selector: 'app-metadata',
-  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatExpansionModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, LoaderComponent, ButtonSpinnerComponent, MatTabGroup, MatTab, ServiceControlComponent],
+  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatExpansionModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, LoaderComponent, ButtonSpinnerComponent, MatTabGroup, MatTab, ServiceControlComponent, SidebarSettingsComponent],
   templateUrl: './metadata.component.html',
   styleUrl: './metadata.component.css'
 })
