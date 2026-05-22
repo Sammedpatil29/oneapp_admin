@@ -8,6 +8,7 @@ import {jwtDecode} from 'jwt-decode';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { environment } from '../../../environments/environment';  
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent {
   mobileNumber = ''
   password = ''
   isLoading:boolean = false
-
+  version = environment.version
   constructor(private router: Router, private authService: AuthService){}
 
   logIn(){

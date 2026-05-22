@@ -227,4 +227,8 @@ export class CommonService {
   getAllVisits(){
     return this.http.get(this.allVisitsUrl)
   }
+
+  getSidebarItems(){
+    return this.http.get(`${this.url}/api/sidebar-items`)
+  }
 }
