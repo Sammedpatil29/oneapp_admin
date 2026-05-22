@@ -1,1 +1,69 @@
-<app-under-development [featureName]="'Sidebar Settings'" [message]="'This section is under development. Please check back later for updates.🚧'"></app-under-development>
+<div class="row p-0 m-0">
+    <!-- Left Column: Display Sidebar Items -->
+    <div class="col-md-8 border p-4" style="border-radius: 10px;">
+        <h4 class="mb-4">Sidebar Items</h4>
+        <div class="list-group">
+            @for (item of sidebarItems; track $index) {
+                <div class="list-group-item d-flex justify-content-between align-items-center mb-2 shadow-sm border" style="border-radius: 8px;">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-dark rounded p-2 me-3 d-flex align-items-center justify-content-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path [attr.d]="item.svg"/></svg>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">
+                                {{item.title}}
+                                @if (item.requiredRole) {
+                                    <span class="badge bg-primary ms-2">{{item.requiredRole | titlecase}}</span>
+                                }
+                            </h6>
+                            <small class="text-muted">{{item.routerLink.join('/')}}</small>
+                            @if (item.notification) {
+                                <span class="badge bg-danger ms-2" style="font-size: 0.65em;">Notification Alert</span>
+                            }
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary me-2" (click)="editItem(item, $index)">Edit</button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteItem($index)">Delete</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Right Column: Add / Edit Form -->
+    <div class="col-md-4 border bg-light p-4" style="border-radius: 10px;">
+        <h4 class="mb-4">{{ isEditing ? 'Edit Item' : 'Add Item' }}</h4>
+        <div class="mb-3">
+            <label class="form-label text-muted small fw-bold mb-1">Title</label>
+            <input type="text" class="form-control" [(ngModel)]="currentItem.title" placeholder="e.g. Home">
+        </div>
+        <div class="mb-3">
+            <label class="form-label text-muted small fw-bold mb-1">Router Link</label>
+            <input type="text" class="form-control" [(ngModel)]="routerLinkString" placeholder="e.g. /layout/home">
+        </div>
+        <div class="mb-3">
+            <label class="form-label text-muted small fw-bold mb-1">SVG Path</label>
+            <textarea class="form-control" rows="4" [(ngModel)]="currentItem.svg" placeholder="M240-200h120v-240..."></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label text-muted small fw-bold mb-1">Required Role</label>
+            <select class="form-select" [(ngModel)]="currentItem.requiredRole">
+                <option value="">None (All Users)</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="exactMatchCheck" [(ngModel)]="exactMatchCheck">
+            <label class="form-check-label" for="exactMatchCheck">Exact Match Route</label>
+        </div>
+        <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="notificationCheck" [(ngModel)]="currentItem.notification">
+            <label class="form-check-label" for="notificationCheck">Show Notification Badge</label>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-outline-secondary" (click)="clearForm()">Clear</button>
+            <button class="btn btn-dark" (click)="saveItem()">Save</button>
+        </div>
+    </div>
+</div>
