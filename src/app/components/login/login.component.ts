@@ -34,10 +34,10 @@ export class LoginComponent {
     }
     this.isLoading = true
     this.authService.Login(params).subscribe((res:any)=>{
-      console.log(res)
       sessionStorage.setItem('token', res.token)
       try {
           const decoded = jwtDecode<any>(res.token);
+          this.dialog.closeAll()
           this.router.navigate(['/layout/home']);
         } catch (err) {
           console.error('Error decoding token', err);
