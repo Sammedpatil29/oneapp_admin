@@ -198,7 +198,7 @@ isSettings(){
 
 connected = {
   title: 'success',
-  body: 'Socket is connected and Looking for orders...',
+  body: 'Connected and Looking for orders...',
   type: 'success'
 }
 
