@@ -104,8 +104,7 @@
     }
     </div>
   <div>
-    <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Close</button>
-  @if (data.type == 'edit') {
+    @if (data.type == 'edit') {
     <button matButton [mat-dialog-close]="true" class="btn btn-dark" cdkFocusInitial (click)="updateServices()">
         @if(isUpdating){
             <app-button-spinner></app-button-spinner>
@@ -122,5 +121,6 @@
         }
     </button>
   }
+    <button matButton mat-dialog-close class="btn btn-outline-dark ms-2">Close</button>
   </div>
 </mat-dialog-actions>

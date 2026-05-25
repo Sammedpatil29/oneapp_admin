@@ -269,9 +269,9 @@
         }
     </div>
     <div>
-        <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Close</button>
         <button matButton class="btn btn-dark" cdkFocusInitial [disabled]="!property_name || !property_type || !base_price || !cover_image" (click)="data.type == 'edit' ? updateProperty() : createProperty()">
             {{ data.type == 'edit' ? 'Save Changes' : 'Create Property' }}
         </button>
+                <button matButton mat-dialog-close class="btn btn-outline-dark ms-2">Close</button>
     </div>
 </mat-dialog-actions>
