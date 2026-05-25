@@ -70,7 +70,6 @@
     }
     </div>
   <div>
-    <button matButton mat-dialog-close class="btn btn-outline-dark me-2">Close</button>
   @if (data.type == 'edit') {
     <button matButton class="btn btn-dark" cdkFocusInitial (click)="updateUser()">
         @if (userUpdating) {
@@ -88,5 +87,6 @@
         }
     </button>
   }
+      <button matButton mat-dialog-close class="btn btn-outline-dark ms-2">Close</button>
   </div>
 </mat-dialog-actions>

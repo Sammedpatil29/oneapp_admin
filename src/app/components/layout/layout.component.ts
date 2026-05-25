@@ -220,4 +220,14 @@ getSidebarItems(){
     console.log(this.sidebarItems)
   })
 }
+
+openDialog(){
+  this.dialog.open(AlertdialogComponent, {
+    data: {
+      title: 'info',
+      body: 'Help is on the way!',
+      type: 'info'
+    }
+  });
+}
 }
