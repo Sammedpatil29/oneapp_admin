@@ -19,8 +19,8 @@
                     @if (userDetails.profile_image) {
                         <img [src]="userDetails.profile_image" alt="Profile Image" class="profile-image mb-3 shadow-sm" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid #f8f9fa;">
                     } @else {
-                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 130px; height: 130px; border: 4px solid #f8f9fa;">
-                            <img style="width: 90px" src="assets/wired-flat-1072-reggae-music-in-reveal.gif" alt="">
+                        <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 130px; height: 130px; border: 4px solid #f8f9fa; font-size: 3.5rem; font-weight: 500;">
+                            {{ getInitials() }}
                         </div>
                     }
                     <h4 class="mt-2 fw-bold">{{userDetails.first_name | titlecase}} {{userDetails.last_name | titlecase}}</h4>
