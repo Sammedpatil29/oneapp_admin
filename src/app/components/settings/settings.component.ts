@@ -47,6 +47,13 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  getInitials(): string {
+  if (!this.userDetails) return '';
+  const first = this.userDetails.first_name ? this.userDetails.first_name.charAt(0).toUpperCase() : '';
+  const last = this.userDetails.last_name ? this.userDetails.last_name.charAt(0).toUpperCase() : '';
+  return first + last;
+}
+
   logOut() {
     const dialogRef = this.dialog.open(AlertdialogComponent, {
       data: {
