@@ -180,4 +180,14 @@ openBrandsDialog(){
 
   }
 
+  openDiscountCoupons(){
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'Coming Soon',
+        body: 'This feature is coming soon. Stay tuned!',
+        type: 'info',
+      },
+    });
+  }
+
 }
