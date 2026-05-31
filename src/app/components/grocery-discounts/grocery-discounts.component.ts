@@ -1,10 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { LoaderComponent } from '../loader/loader.component';
 import { EmptyDataComponent } from '../empty-data/empty-data.component';
 import { CommonService } from '../../services/common.service';
+import { OrdersService } from '../../services/orders.service';
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-grocery-discounts',
@@ -16,13 +18,13 @@ import { CommonService } from '../../services/common.service';
 export class GroceryDiscountsComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<GroceryDiscountsComponent>);
   private commonService = inject(CommonService);
-
+  readonly dialog = inject(MatDialog);
   coupons: any[] = [];
   filteredCoupons: any[] = [];
   isLoading: boolean = false;
   searchTerm: string = '';
 
-  showForm: boolean = false;
+  showForm: boolean = true;
   isEditMode: boolean = false;
   currentCoupon: any = {
     code: '',
@@ -33,24 +35,31 @@ export class GroceryDiscountsComponent implements OnInit {
     condition: 'None'
   };
 
+  constructor(private ordersService: OrdersService){}
+
   ngOnInit(): void {
     this.getCoupons();
   }
 
   getCoupons() {
     this.isLoading = true;
-    
-    // Using a mock timeout to simulate your API call for now.
-    // Replace this block with your actual CommonService integration
-    setTimeout(() => {
-      this.coupons = [
-        { code: 'SAVE20', discount: '₹20', min_order: '₹100', expiry_date: '2025-12-31', is_active: true, condition: 'None' },
-        { code: 'OFF50', discount: '₹50', min_order: '₹250', expiry_date: '2025-10-15', is_active: true, condition: 'New Users Only' },
-        { code: 'WELCOME10', discount: '10%', min_order: '₹500', expiry_date: '2023-01-01', is_active: false, condition: 'First 3 Orders' }
-      ];
-      this.filteredCoupons = [...this.coupons];
-      this.isLoading = false;
-    }, 600);
+    this.ordersService.getGroceryCoupons().subscribe(
+      (res: any) => {
+        this.coupons = res.data;
+        this.filteredCoupons = this.coupons;
+        this.isLoading = false;
+      },
+      (error) => {
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'Error',
+            body: 'Failed to fetch coupons.',
+            type: 'error'
+          }
+        });
+        this.isLoading = false;
+      }
+    );
   }
 
   searchCoupons() {
@@ -62,18 +71,18 @@ export class GroceryDiscountsComponent implements OnInit {
     );
   }
 
-  addNewCoupon() {
-    this.isEditMode = false;
-    this.currentCoupon = {
-      code: '',
-      discount: '',
-      min_order: '',
-      expiry_date: '',
-      is_active: true,
-      condition: 'None'
-    };
-    this.showForm = true;
-  }
+  // addNewCoupon() {
+  //   this.isEditMode = false;
+  //   this.currentCoupon = {
+  //     code: '',
+  //     discount: '',
+  //     min_order: '',
+  //     expiry_date: '',
+  //     is_active: true,
+  //     condition: 'None'
+  //   };
+  //   this.showForm = true;
+  // }
 
   editCoupon(coupon: any) {
     this.isEditMode = true;
@@ -87,15 +96,96 @@ export class GroceryDiscountsComponent implements OnInit {
   }
 
   saveCoupon() {
-    console.log('Saving coupon:', this.currentCoupon);
-    this.closeForm();
+    let params = {
+      code: this.currentCoupon.code,
+      discount: this.currentCoupon.discount,
+      min_order: this.currentCoupon.min_order,
+      expiry_date: this.currentCoupon.expiry_date,
+      is_active: this.currentCoupon.is_active,
+      condition: this.currentCoupon.condition
+    }
+    if (this.isEditMode) {
+      this.ordersService.updateGroceryCoupon(this.currentCoupon.id, params).subscribe(
+        (res: any) => {
+          this.getCoupons();
+          this.closeForm();
+          this.dialog.open(AlertdialogComponent, {
+            data: {
+              title: 'Success',
+              body: 'Coupon updated successfully.'
+            }
+          });
+        },
+        (error) => {
+          this.dialog.open(AlertdialogComponent, {
+            data: {
+              title: 'Error',
+              body: 'Failed to update coupon.'
+            }
+          });
+        }
+      );
+    } else {
+      this.ordersService.createGroceryCoupon(params).subscribe(
+        (res: any) => {
+          this.getCoupons();
+          this.closeForm();
+          this.dialog.open(AlertdialogComponent, {
+            data: {
+              title: 'Success',
+              body: 'Coupon created successfully.',
+              type: 'success'
+            }
+          });
+        },
+        (error) => {
+          this.dialog.open(AlertdialogComponent, {
+            data: {
+              title: 'Error',
+              body: 'Failed to save coupon.',
+              type: 'error'
+          }
+        });
+      }
+    );
   }
+}
 
   closeForm() {
-    this.showForm = false;
+    this.showForm = true;
   }
 
   closeDialog() {
     this.dialogRef.close();
   }
+
+  deleteCoupon(coupon: any) {
+    const dialogRef = this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'Confirm Deletion',
+        body: 'Are you sure you want to delete this coupon?',
+        type: 'warning'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if (result === 'true' || result === true) {
+        this.ordersService.deleteGroceryCoupon(coupon.id).subscribe(
+          (res: any) => {
+            this.getCoupons();
+            this.dialog.open(AlertdialogComponent, {
+              data: {
+                title: 'Success',
+                body: 'Coupon deleted successfully.',
+                type: 'success'
+              }
+            }); 
+          }
+        );
+      }
+    });
+  }
 }
+
+  
+

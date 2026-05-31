@@ -4,8 +4,8 @@
     <div class="header d-flex justify-content-between align-items-center mb-4">
       <h3 class="m-0 text-nowrap me-4">Discount Coupons</h3>
       <div class="d-flex align-items-center w-100 justify-content-end">
-        <input type="text" class="form-control w-50 me-2" [(ngModel)]="searchTerm" (input)="searchCoupons()" placeholder="Search Coupons">
-        <button class="btn btn-dark text-nowrap" (click)="addNewCoupon()">Add New Coupon</button>
+        <input type="text" class="form-control w-100 me-2" [(ngModel)]="searchTerm" (input)="searchCoupons()" placeholder="Search Coupons">
+        <!-- <button class="btn btn-dark text-nowrap" (click)="addNewCoupon()">Add New Coupon</button> -->
       </div>
     </div>
 
@@ -36,7 +36,7 @@
                                       </div>
                                       <div>
                                           <button class="btn btn-sm btn-outline-dark me-2" (click)="editCoupon(item)">Edit</button>
-                                          <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                          <button class="btn btn-sm btn-outline-danger" (click)="deleteCoupon(item)">Delete</button>
                                       </div>
                                   </div>
                               </div>
@@ -62,7 +62,7 @@
     <div class="p-4 bg-light border-start" style="width: 35%; overflow-y: auto; max-height: 70vh;">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="m-0 fw-bold">{{ isEditMode ? 'Edit Coupon' : 'Add New Coupon' }}</h4>
-        <button type="button" class="btn-close" (click)="closeForm()"></button>
+        <!-- <button type="button" class="btn-close" (click)="closeForm()"></button> -->
       </div>
 
       <form>
@@ -103,7 +103,7 @@
 
         <div class="d-grid gap-2">
           <button type="button" class="btn btn-dark" (click)="saveCoupon()">Save Coupon</button>
-          <button type="button" class="btn btn-outline-secondary" (click)="closeForm()">Cancel</button>
+          <!-- <button type="button" class="btn btn-outline-secondary" (click)="closeForm()">Cancel</button> -->
         </div>
       </form>
     </div>
