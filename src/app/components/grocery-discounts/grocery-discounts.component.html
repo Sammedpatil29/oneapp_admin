@@ -1,0 +1,111 @@
+<div class="bg-white d-flex" style="border-radius: 8px; overflow: hidden; min-height: 60vh;">
+  <!-- Main content area for coupons -->
+  <div class="p-4 flex-grow-1 d-flex flex-column" style="transition: width 0.3s;" [ngStyle]="{'width': showForm ? '65%' : '100%'}">
+    <div class="header d-flex justify-content-between align-items-center mb-4">
+      <h3 class="m-0 text-nowrap me-4">Discount Coupons</h3>
+      <div class="d-flex align-items-center w-100 justify-content-end">
+        <input type="text" class="form-control w-50 me-2" [(ngModel)]="searchTerm" (input)="searchCoupons()" placeholder="Search Coupons">
+        <button class="btn btn-dark text-nowrap" (click)="addNewCoupon()">Add New Coupon</button>
+      </div>
+    </div>
+
+    <div class="content-area flex-grow-1" style="max-height: 60vh; overflow-y: auto; overflow-x: hidden;">
+      @if (!isLoading) {
+          @if(filteredCoupons.length > 0){
+              <div class="row">
+                  @for (item of filteredCoupons; track $index) {
+                      <div class="mb-3" [ngClass]="showForm ? 'col-12' : 'col-md-6'">
+                          <div class="card shadow-sm border-0 h-100" style="background-color: #fcfcfc; border: 2px dashed #adb5bd !important; border-radius: 10px;">
+                              <div class="card-body">
+                                  <div class="d-flex justify-content-between align-items-start mb-2">
+                                      <div>
+                                          <h4 class="fw-bold mb-1">{{item.code}}</h4>
+                                          <span class="badge" [ngClass]="item.is_active ? 'bg-success' : 'bg-danger'">{{item.is_active ? 'Active' : 'Expired'}}</span>
+                                      </div>
+                                      <div class="text-end">
+                                          <h4 class="text-success fw-bold mb-0">{{item.discount}}</h4>
+                                          <small class="text-muted">Discount</small>
+                                      </div>
+                                  </div>
+                                  <hr class="text-muted opacity-25 my-2">
+                                  <div class="d-flex justify-content-between align-items-end mt-2">
+                                      <div>
+                                          <p class="mb-1 small text-muted">Min Order: <span class="fw-bold text-dark">{{item.min_order}}</span></p>
+                                          <p class="mb-1 small text-muted">Condition: <span class="fw-bold text-dark">{{item.condition || 'None'}}</span></p>
+                                          <p class="mb-0 small text-muted">Expires: <span class="fw-bold text-dark">{{item.expiry_date | date:'dd/MM/yyyy'}}</span></p>
+                                      </div>
+                                      <div>
+                                          <button class="btn btn-sm btn-outline-dark me-2" (click)="editCoupon(item)">Edit</button>
+                                          <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  }
+              </div>
+          } @else {
+              <app-empty-data></app-empty-data>
+          }
+      } @else {
+          <app-loader></app-loader>
+      }
+    </div>
+
+    <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+      <button class="btn btn-outline-danger" (click)="closeDialog()">Close</button>
+    </div>
+  </div>
+
+  <!-- Right Side Form Panel -->
+  @if (showForm) {
+    <div class="p-4 bg-light border-start" style="width: 35%; overflow-y: auto; max-height: 70vh;">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="m-0 fw-bold">{{ isEditMode ? 'Edit Coupon' : 'Add New Coupon' }}</h4>
+        <button type="button" class="btn-close" (click)="closeForm()"></button>
+      </div>
+
+      <form>
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Coupon Code</label>
+          <input type="text" class="form-control" name="code" [(ngModel)]="currentCoupon.code" placeholder="e.g. SAVE20">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Discount</label>
+          <input type="text" class="form-control" name="discount" [(ngModel)]="currentCoupon.discount" placeholder="e.g. ₹20 or 10%">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Min Order Value</label>
+          <input type="text" class="form-control" name="min_order" [(ngModel)]="currentCoupon.min_order" placeholder="e.g. ₹100">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Expiry Date</label>
+          <input type="date" class="form-control" name="expiry_date" [(ngModel)]="currentCoupon.expiry_date">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Offer Condition</label>
+          <select class="form-select" name="condition" [(ngModel)]="currentCoupon.condition">
+            <option value="None">None</option>
+            <option value="New Users Only">New Users Only</option>
+            <option value="First 3 Orders">First 3 Orders</option>
+            <option value="Orders above ₹1000">Orders above ₹1000</option>
+          </select>
+        </div>
+
+        <div class="mb-4 form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="isActiveSwitch" name="is_active" [(ngModel)]="currentCoupon.is_active">
+          <label class="form-check-label fw-bold small" for="isActiveSwitch">Active Status</label>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-dark" (click)="saveCoupon()">Save Coupon</button>
+          <button type="button" class="btn btn-outline-secondary" (click)="closeForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  }
+</div>

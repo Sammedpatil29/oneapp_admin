@@ -11,6 +11,7 @@ import * as FileSaver from 'file-saver';
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { GroceryCategoriesComponent } from '../grocery-categories/grocery-categories.component';
 import { groceryBrandsComponent } from '../grocery-brands/grocery-brands.component';
+import { GroceryDiscountsComponent } from '../grocery-discounts/grocery-discounts.component';
 
 @Component({
   selector: 'app-grocery',
@@ -181,12 +182,9 @@ openBrandsDialog(){
   }
 
   openDiscountCoupons(){
-    this.dialog.open(AlertdialogComponent, {
-      data: {
-        title: 'Coming Soon',
-        body: 'This feature is coming soon. Stay tuned!',
-        type: 'info',
-      },
+    this.dialog.open(GroceryDiscountsComponent, {
+      maxWidth: '75vw',
+      disableClose: true,
     });
   }
 
