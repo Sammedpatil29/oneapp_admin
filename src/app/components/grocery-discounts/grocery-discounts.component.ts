@@ -32,7 +32,8 @@ export class GroceryDiscountsComponent implements OnInit {
     min_order: '',
     expiry_date: '',
     is_active: true,
-    condition: 'None'
+    condition: 'None',
+    max_discount: ''
   };
 
   constructor(private ordersService: OrdersService){}
@@ -71,18 +72,18 @@ export class GroceryDiscountsComponent implements OnInit {
     );
   }
 
-  // addNewCoupon() {
-  //   this.isEditMode = false;
-  //   this.currentCoupon = {
-  //     code: '',
-  //     discount: '',
-  //     min_order: '',
-  //     expiry_date: '',
-  //     is_active: true,
-  //     condition: 'None'
-  //   };
-  //   this.showForm = true;
-  // }
+  addNewCoupon() {
+    this.isEditMode = false;
+    this.currentCoupon = {
+      code: '',
+      discount: '',
+      min_order: '',
+      expiry_date: '',
+      is_active: true,
+      condition: 'None',
+      max_discount: ''
+    };
+  }
 
   editCoupon(coupon: any) {
     this.isEditMode = true;
@@ -102,7 +103,8 @@ export class GroceryDiscountsComponent implements OnInit {
       min_order: this.currentCoupon.min_order,
       expiry_date: this.currentCoupon.expiry_date,
       is_active: this.currentCoupon.is_active,
-      condition: this.currentCoupon.condition
+      condition: this.currentCoupon.condition,
+      max_discount: this.currentCoupon.max_discount
     }
     if (this.isEditMode) {
       this.ordersService.updateGroceryCoupon(this.currentCoupon.id, params).subscribe(
@@ -188,4 +190,3 @@ export class GroceryDiscountsComponent implements OnInit {
 }
 
   
-
