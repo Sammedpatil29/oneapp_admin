@@ -26,7 +26,7 @@
                     }
                     <h4 class="mt-2 fw-bold">{{userDetails.first_name | titlecase}} {{userDetails.last_name | titlecase}}</h4>
                     <p class="text-muted mb-0">{{userDetails.email}}</p>
-                    <p class="text-muted mb-3">Since {{userDetails.date_joined | date:'dd/MM/yyyy'}}</p>
+                    <p class="text-muted mb-3">Since {{userDetails.date_joined | date:'dd-MMM-yy'}}</p>
                     <span class="badge bg-primary px-3 py-2 rounded-pill text-uppercase">{{userDetails.role}}</span>
                 </div>
             </div>
