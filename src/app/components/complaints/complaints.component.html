@@ -1,12 +1,12 @@
 @if (!isLoading) {
-    @if(supportTickets.length > 0){
+    @if(filteredTickets.length > 0){
 <div class="row">
     @for (item of filteredTickets; track $index) {
         <div class="col-4">
         <div class="card mt-2" style="width: 100%; cursor: pointer; border-radius: 20px" (click)="viewTicket(item)">
   <div class="card-body">
     <div class="mb-1 d-flex justify-content-between" [ngClass]="item.status == 'Open'? 'open': 'close'">
-        <div class="ps-2">{{item.status}}</div>
+        <div class="ps-2">{{item.status[item.status.length - 1].status}}</div>
         <div>{{item.ticket_id}}</div>
     </div>
     <div class="mb-2 d-flex justify-content-between" style="background-color: rgba(0, 162, 255, 0.164); border-radius: 15px">
