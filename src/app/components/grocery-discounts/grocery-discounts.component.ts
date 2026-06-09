@@ -7,11 +7,13 @@ import { EmptyDataComponent } from '../empty-data/empty-data.component';
 import { CommonService } from '../../services/common.service';
 import { OrdersService } from '../../services/orders.service';
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-grocery-discounts',
   standalone: true,
-  imports: [CommonModule, FormsModule, LoaderComponent, EmptyDataComponent],
+  imports: [CommonModule, FormsModule, LoaderComponent, EmptyDataComponent, MatSelectModule, MatFormFieldModule],
   templateUrl: './grocery-discounts.component.html',
   styleUrl: './grocery-discounts.component.css'
 })
@@ -33,8 +35,14 @@ export class GroceryDiscountsComponent implements OnInit {
     expiry_date: '',
     is_active: true,
     condition: 'None',
-    max_discount: ''
+    max_discount: '',
+    include: [],
+    exclude: []
   };
+
+  availableCategories: string[] = ['Dairy', 'Snacks', 'Beverages', 'Alcohol', 'Tobacco', 'Fruits', 'Vegetables', 'Meat', 'Bakery'];
+  includeSearchTerm: string = '';
+  excludeSearchTerm: string = '';
 
   constructor(private ordersService: OrdersService){}
 
@@ -72,6 +80,14 @@ export class GroceryDiscountsComponent implements OnInit {
     );
   }
 
+  get filteredIncludeCategories() {
+    return this.availableCategories.filter(cat => cat.toLowerCase().includes(this.includeSearchTerm.toLowerCase()));
+  }
+
+  get filteredExcludeCategories() {
+    return this.availableCategories.filter(cat => cat.toLowerCase().includes(this.excludeSearchTerm.toLowerCase()));
+  }
+
   addNewCoupon() {
     this.isEditMode = false;
     this.currentCoupon = {
@@ -81,7 +97,9 @@ export class GroceryDiscountsComponent implements OnInit {
       expiry_date: '',
       is_active: true,
       condition: 'None',
-      max_discount: ''
+      max_discount: '',
+      include: [],
+      exclude: []
     };
   }
 
@@ -92,7 +110,12 @@ export class GroceryDiscountsComponent implements OnInit {
     if (coupon.expiry_date instanceof Date) {
       formattedDate = coupon.expiry_date.toISOString().split('T')[0];
     }
-    this.currentCoupon = { ...coupon, expiry_date: formattedDate };
+    this.currentCoupon = { 
+      ...coupon, 
+      expiry_date: formattedDate,
+      include: coupon.include || [],
+      exclude: coupon.exclude || []
+    };
     this.showForm = true;
   }
 
@@ -104,7 +127,9 @@ export class GroceryDiscountsComponent implements OnInit {
       expiry_date: this.currentCoupon.expiry_date,
       is_active: this.currentCoupon.is_active,
       condition: this.currentCoupon.condition,
-      max_discount: this.currentCoupon.max_discount
+      max_discount: this.currentCoupon.max_discount,
+      include: this.currentCoupon.include,
+      exclude: this.currentCoupon.exclude
     }
     if (this.isEditMode) {
       this.ordersService.updateGroceryCoupon(this.currentCoupon.id, params).subscribe(
