@@ -28,8 +28,8 @@ export class GroceryOrdersComponent implements OnInit, OnDestroy {
   private orderSubscription: Subscription | undefined;
   private searchSubscription: Subscription | undefined;
   private dateRangeSubscription: Subscription | undefined;
-  startDateEpoch: number | null = null;
-  endDateEpoch: number | null = null;
+  startDateEpoch: any = new Date().setHours(0, 0, 0, 0);
+  endDateEpoch: any = new Date().setHours(23, 59, 59, 999);
 
 
   constructor(private ordersService: OrdersService, private dialog: MatDialog, private socketService: SocketService, private searchService: OrdersSearchService){
@@ -69,7 +69,12 @@ export class GroceryOrdersComponent implements OnInit, OnDestroy {
     if (!silent) {
       this.isLoading = true;
     }
-    this.ordersService.getOrders('grocery').subscribe((res:any)=>{
+    let params = {
+      startDate: this.startDateEpoch,
+      endDate: this.endDateEpoch
+     }
+    
+    this.ordersService.getOrders('grocery', params).subscribe((res:any)=>{
       this.allOrders = res.data || [];
       this.filterOrders();
       this.isLoading = false

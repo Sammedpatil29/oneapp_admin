@@ -34,6 +34,7 @@ import { UserLayoutComponent } from './components/user-layout/user-layout.compon
 import { RiderUsersComponent } from './components/rider-users/rider-users.component';
 import { NormalUsersComponent } from './components/normal-users/normal-users.component';
 import { ValidationComponent } from './components/validation/validation.component';
+import { IssuesComponent } from './components/issues/issues.component';
 
 export const routes: Routes = [
   {
@@ -116,6 +117,10 @@ export const routes: Routes = [
       {
         path: 'notifications',
         component: CreateNotificationsComponent,
+      },
+      {
+        path: 'issues',
+        component: IssuesComponent,
       },
       {
         path: 'inventory',

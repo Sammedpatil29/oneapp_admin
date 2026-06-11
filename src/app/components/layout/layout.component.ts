@@ -221,7 +221,7 @@ openAlert(data:any){
 }
 
 getSidebarItems(){
-  this.commonService.getSidebarItems().subscribe((res:any)=>{
+  this.commonService.getValidSidebarItems().subscribe((res:any)=>{
     this.sidebarItems = res.data.filter((item:any) => item.is_active === true);
     if(this.sidebarItems.length == 0){
       this.sidebarItems.push({

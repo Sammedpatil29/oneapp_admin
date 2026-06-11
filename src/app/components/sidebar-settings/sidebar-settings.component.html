@@ -16,7 +16,9 @@
                             <h6 class="mb-0 fw-bold">
                                 {{item.title}}
                                 @if (item.requiredRole) {
-                                    <span class="badge bg-primary ms-2">{{item.requiredRole | titlecase}}</span>
+                                    @for (role of item.requiredRole; track $index) {
+                                        <span class="badge bg-primary ms-2">{{role | titlecase}}</span>
+                                    }
                                 }
                             </h6>
                             <small class="text-muted">{{item.routerLink.join('/')}}</small>
@@ -44,18 +46,26 @@
         </div>
         <div class="mb-3">
             <label class="form-label text-muted small fw-bold mb-1">Router Link</label>
-            <input type="text" class="form-control" [(ngModel)]="routerLinkString" placeholder="e.g. /layout/home">
+            <select class="form-select" [(ngModel)]="routerLinkString">
+                <option value="" disabled selected>Select a route</option>
+                @for (route of availableRoutes; track $index) {
+                    <option [value]="route">{{route}}</option>
+                }
+            </select>
         </div>
         <div class="mb-3">
             <label class="form-label text-muted small fw-bold mb-1">SVG Path</label>
             <textarea class="form-control" rows="4" [(ngModel)]="currentItem.svg" placeholder="M240-200h120v-240..."></textarea>
+            <small class="text-muted" style="font-size: 0.7em;">Enter the SVG path for the icon.</small>
         </div>
         <div class="mb-3">
             <label class="form-label text-muted small fw-bold mb-1">Required Role</label>
-            <select class="form-select" [(ngModel)]="currentItem.requiredRole">
-                <option value="">None (All Users)</option>
-                <option value="admin">Admin</option>
+            <select class="form-select" multiple [(ngModel)]="currentItem.requiredRole">
+                @for (role of roles; track $index) {
+                    <option [value]="role">{{role | titlecase}}</option>
+                }
             </select>
+            <small class="text-muted" style="font-size: 0.7em;">Hold Ctrl/Cmd to select multiple roles.</small>
         </div>
         <div class="form-check mb-2">
             <input class="form-check-input" type="checkbox" id="exactMatchCheck" [(ngModel)]="exactMatchCheck">

@@ -63,9 +63,9 @@ isDeleting: boolean = false
 
   getMetaData(){
     let params = {
-      "fields": ["categories", "cities", "status"]
+      "fields": ["categories", "locations", "status"]
     }
-    this.commonService.getMetaData(params).subscribe((res:any) => {
+    this.commonService.getMetaDatabyQuerry(params).subscribe((res:any) => {
       console.log(res)
       this.metaData = res
       // let data = JSON.parse(this.metaData.video)

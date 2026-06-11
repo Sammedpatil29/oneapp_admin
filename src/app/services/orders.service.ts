@@ -13,8 +13,8 @@ export class OrdersService {
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
-  getOrders(service:any, status?:any){
-    return this.http.get(`${this.url}/api/admin/orders?service=${service}`)
+  getOrders(service:any, params?:any, status?:any){
+    return this.http.get(`${this.url}/api/admin/orders?service=${service}`, { params: params })
   }
 
   updateOrder(params:any){
