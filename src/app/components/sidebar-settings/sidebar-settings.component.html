@@ -1,7 +1,10 @@
 <div class="row p-0 m-0">
     <!-- Left Column: Display Sidebar Items -->
     <div class="col-md-8 border p-4" style="border-radius: 10px;">
-        <h4 class="mb-4">Sidebar Items</h4>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="mb-0">Sidebar Items</h4>
+            <button class="btn btn-sm btn-dark" (click)="isEditing = false; clearForm()">Add New Item</button>
+        </div>
         <div class="list-group">
             @for (item of sidebarItems; track $index) {
                 <div class="list-group-item d-flex justify-content-between align-items-center mb-2 shadow-sm border" style="border-radius: 8px;">
@@ -22,9 +25,10 @@
                             }
                         </div>
                     </div>
-                    <div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-sm me-2" [ngClass]="item.is_active ? 'btn-success' : 'btn-secondary'"  (click)="toggleItem(item.id)">{{ item.is_active ? 'On' : 'Off' }}</button>
                         <button class="btn btn-sm btn-outline-primary me-2" (click)="editItem(item, $index)">Edit</button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="deleteItem($index)">Delete</button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteItem(item.id)" [disabled]="isDeleting">Delete</button>
                     </div>
                 </div>
             }
