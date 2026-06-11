@@ -28,7 +28,7 @@ export class AddUsersComponent implements OnInit{
   isLoading: boolean = false
   userUpdating: boolean = false
   isDeleting: boolean = false
-  roles: any = ["admin", "vendor", "editor", "verifier", "manager", "support", "auditor", "analyst", "moderator", "guest"]
+  roles: any = []
 
 constructor( @Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService, private dialogRef: MatDialogRef<AddUsersComponent>){
     console.log(data)
@@ -44,6 +44,17 @@ ngOnInit(): void {
       this.password = this.data.item.password_field,
       this.isActive = this.data.item.is_active
     }
+    this.getRolesFromMetadata();
+}
+
+getRolesFromMetadata(){
+  let params = {
+    "fields": ["roles"]
+  }
+  this.commonService.getMetaDatabyQuerry(params).subscribe((res:any) => {
+    console.log(res)
+    this.roles = res.data.roles
+  })
 }
 
 createUser(){

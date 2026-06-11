@@ -41,8 +41,12 @@ export class CommonService {
     return this.http.get(`${this.url}/service`)
   }
 
-  getMetaData(params:any){
+  getMetaDatabyQuerry(params:any){
     return this.http.post(this.url + '/api/metadata/query', params)
+  }
+
+  getMetadata(){
+    return this.http.get(`${this.url}/api/metadata/`)
   }
 
   updateService(params:any,id:any){
@@ -230,6 +234,13 @@ export class CommonService {
 
   getSidebarItems(){
     return this.http.get(`${this.url}/api/sidebar-items`)
+  }
+
+  getValidSidebarItems(){
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    })
+    return this.http.get(`${this.url}/api/sidebar-items/valid`, { headers: headers })
   }
 
   deleteSidebarItem(id:any){

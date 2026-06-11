@@ -16,7 +16,7 @@ import { SidebarMidService } from '../../services/sidebar-mid.service';
 export class SidebarSettingsComponent implements OnInit {
   sidebarItems: any[] = []
   isDeleting: boolean = false;
-  
+  roles = []
   // [
   //   {
   //     routerLink: ['/layout/home'],
@@ -78,6 +78,7 @@ export class SidebarSettingsComponent implements OnInit {
   isEditing: boolean = false;
   isUpdating: boolean = false;
   editIndex: number = -1;
+  availableRoutes: string[] = []
 
   constructor(private commonService: CommonService, private dialog: MatDialog, private cdr: ChangeDetectorRef, private sidebarMidService: SidebarMidService) {
     this.clearForm();
@@ -85,6 +86,7 @@ export class SidebarSettingsComponent implements OnInit {
 
   ngOnInit(): void {;
     this.getSidebarItems();
+    this.getRolesFromMetadata()
   }
 
   editItem(item: any, index: number) {
@@ -93,6 +95,17 @@ export class SidebarSettingsComponent implements OnInit {
     this.currentItem = { ...item };
     this.routerLinkString = item.routerLink ? item.routerLink.join('/') : '';
     this.exactMatchCheck = item.routerLinkActiveOptions?.exact || false;
+  }
+
+  getRolesFromMetadata(){
+    let params = {
+      "fields": ["roles","routes"]
+    }
+    this.commonService.getMetaDatabyQuerry(params).subscribe((res:any) => {
+      console.log(res)
+      this.roles = res.data.roles
+      this.availableRoutes = res.data.routes
+    })
   }
 
   triggerMidUpdate() {
@@ -154,7 +167,7 @@ export class SidebarSettingsComponent implements OnInit {
       "title": this.currentItem.title,
       "routerLink": [this.routerLinkString],
       "svg": this.currentItem.svg,
-      "requiredRole": this.currentItem.requiredRole,
+      "requiredRole": this.currentItem.requiredRole || [],
       "notification": this.currentItem.notification,
       "is_active": this.currentItem.is_active,
     };
@@ -214,7 +227,7 @@ export class SidebarSettingsComponent implements OnInit {
       title: '',
       routerLink: [],
       svg: '',
-      requiredRole: '',
+      requiredRole: [],
       notification: false
     };
   }
