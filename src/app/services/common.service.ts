@@ -231,4 +231,16 @@ export class CommonService {
   getSidebarItems(){
     return this.http.get(`${this.url}/api/sidebar-items`)
   }
+
+  deleteSidebarItem(id:any){
+    return this.http.delete(`${this.url}/api/sidebar-items/${id}/`)
+  }
+
+  addSidebarItem(params:any){
+    return this.http.post(`${this.url}/api/sidebar-items/create`, params)
+  }
+
+  updateSidebarItem(id:any, params:any){
+    return this.http.put(`${this.url}/api/sidebar-items/${id}/`, params)
+  }
 }

@@ -188,4 +188,14 @@ openBrandsDialog(){
     });
   }
 
+  openRecycleBin(){
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'Recycle Bin',
+        body: 'This feature is coming soon!',
+        type: 'info',
+      },
+    });
+  }
+
 }
