@@ -213,19 +213,19 @@ export class CommonService {
   }
 
   getAllSupportTickets(params:any){
-    return this.http.post(`${this.url}/api/ticket/admin-ticket-list`, params)
+    return this.http.get(`${this.url}/api/tickets/`, { params: params })
   }
 
   createSupportTickets(params:any){
-    return this.http.post(`${this.createSupportTicketsUrl}`, params)
+    return this.http.post(`${this.url}/api/tickets/create`, params)
   }
 
   updateSupportTickets(params:any, id:any){
-    return this.http.post(`${this.updateSupportTicketsUrl}/${id}/`, params)
+    return this.http.put(`${this.url}/api/tickets/${id}/`, params)
   }
 
   deleteSupportTickets(params:any, id:any){
-    return this.http.post(`${this.deleteSupportTicketsUrl}${id}/`, params)
+    return this.http.delete(`${this.url}/api/tickets/${id}/`, params)
   }
 
   getAllVisits(){
@@ -253,5 +253,9 @@ export class CommonService {
 
   updateSidebarItem(id:any, params:any){
     return this.http.put(`${this.url}/api/sidebar-items/${id}/`, params)
+  }
+
+  getAdminOrderById(id:any, service:any){
+    return this.http.get(`${this.url}/api/admin/orders/${id}?service=${service}`)
   }
 }

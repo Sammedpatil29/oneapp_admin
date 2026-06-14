@@ -65,7 +65,7 @@ addNewTicket(){
       });
   
       dialogRef.afterClosed().subscribe((result) => {
-        if (result == undefined || result == 'true') {
+        if (result == true || result == 'true') {
           // this.getAllGroceryList();
         }
         console.log(`Dialog result: ${result}`);
