@@ -115,7 +115,6 @@ export class GroceryOrdersComponent implements OnInit, OnDestroy {
 
   viewOrder(order: any) {
   // Fallback 1: Input Validation
-  console.log('called', order)
   const id = order.id || order._id
   if (!id) {
     console.error('Order ID is missing');

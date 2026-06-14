@@ -9,6 +9,10 @@ import { CommonService } from '../../services/common.service';
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { CommonModule } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
+import { c } from "../../../../node_modules/@angular/cdk/a11y-module.d-DBHGyKoh";
+import { SendEmailComponent } from '../send-email/send-email.component';
+import { RefundExchangeComponent } from '../refund-exchange/refund-exchange.component';
+import { GroceryOrderDetailsComponent } from '../grocery-order-details/grocery-order-details.component';
 
 @Component({
   selector: 'app-ticket-dialog',
@@ -20,6 +24,7 @@ export class TicketDialogComponent implements OnInit{
   readonly dialog = inject(MatDialog);
 isLoading:boolean = false
 itemUpdating:boolean = false
+gettingOrderDetails:boolean = false
 isDeleting:boolean = false
 title: any = ''
 description: any = ''
@@ -41,13 +46,9 @@ ngOnInit(): void {
 createTicket(){
   let ticket_id = `TKT${Date.now().toString().slice(-5)}${Math.floor(Math.random() * 100)}`
   let params = {
-  "token": sessionStorage.getItem('token'),
-  "user": 3,
   "title": this.title,
   "details": this.description,
-  "ticket_id": ticket_id,
-  "connected_by": 'backend',
-  "status": "Open"
+  "phone": this.userNumber,
   }
   this.isLoading = true
   this.commonService.createSupportTickets(params).subscribe((res:any)=>{
@@ -56,7 +57,7 @@ createTicket(){
     this.dialog.open(AlertdialogComponent, {
             data: {
               title: 'success',
-              body: `${res.ticket_id} Raised Successfully`,
+              body: `${res.data.ticket_id} Raised Successfully`,
               type: 'success',
             },
           });
@@ -73,19 +74,18 @@ createTicket(){
 }
 
 closeTicket(){
-  if(this.comment.length < 15){
+  if(this.comment.length == 0){
     this.showCommentBox = !this.showCommentBox
   } else {
     let params = {
-      "token": sessionStorage.getItem('token'),
-      "connected_by": 'backend',
-      "status": "Closed",
-      "closed_at": new Date().toISOString(),
-      "comment": this.comment
+      status: [...this.data.item.status, {status: 'Closed', date: new Date()}],
+      closed_at: new Date(),
+      comment: [...this.data.item.comment, {comment: this.comment, date: new Date()}]
     }
     this.isLoading = true
     this.commonService.updateSupportTickets(params, this.data.item.id).subscribe(res => {
       this.isLoading = false
+      this.comment = ''
     this.dialogRef.close();
     this.dialog.open(AlertdialogComponent, {
             data: {
@@ -107,17 +107,54 @@ closeTicket(){
   }
 }
 
+addComment(){
+  if(this.comment.length == 0){
+    this.showCommentBox = !this.showCommentBox
+  } else {
+    let params = {
+      comment: [...this.data.item.comment, {comment: this.comment, date: new Date()}]
+    }
+    this.isLoading = true
+    this.commonService.updateSupportTickets(params, this.data.item.id).subscribe(res => {
+      this.isLoading = false
+      this.comment = ''
+    this.dialogRef.close();
+    this.dialog.open(AlertdialogComponent, {
+            data: {
+              title: 'success',
+              body: `Comment added Successfully`,
+              type: 'success',
+            },
+          });
+    }, error => {
+      this.isLoading = false
+    this.dialog.open(AlertdialogComponent, {
+            data: {
+              title: 'error',
+              body: 'Failed to add comment',
+              type: 'error',
+            },
+          });
+    })
+  }
+}
+
 close(){
   this.dialogRef.close();
 }
 
 clickCount = 0
 deleteTicket(id:any){
-  if(this.clickCount != 10){
-    this.clickCount += 1
-    console.log(this.clickCount)
-  } else {
-    let params = {
+
+  this.dialog.open(AlertdialogComponent, {
+    data: {
+              title: 'warning',
+              body: `Are you sure you want to delete?`,
+              type: 'warning',
+            },
+  }).afterClosed().subscribe(res => {
+    if(res == 'true' || res == true){
+      let params = {
       "token": sessionStorage.getItem('token')
     }
     this.isDeleting = true
@@ -142,6 +179,59 @@ deleteTicket(id:any){
             },
           });
     })
+    }
+  })
   }
-}
+
+  sendEmail(){
+    this.dialog.open(SendEmailComponent, {
+      minWidth: '50vw',
+      data: {
+        email: this.data.item.userDetails.email,
+      }
+    })
+  }
+
+  refund(){
+    this.dialog.open(RefundExchangeComponent, {
+      minWidth: '50vw',
+      data: {
+        email: this.data.item.user_email,
+      }
+    })
+  }
+
+  checkOrder(){
+    this.gettingOrderDetails = true
+    this.commonService.getAdminOrderById(this.data.item.orderId, this.data.item.orderService).subscribe((res:any)=>{
+      this.gettingOrderDetails = false
+      try {
+          const dialogRef = this.dialog.open(GroceryOrderDetailsComponent, {
+            width: '90%',
+            maxWidth: '80vw',
+            maxHeight: '90vh',
+            autoFocus: false,
+            data: {
+              title: 'Order Details',
+              order: res.data
+            },
+            disableClose: true
+          });
+      
+        } catch (error) {
+          // Fallback 3: Component Load Failure
+          this.gettingOrderDetails = false
+          console.error('Failed to open Order Details dialog:', error);
+        }
+    }, error => {
+      this.gettingOrderDetails = false
+      this.dialog.open(AlertdialogComponent, {
+            data: {
+              title: 'error',
+              body: `Failed to fetch order details`,
+              type: 'error',
+            },
+          });
+    })
+  }
 }
