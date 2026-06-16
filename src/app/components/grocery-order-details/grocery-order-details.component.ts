@@ -9,6 +9,7 @@ import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.compone
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 import { error } from 'console';
+import { RefundExchangeComponent } from '../refund-exchange/refund-exchange.component';
 
 @Component({
   selector: 'app-grocery-order-details',
@@ -186,4 +187,13 @@ export class GroceryOrderDetailsComponent implements OnInit {
       }
     });
   }
+
+   refund(){
+      this.dialog.open(RefundExchangeComponent, {
+        minWidth: '90vw',
+        data: {
+          orderId: this.order.id,
+        }
+      })
+    }
 }

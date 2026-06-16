@@ -194,9 +194,9 @@ deleteTicket(id:any){
 
   refund(){
     this.dialog.open(RefundExchangeComponent, {
-      minWidth: '50vw',
+      minWidth: '90vw',
       data: {
-        email: this.data.item.user_email,
+        orderId: this.data.item.orderId,
       }
     })
   }
