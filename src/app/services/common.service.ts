@@ -258,4 +258,8 @@ export class CommonService {
   getAdminOrderById(id:any, service:any){
     return this.http.get(`${this.url}/api/admin/orders/${id}?service=${service}`)
   }
+
+  sendEmail(params:any){
+    return this.http.post(`${this.url}/api/email/send`, params)
+  }
 }
