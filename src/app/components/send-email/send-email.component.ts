@@ -1,10 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { CommonService } from './../../services/common.service';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 import { FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-send-email',
@@ -24,10 +26,10 @@ export class SendEmailComponent implements OnInit {
   subject: string = '';
   message: string = '';
   isSending: boolean = false;
-
+readonly dialog = inject(MatDialog);
   constructor(
     public dialogRef: MatDialogRef<SendEmailComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -39,11 +41,30 @@ export class SendEmailComponent implements OnInit {
 
   sendEmail(): void {
     this.isSending = true;
-    
-    // TODO: Connect this to your actual email sending API in CommonService
-    setTimeout(() => {
+    const params = {
+      to: this.toEmail,
+      subject: this.subject,
+      body: this.message
+    };
+    this.commonService.sendEmail(params).subscribe((res: any) => {
       this.isSending = false;
-      this.dialogRef.close(true); // Close the dialog and return a success indicator
-    }, 1500);
+      this.dialogRef.close();
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+              title: 'success',
+              body: `Email Sent Successfully`,
+              type: 'success',
+            },
+      })
+    }, error => {
+      this.isSending = false;
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+              title: 'error',
+              body: `Failed to send email`,
+              type: 'error',
+            },
+      })
+    });
   }
 }
