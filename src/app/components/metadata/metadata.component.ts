@@ -50,16 +50,20 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   ngOnInit(): void {
       this.getMetaData()
       this.getbanners()
+      this.getPolygonData()
   }
 
   ngAfterViewInit(): void {
-    this.getPolygonData()
+    
   }
 
   getPolygonData(){
     console.log('polygon called')
     this.isMapDataLoading = true
-    this.commonService.getPolygonData().subscribe((res: any)=>{
+    let params = {
+        'fields': ['polygon']
+      }
+    this.commonService.getPolygonData(params).subscribe((res: any)=>{
       this.polygonCoords = res.data.polygon
       this.areaColor = res.inside_color
       this.strokeColor = res.border_color
@@ -90,10 +94,10 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
       }
     this.commonService.getMetaDatabyQuerry(params).subscribe((res:any) => {
         this.metaData = res
-        this.latest_version = this.metaData.latest_version
-        this.download_link = this.metaData.download_link
-        this.last_updated = this.metaData.last_updated
-        this.otherDetails = this.metaData.video
+        this.latest_version = this.metaData?.latest_version
+        this.download_link = this.metaData?.download_link
+        this.last_updated = this.metaData?.last_updated
+        this.otherDetails = this.metaData?.video
         this.isMetaDataLoading = false
          const parsed = JSON.parse(this.otherDetails);
     this.otherDetails = JSON.stringify(parsed, null, 10)

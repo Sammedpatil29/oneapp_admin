@@ -1,0 +1,191 @@
+<div class="container-fluid p-4">
+  <div class="row gap-4 gap-md-0">
+    <!-- Left Panel: Form -->
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light d-flex align-items-center">
+          <strong>{{
+            isEditing ? "Edit Damaged Item" : "Report Damaged Item"
+          }}</strong>
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Search Item</label>
+              <input
+                type="text"
+                class="form-control mb-2"
+                [(ngModel)]="searchTerm"
+                name="searchTerm"
+                (input)="filterItems()"
+                placeholder="Search available items..."
+              />
+              <label class="form-label">Select Item</label>
+              <select
+                class="form-select"
+                [(ngModel)]="newItem.itemId"
+                name="itemId"
+                (selectionchange)="setItem(newItem.itemId)"
+              >
+                <option value="" disabled selected>Select an item</option>
+                <option *ngFor="let item of filteredItems" [value]="item.id">
+                  {{ item.name }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Damage Reason</label>
+              <select
+                class="form-select"
+                [(ngModel)]="newItem.reason"
+                name="reason"
+              >
+                <option value="" disabled selected>Select a reason</option>
+                <option value="damaged">Damaged</option>
+                <option value="spoiled">Spoiled</option>
+                <option value="expired">Expired</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Quantity</label>
+              <input
+                type="number"
+                class="form-control"
+                [(ngModel)]="newItem.quantity"
+                name="quantity"
+                min="1"
+              />
+            </div>
+            <div class="mb-4 form-check d-flex align-items-center">
+              <input
+                type="checkbox"
+                class="form-check-input me-2"
+                id="acknowledgedCheck"
+                [(ngModel)]="newItem.acknowledged"
+                name="acknowledged"
+              />
+              <label class="form-check-label mt-1" for="acknowledgedCheck"
+                >Acknowledged</label
+              >
+            </div>
+            <div class="d-flex gap-2 align-items-baseline">
+              <button
+                type="button"
+                class="btn btn-dark w-100"
+                [disabled]="!newItem.itemId || !newItem.reason"
+                (click)="addDamagedItem()"
+              >
+                {{ isEditing ? "Update Entry" : "Add Entry" }}
+              </button>
+              <button
+                *ngIf="isEditing"
+                type="button"
+                class="btn btn-outline-secondary w-100 mt-2"
+                (click)="resetForm()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel: List -->
+    <div class="col-md-8">
+      <div class="card border-0 shadow-sm h-100">
+        @if (!isGettingDamagedItems) {
+          <div
+            class="card-header bg-light d-flex justify-content-between align-items-center"
+          >
+            <strong>Damaged Items List</strong>
+            <span class="badge bg-dark">{{ damagedItems.length }} Items</span>
+          </div>
+          @if (damagedItems.length != 0) {
+            <div class="table-responsive">
+              <table class="table align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Sl No.</th>
+                    <th>Product</th>
+                    <th>Reason</th>
+                    <th>Qty</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let item of damagedItems; let i = index"
+                    (click)="editItem(item)"
+                    style="cursor: pointer"
+                    [class.table-active]="editingId === item.id"
+                  >
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                      <div class="fw-bold">{{ item.name }}</div>
+                      <small class="text-muted">ID: {{ item.itemId }}</small>
+                    </td>
+                    <td>
+                      <span
+                        class="badge"
+                        [ngClass]="{
+                          'bg-danger': item.reason === 'damaged',
+                          'bg-warning text-dark': item.reason === 'spoiled',
+                          'bg-secondary':
+                            item.reason !== 'damaged' &&
+                            item.reason !== 'spoiled',
+                        }"
+                        >{{ item.reason | titlecase }}</span
+                      >
+                    </td>
+                    <td>x{{ item.quantity }}</td>
+                    <td>
+                      <span
+                        *ngIf="item.acknowledged"
+                        class="text-success small fw-bold"
+                        >Acknowledged</span
+                      >
+                      <span
+                        *ngIf="!item.acknowledged"
+                        class="text-danger small fw-bold"
+                        >Pending</span
+                      >
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-danger"
+                        (click)="$event.stopPropagation(); deleteItem(item.id)"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="damagedItems.length === 0">
+                    <td colspan="4" class="text-center py-4 text-muted">
+                      No items found.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <app-empty-data class="h-100"></app-empty-data>
+          }
+        } @else {
+          <app-loader></app-loader>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<button
+  class="btn btn-dark position-absolute bottom-0 m-3"
+  style="right: 10px"
+  (click)="close()"
+>
+  Close
+</button>

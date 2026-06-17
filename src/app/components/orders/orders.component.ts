@@ -69,7 +69,10 @@ center: google.maps.LatLngLiteral = { lat: 16.715672, lng: 75.061847 };
 
   ngOnInit(): void {
       this.getOrders()
-      this.commonService.getPolygonData().subscribe((res:any) => {
+      let params = {
+        'fields': ['polygon']
+      }
+      this.commonService.getPolygonData(params).subscribe((res:any) => {
         console.log(res)
         this.polygonPaths = res.polygon
       })

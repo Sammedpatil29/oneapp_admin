@@ -81,8 +81,8 @@ export class CommonService {
     return this.http.put(`${this.bannerUrl}${id}/`, params)
   }
 
-  getPolygonData(){
-    return this.http.get(`${this.url}/api/metadata`)
+  getPolygonData(params:any){
+    return this.http.post(`${this.url}/api/metadata/query`, params)
   }
 
   updatePlygonData(params:any){
@@ -265,5 +265,21 @@ export class CommonService {
 
   sendEmail(params:any){
     return this.http.post(`${this.url}/api/email/send`, params)
+  }
+
+  getDamageItems(){
+    return this.http.get(`${this.url}/api/grocery-damage`)
+  }
+
+  createDamage(params:any){
+    return this.http.post(`${this.url}/api/grocery-damage`, params)
+  }
+
+  updateDamage(params:any){
+    return this.http.put(`${this.url}/api/grocery-damage/${params.id}`, params)
+  }
+
+  deleteDamage(id:any){
+    return this.http.delete(`${this.url}/api/grocery-damage/${id}`)
   }
 }
