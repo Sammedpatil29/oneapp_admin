@@ -259,6 +259,10 @@ export class CommonService {
     return this.http.get(`${this.url}/api/admin/orders/${id}?service=${service}`)
   }
 
+  updateAdminOrderById(params:any){
+    return this.http.patch(`${this.url}/api/admin/orders/`, params)
+  }
+
   sendEmail(params:any){
     return this.http.post(`${this.url}/api/email/send`, params)
   }

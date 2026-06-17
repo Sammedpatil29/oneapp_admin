@@ -1,6 +1,6 @@
 import { Component, inject, Inject, OnInit } from '@angular/core';
 import { UnderDevelopmentComponent } from "../under-development/under-development.component";
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from '../../services/common.service';
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { LoaderComponent } from "../loader/loader.component";
@@ -19,14 +19,16 @@ export class RefundExchangeComponent implements OnInit{
   selectedItems: any[] = [];
   isExchangePossible: boolean = true;
   readonly dialog = inject(MatDialog);
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService  ){}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService, private dialogRef: MatDialogRef<RefundExchangeComponent>){}
 
 ngOnInit(): void {
-  this.getOrderDetails()
+  this.getOrderDetails(true)
 }
 
-getOrderDetails(){
-  this.isLoading = true
+getOrderDetails(reload:any){
+  if(reload){
+    this.isLoading = true
+  }
   this.commonService.getAdminOrderById(this.data.orderId, 'grocery').subscribe((res:any)=>{
     this.isLoading = false
     this.orderDetails = res.data
@@ -93,5 +95,153 @@ getOrderDetails(){
     }
     // An exchange is not allowed if any selected item is out of stock.
     this.isExchangePossible = !this.selectedItems.some(item => item.stock === 0);
+  }
+
+  markRefund(){
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'warning',
+        body: `Before Processing Refund Hope you have manually PAID to the Customer?`,
+        type: 'warning',
+        }
+    }).afterClosed().subscribe((res:any) => {
+      if(res == 'true' || res == true){
+        const allItems = (this.orderDetails?.cart_items || []).map((item: any) => {
+      if (item.selected) {
+        const existingMessages = Array.isArray(item.refund_message) ? item.refund_message : (item.refund_message ? [item.refund_message] : []);
+        return {
+          ...item,
+          refund_message: [...existingMessages, `refund of rs ${this.getEffectivePrice(item)} is completed.`]
+        };
+      }
+      return item;
+    });
+
+    let params = {
+      status: 'refunded',
+      orderId: this.data.orderId,
+      service: 'grocery',
+      items: allItems
+    };
+    this.commonService.updateAdminOrderById(params).subscribe((res:any)=>{
+      this.getOrderDetails(false)
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+        title: 'success',
+        body: `Refund Completed Successfully `,
+        type: 'success',
+      }
+      })
+    }, error => {
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+        title: 'error',
+        body: `Refund Failed`,
+        type: 'error',
+      }
+      })
+    })
+      }
+    })
+  }
+
+  exchange(){
+   this.dialog.open(AlertdialogComponent, {
+    data: {
+      title: 'warning',
+      body: `Are you sure you want to exchange?`,
+      type: 'warning',
+    }
+  }).afterClosed().subscribe((res:any)=>{
+    if(res == 'true' || res == true){
+      const allItems = (this.orderDetails?.cart_items || []).map((item: any) => {
+      if (item.selected) {
+        const existingMessages = Array.isArray(item.refund_message) ? item.refund_message : (item.refund_message ? [item.refund_message] : []);
+        return {
+          ...item,
+          refund_message: [...existingMessages, `exchange initiated`]
+        };
+      }
+      return item;
+    });
+
+    let params = {
+      status: 'exchange started',
+      orderId: this.data.orderId,
+      service: 'grocery',
+      items: allItems
+    };
+    this.commonService.updateAdminOrderById(params).subscribe((res:any)=>{
+      this.getOrderDetails(false)
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+        title: 'success',
+        body: `Exchange Initiated Successfully `,
+        type: 'success',
+      }
+      })
+    }, error => {
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+        title: 'error',
+        body: `Exchange Initiation Failed`,
+        type: 'error',
+      }
+      })
+    })
+    }
+  })
+}
+
+  return(){
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'warning',
+        body: `Are you sure you want to return?`,
+        type: 'warning',
+      }
+    }).afterClosed().subscribe((res:any) => {
+      if(res == 'true' || res == true){
+        const allItems = (this.orderDetails?.cart_items || []).map((item: any) => {
+      if (item.selected) {
+        const existingMessages = Array.isArray(item.refund_message) ? item.refund_message : (item.refund_message ? [item.refund_message] : []);
+        return {
+          ...item,
+          refund_message: [...existingMessages, `return initiated`]
+        };
+      }
+      return item;
+    });
+
+    let params = {
+      status: 'return started',
+      orderId: this.data.orderId,
+      service: 'grocery',
+      items: allItems
+    };
+    this.commonService.updateAdminOrderById(params).subscribe((res:any)=>{
+      this.getOrderDetails(false)
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+        title: 'success',
+        body: `Return Initiated Successfully `,
+        type: 'success',
+      }
+      })
+    }, error => {
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+        title: 'error',
+        body: `Return Initiation Failed`,
+        type: 'error',
+      }
+      })
+    })
+      }
+  })
+}
+
+  close(){
+    this.dialogRef.close()
   }
 }
