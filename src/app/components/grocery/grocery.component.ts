@@ -12,6 +12,7 @@ import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { GroceryCategoriesComponent } from '../grocery-categories/grocery-categories.component';
 import { groceryBrandsComponent } from '../grocery-brands/grocery-brands.component';
 import { GroceryDiscountsComponent } from '../grocery-discounts/grocery-discounts.component';
+import { GroceryDamageComponent } from '../grocery-damage/grocery-damage.component';
 
 @Component({
   selector: 'app-grocery',
@@ -29,14 +30,16 @@ export class GroceryComponent implements OnInit {
   constructor(private commonService: CommonService) {}
 
   ngOnInit(): void {
-    this.getAllGroceryList();
+    this.getAllGroceryList(true);
   }
 
-  getAllGroceryList() {
+  getAllGroceryList(reload:any) {
     let params = {
       token: sessionStorage.getItem('token'),
     };
-    this.isLoading = true;
+    if(reload){
+      this.isLoading = true;
+    }
     this.commonService.getGroceryList(params).subscribe(
       (res:any) => {
         this.fullGroceryList = res.data;
@@ -95,7 +98,7 @@ export class GroceryComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result == undefined || result == 'true') {
-        this.getAllGroceryList();
+        this.getAllGroceryList(false);
       }
       console.log(`Dialog result: ${result}`);
     });
@@ -110,7 +113,7 @@ export class GroceryComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result == undefined || result == 'true') {
-        this.getAllGroceryList();
+        this.getAllGroceryList(false);
       }
       console.log(`Dialog result: ${result}`);
     });
@@ -189,12 +192,12 @@ openBrandsDialog(){
   }
 
   openRecycleBin(){
-    this.dialog.open(AlertdialogComponent, {
-      data: {
-        title: 'Recycle Bin',
-        body: 'This feature is coming soon!',
-        type: 'info',
-      },
+    this.dialog.open(GroceryDamageComponent, {
+      minWidth: '75vw',
+    }).afterClosed().subscribe((res:any)=>{
+      if(res == true || res == 'true'){
+        this.getAllGroceryList(false)
+      }
     });
   }
 
