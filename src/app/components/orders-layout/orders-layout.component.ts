@@ -18,7 +18,6 @@ import { CommonService } from '../../services/common.service';
     MatFormField, 
     MatLabel, 
     MatDatepickerToggle, 
-    MatDatepicker, 
     MatDatepickerModule,
     MatNativeDateModule,
     MatIconModule,
@@ -61,9 +60,9 @@ export class OrdersLayoutComponent implements OnInit{
       const end = new Date(this.endDate);
       end.setHours(23, 59, 59, 999);
       endEpoch = end.getTime();
+      this.searchService.setDateRange(startEpoch, endEpoch);
     }
 
-    this.searchService.setDateRange(startEpoch, endEpoch);
   }
 
   toggleDropdown() {

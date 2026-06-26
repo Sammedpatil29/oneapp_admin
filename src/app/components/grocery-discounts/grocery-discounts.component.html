@@ -1,0 +1,174 @@
+<div class="bg-white d-flex" style="border-radius: 8px; overflow: hidden; min-height: 60vh;">
+  <!-- Main content area for coupons -->
+  <div class="p-3 flex-grow-1 d-flex flex-column" style="transition: width 0.3s;" [ngStyle]="{'width': showForm ? '65%' : '100%'}">
+    <div class="header d-flex justify-content-between align-items-center mb-4">
+      <h3 class="m-0 text-nowrap me-4">Discount Coupons</h3>
+      <div class="d-flex align-items-center w-100 justify-content-end">
+        <input type="text" class="form-control w-100 me-2" [(ngModel)]="searchTerm" (input)="searchCoupons()" placeholder="Search Coupons">
+        <button class="btn btn-dark text-nowrap" (click)="addNewCoupon()" [disabled]="!isEditMode"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></button>
+      </div>
+    </div>
+
+    <div class="content-area flex-grow-1" style="max-height: 60vh; overflow-y: auto; overflow-x: hidden;">
+      @if (!isLoading) {
+          @if(filteredCoupons.length > 0){
+              <div class="row">
+                  @for (item of filteredCoupons; track $index) {
+                      <div class="p-2 position-relative" [ngClass]="showForm ? 'col-12' : 'col-md-6'">
+                          <div class="card shadow-sm mx-2 border-0 h-100 " style="background-color: #fcfcfc; border: 2px dashed #adb5bd !important; border-radius: 10px;">
+                              <div class="card-body" (click)="editCoupon(item)">
+                                  <div class="d-flex justify-content-between align-items-start mb-2">
+                                      <div>
+                                          <h4 class="fw-bold mb-1">{{item.code}}</h4>
+                                          <span class="badge" [ngClass]="item.is_active ? 'bg-success' : 'bg-danger'">{{item.is_active ? 'Active' : 'Expired'}}</span>
+                                      </div>
+                                      <div class="text-end">
+                                          <h4 class="text-success fw-bold mb-0">{{item.discount}}</h4>
+                                          <small class="text-muted">Discount</small>
+                                      </div>
+                                  </div>
+                                  <hr class="text-muted opacity-25 my-2">
+                                  <div class="d-flex justify-content-between align-items-end mt-2">
+                                      <div class="row">
+                                        <div class="col-6">
+                                                 <p class="mb-1 small text-muted">Min Order: <span class="fw-bold text-dark">{{item.min_order}}</span></p>
+                                          @if(item.max_discount) {
+                                              <p class="mb-1 small text-muted">Max Discount: <span class="fw-bold text-dark">{{item.max_discount}}</span></p>
+                                          }
+                                        </div>
+                                        <div class="col-6">
+                                          <p class="mb-1 small text-muted text-nowrap">Condition: <span class="fw-bold text-dark">{{item.condition || 'None'}}</span></p>
+                                          <p class="mb-0 small text-muted text-nowrap">Expires: <span class="fw-bold text-dark">{{item.expiry_date | date:'dd/MM/yyyy'}}</span></p>
+                                        </div>
+                                      </div>
+                                      <button class="position-absolute" style="top: -10px; right: -14px; border: transparent; background-color: transparent; z-index: 999;" (click)="deleteCoupon(item)"><svg version="1.1" id="Uploaded to svgrepo.com" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 width="20px" height="20px" viewBox="0 0 32 32" xml:space="preserve">
+<style type="text/css">
+	.pictogram_een{fill:#F4D6B0;}
+	.pictogram_drie{fill:#F27261;}
+	.pictogram_vier{fill:#E54D2E;}
+	.st0{fill:#F8AD89;}
+	.st1{fill:#01A59C;}
+	.st2{fill:#0C6667;}
+	.st3{fill:none;}
+</style>
+<g>
+	<circle class="pictogram_vier" cx="16" cy="16" r="13"/>
+	<path class="pictogram_drie" d="M16,3v26c7.18,0,13-5.82,13-13C29,8.82,23.18,3,16,3z"/>
+	<path class="pictogram_een" d="M16,3c7.168,0,13,5.832,13,13s-5.832,13-13,13S3,23.168,3,16S8.832,3,16,3 M16,0
+		C7.163,0,0,7.163,0,16s7.163,16,16,16s16-7.163,16-16S24.837,0,16,0L16,0z M18.121,16l2.475-2.475c0.586-0.585,0.586-1.536,0-2.121
+		c-0.586-0.586-1.535-0.586-2.121,0L16,13.879l-2.475-2.475c-0.586-0.586-1.535-0.586-2.121,0c-0.586,0.585-0.586,1.536,0,2.121
+		L13.879,16l-2.475,2.475c-0.586,0.585-0.586,1.536,0,2.121c0.293,0.293,0.677,0.439,1.061,0.439s0.768-0.146,1.061-0.439L16,18.121
+		l2.475,2.475c0.293,0.293,0.677,0.439,1.061,0.439s0.768-0.146,1.061-0.439c0.586-0.585,0.586-1.536,0-2.121L18.121,16z"/>
+</g>
+</svg></button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  }
+              </div>
+          } @else {
+              <app-empty-data></app-empty-data>
+          }
+      } @else {
+          <app-loader></app-loader>
+      }
+    </div>
+
+    <div class="d-flex justify-content-end mt-4 pt-3 border-top">
+      <!-- <button class="btn btn-outline-danger" (click)="closeDialog()">Close</button> -->
+    </div>
+  </div>
+
+  <!-- Right Side Form Panel -->
+  @if (showForm) {
+    <div class="p-4 bg-light border-start" style="width: 35%; overflow-y: auto; max-height: 70vh;">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="m-0 fw-bold text-nowrap">{{ isEditMode ? 'Edit Coupon' : 'Add New Coupon' }}</h4>
+        <button type="button" class="btn-close" (click)="closeDialog()"></button>
+      </div>
+
+      <form>
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Coupon Code</label>
+          <input type="text" class="form-control" name="code" [(ngModel)]="currentCoupon.code" placeholder="e.g. SAVE20">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Max Discount</label>
+          <input type="text" class="form-control" name="max_discount" [(ngModel)]="currentCoupon.max_discount" placeholder="e.g. ₹50">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Discount</label>
+          <input type="text" class="form-control" name="discount" [(ngModel)]="currentCoupon.discount" placeholder="e.g. ₹20 or 10%">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Min Order Value</label>
+          <input type="text" class="form-control" name="min_order" [(ngModel)]="currentCoupon.min_order" placeholder="e.g. ₹100">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Expiry Date</label>
+          <input type="date" class="form-control" name="expiry_date" [(ngModel)]="currentCoupon.expiry_date">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Offer Condition</label>
+          <select class="form-select" name="condition" [(ngModel)]="currentCoupon.condition">
+            <option value="None">None</option>
+            <option value="New Users Only">New Users Only</option>
+            <option value="First 3 Orders">First 3 Orders</option>
+            <option value="Orders above ₹1000">Orders above ₹1000</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Include Items/Categories</label>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-select multiple name="include" [(ngModel)]="currentCoupon.include" placeholder="Select items">
+              <div class="p-2" style="position: sticky; top: 0; z-index: 100; background: white;">
+                <input type="text" class="form-control form-control-sm" placeholder="Search..." name="includeSearch" [(ngModel)]="includeSearchTerm" (keydown)="$event.stopPropagation()">
+              </div>
+              @for (item of filteredIncludeCategories; track item) {
+                <mat-option [value]="item">{{item}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold small">Exclude Items/Categories</label>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-select multiple name="exclude" [(ngModel)]="currentCoupon.exclude" placeholder="Select items">
+              <div class="p-2" style="position: sticky; top: 0; z-index: 100; background: white;">
+                <input type="text" class="form-control form-control-sm" placeholder="Search..." name="excludeSearch" [(ngModel)]="excludeSearchTerm" (keydown)="$event.stopPropagation()">
+              </div>
+              @for (item of filteredExcludeCategories; track item) {
+                <mat-option [value]="item">{{item}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="mb-4 form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="isActiveSwitch" name="is_active" [(ngModel)]="currentCoupon.is_active">
+          <label class="form-check-label fw-bold small" for="isActiveSwitch">Active Status</label>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-dark" (click)="saveCoupon()">
+            @if(isEditMode) {
+              Update Coupon
+            } @else {
+              Create Coupon
+            }
+          </button>
+          <!-- <button type="button" class="btn btn-outline-secondary" (click)="closeForm()">Cancel</button> -->
+        </div>
+      </form>
+    </div>
+  }
+</div>

@@ -25,7 +25,7 @@ export class ComplaintsComponent implements OnInit, OnChanges {
   constructor(private commonService: CommonService){}
 
   ngOnInit(): void {
-      this.getAllTickets()
+      this.getAllTickets(true)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -34,19 +34,17 @@ export class ComplaintsComponent implements OnInit, OnChanges {
     }
   }
 
-  getAllTickets(){
+  getAllTickets(reload:any){
     let params = {
       "token": sessionStorage.getItem('token')
     }
-    if(this.filteredTickets.length > 0){
-      this.isLoading = false
-    } else {
+    if (reload) {
       this.isLoading = true
     }
     this.commonService.getAllSupportTickets(params).subscribe(res => {
-        this.supportTickets = res;
+        this.isLoading = false;
+        this.supportTickets = Array.isArray(res) ? res : (res as any)?.data || [];
         this.filterTickets();
-        this.isLoading = false
     }, error => {
       this.isLoading = false
       this.dialog.open(AlertdialogComponent, {
@@ -61,7 +59,7 @@ export class ComplaintsComponent implements OnInit, OnChanges {
 
   filterTickets(): void {
     if (!this.searchTerm) {
-      this.filteredTickets = [...this.supportTickets.reverse()];
+      this.filteredTickets = [...this.supportTickets].reverse();
     } else {
       const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
       this.filteredTickets = this.supportTickets.filter((ticket: any) =>
@@ -79,12 +77,12 @@ export class ComplaintsComponent implements OnInit, OnChanges {
           type: 'view',
           item: item
          },
-         maxWidth: '50vw',
+         minWidth: '50vw',
        });
    
        dialogRef.afterClosed().subscribe((result) => {
          if (result == undefined || result == 'true') {
-            this.getAllTickets()
+            this.getAllTickets(false)
          }
          console.log(`Dialog result: ${result}`);
        });

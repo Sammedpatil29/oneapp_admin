@@ -48,8 +48,8 @@ li.active {
 }
 
 .connected {
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   background-color: #28a745;
   border-radius: 50%;
   position: relative;
@@ -87,4 +87,8 @@ li.active {
   background-color: #dc3545; /* Red color */
   border-radius: 50%;
   margin-right: 10px
+}
+
+li {
+  position: relative; 
 }

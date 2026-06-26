@@ -30,6 +30,11 @@ import { BQuoteComponent } from './components/b-quote/b-quote.component';
 import { OrdersLayoutComponent } from './components/orders-layout/orders-layout.component';
 import { GroceryOrdersComponent } from './components/grocery-orders/grocery-orders.component';
 import { DineoutComponent } from './components/dineout/dineout.component';
+import { UserLayoutComponent } from './components/user-layout/user-layout.component';
+import { RiderUsersComponent } from './components/rider-users/rider-users.component';
+import { NormalUsersComponent } from './components/normal-users/normal-users.component';
+import { ValidationComponent } from './components/validation/validation.component';
+import { IssuesComponent } from './components/issues/issues.component';
 
 export const routes: Routes = [
   {
@@ -79,8 +84,31 @@ export const routes: Routes = [
         component: MetadataComponent,
       },
       {
+        path: 'validation',
+        component: ValidationComponent,
+      },
+      {
         path: 'manageUsers',
-        component: ManageUsersComponent,
+        component: UserLayoutComponent,
+        // children: [
+        //   {
+        //     path: 'manage-users',
+        //     component: NormalUsersComponent,
+        //   },
+        //   {
+        //     path: 'admin-users',
+        //     component: ManageUsersComponent,
+        //   },
+        //   {
+        //     path: 'rider-users',
+        //     component: RiderUsersComponent,
+        //   },
+        //   {
+        //     path: '',
+        //     redirectTo: 'admin-users',
+        //     pathMatch: 'full',
+        //   }
+        // ]
       },
       {
         path: 'visits',
@@ -89,6 +117,10 @@ export const routes: Routes = [
       {
         path: 'notifications',
         component: CreateNotificationsComponent,
+      },
+      {
+        path: 'issues',
+        component: IssuesComponent,
       },
       {
         path: 'inventory',

@@ -1,11 +1,15 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { Component, inject, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { OrdersService } from '../../services/orders.service';
 import { MatFormField, MatLabel } from "@angular/material/input";
 import { MatSelect, MatOption } from "@angular/material/select";
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
+import { MapDialogComponent } from '../map-dialog/map-dialog.component';
+import { error } from 'console';
+import { RefundExchangeComponent } from '../refund-exchange/refund-exchange.component';
 
 @Component({
   selector: 'app-grocery-order-details',
@@ -18,6 +22,8 @@ export class GroceryOrderDetailsComponent implements OnInit {
   order: any;
   riders:any = []
   isAssigning: boolean = false;
+  readonly dialog = inject(MatDialog);
+  isTicketOpen: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<GroceryOrderDetailsComponent>, private ordersService: OrdersService) {
     this.order = data.order;
@@ -39,22 +45,75 @@ export class GroceryOrderDetailsComponent implements OnInit {
   }
 
   cancelOrder() {
-    let params = {
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'Confirm Cancel',
+        body: `Are you sure to cancel order #${this.order.id}`,
+        type: 'warning'
+      }
+    }).afterClosed().subscribe(result => {
+      if (result === 'true' || result === true) {
+        let params = {
       "orderId": this.order.id,
     }
     this.ordersService.cancelOrder(params).subscribe((res:any)=>{
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'success',
+          body: 'Order cancelled successfully',
+          type: 'success'
+        }
+      }
+        )
       this.dialogRef.close();
+    }, error => {
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'error',
+          body: 'Error while cancelling order',
+          type: 'error'
+        }
+      })
     })
-  }
+      }
+    })
+      }
 
   markPacked() {
-    let params = {
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'Confirm Packing',
+        body: `Are you sure to mark order #${this.order.id} as packed?`,
+        type: 'warning'
+      }
+    }).afterClosed().subscribe(result => {
+      if (result === 'true' || result === true) {
+        let params = {
       "orderId": this.order.id,
     "status": "PACKED"
     }
     this.ordersService.updateOrder(params).subscribe((res:any)=>{
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'success',
+          body: 'Order marked as packed successfully',
+          type: 'success'
+        }
+      }
+        )
       this.dialogRef.close();
+    }, error => {
+      this.dialog.open(AlertdialogComponent, {
+        data: {
+          title: 'error',
+          body: 'Error while marking order as packed',
+          type: 'error'
+        }
+      })
+      })
+      }
     })
+    
   }
 
   getRiders(){
@@ -92,4 +151,49 @@ export class GroceryOrderDetailsComponent implements OnInit {
   closeDialog() {
     this.dialogRef.close();
   }
+
+  openMap(type:any){
+    // Adjust the properties below based on your actual order object structure
+    let lat:any; 
+    let lng:any;
+    
+       const rider = {
+        lat : Number(this.order?.rider_details?.current_lat), 
+       lng : Number(this.order?.rider_details?.current_lng)
+       }
+       
+       const customer = {
+        lat : Number(this.order?.address?.lat),
+       lng : Number(this.order?.address?.lng)
+       }
+ 
+      this.dialog.open(MapDialogComponent, {
+        minWidth: '80vw',
+        autoFocus: false,
+        data: {
+          rider: rider,
+          customer: customer,
+          type: type
+        }
+      });
+  }
+
+  openDialog(){
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+        title: 'Contact Support',
+        body: 'No open Tickets for this order',
+        type: 'success'
+      }
+    });
+  }
+
+   refund(){
+      this.dialog.open(RefundExchangeComponent, {
+        minWidth: '90vw',
+        data: {
+          orderId: this.order.id,
+        }
+      })
+    }
 }

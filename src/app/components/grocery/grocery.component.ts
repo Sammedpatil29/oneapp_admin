@@ -11,6 +11,8 @@ import * as FileSaver from 'file-saver';
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { GroceryCategoriesComponent } from '../grocery-categories/grocery-categories.component';
 import { groceryBrandsComponent } from '../grocery-brands/grocery-brands.component';
+import { GroceryDiscountsComponent } from '../grocery-discounts/grocery-discounts.component';
+import { GroceryDamageComponent } from '../grocery-damage/grocery-damage.component';
 
 @Component({
   selector: 'app-grocery',
@@ -28,14 +30,16 @@ export class GroceryComponent implements OnInit {
   constructor(private commonService: CommonService) {}
 
   ngOnInit(): void {
-    this.getAllGroceryList();
+    this.getAllGroceryList(true);
   }
 
-  getAllGroceryList() {
+  getAllGroceryList(reload:any) {
     let params = {
       token: sessionStorage.getItem('token'),
     };
-    this.isLoading = true;
+    if(reload){
+      this.isLoading = true;
+    }
     this.commonService.getGroceryList(params).subscribe(
       (res:any) => {
         this.fullGroceryList = res.data;
@@ -89,11 +93,12 @@ export class GroceryComponent implements OnInit {
     const dialogRef = this.dialog.open(AddGroceryComponent, {
       data: { type: 'add' },
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result == undefined || result == 'true') {
-        this.getAllGroceryList();
+        this.getAllGroceryList(false);
       }
       console.log(`Dialog result: ${result}`);
     });
@@ -103,11 +108,12 @@ export class GroceryComponent implements OnInit {
     const dialogRef = this.dialog.open(AddGroceryComponent, {
       data: { item: item, type: 'edit' },
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result == undefined || result == 'true') {
-        this.getAllGroceryList();
+        this.getAllGroceryList(false);
       }
       console.log(`Dialog result: ${result}`);
     });
@@ -165,6 +171,7 @@ exportToExcel(): void {
 openCategoriesDialog(){
   const dialogRef = this.dialog.open(GroceryCategoriesComponent, {
     maxWidth: '75vw',
+    disableClose: true,
   });
 }
 
@@ -172,8 +179,26 @@ openBrandsDialog(){
     console.log('open')
     const dialogRef = this.dialog.open(groceryBrandsComponent, {
       maxWidth: '75vw',
+      disableClose: true,
     });
 
+  }
+
+  openDiscountCoupons(){
+    this.dialog.open(GroceryDiscountsComponent, {
+      maxWidth: '75vw',
+      disableClose: true,
+    });
+  }
+
+  openRecycleBin(){
+    this.dialog.open(GroceryDamageComponent, {
+      minWidth: '75vw',
+    }).afterClosed().subscribe((res:any)=>{
+      if(res == true || res == 'true'){
+        this.getAllGroceryList(false)
+      }
+    });
   }
 
 }

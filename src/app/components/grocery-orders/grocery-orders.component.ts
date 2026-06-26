@@ -28,8 +28,8 @@ export class GroceryOrdersComponent implements OnInit, OnDestroy {
   private orderSubscription: Subscription | undefined;
   private searchSubscription: Subscription | undefined;
   private dateRangeSubscription: Subscription | undefined;
-  startDateEpoch: number | null = null;
-  endDateEpoch: number | null = null;
+  startDateEpoch: any = new Date().setHours(0, 0, 0, 0);
+  endDateEpoch: any = new Date().setHours(23, 59, 59, 999);
 
 
   constructor(private ordersService: OrdersService, private dialog: MatDialog, private socketService: SocketService, private searchService: OrdersSearchService){
@@ -69,7 +69,12 @@ export class GroceryOrdersComponent implements OnInit, OnDestroy {
     if (!silent) {
       this.isLoading = true;
     }
-    this.ordersService.getOrders('grocery').subscribe((res:any)=>{
+    let params = {
+      startDate: this.startDateEpoch,
+      endDate: this.endDateEpoch
+     }
+    
+    this.ordersService.getOrders('grocery', params).subscribe((res:any)=>{
       this.allOrders = res.data || [];
       this.filterOrders();
       this.isLoading = false
@@ -110,7 +115,6 @@ export class GroceryOrdersComponent implements OnInit, OnDestroy {
 
   viewOrder(order: any) {
   // Fallback 1: Input Validation
-  console.log('called', order)
   const id = order.id || order._id
   if (!id) {
     console.error('Order ID is missing');
@@ -128,7 +132,8 @@ export class GroceryOrdersComponent implements OnInit, OnDestroy {
         body: `Viewing details for Order #${id}`,
         id: id,
         order: order
-      }
+      },
+      disableClose: true
     });
 
     // Fallback 2: Handle Dialog Close/Cancel

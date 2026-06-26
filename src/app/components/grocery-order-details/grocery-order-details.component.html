@@ -16,12 +16,23 @@
         <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
     </div> -->
 <div class="d-flex justify-content-between align-items-center gap-2 mx-4" mat-dialog-actions>
-
-    <h6 style="margin-bottom: 0px;">Order Id #{{order.id}}</h6>
+<div class="d-flex justify-content-center align-items-center">
+        <h6 style="margin-bottom: 0px;">Order Id #{{order.id}}</h6> &nbsp;
+    
+</div>
     <small class="text-muted">{{order.createdAt | date:'medium'}}</small>
-    <div class="badge" [ngClass]="getStatusClass(order?.status)">
+    <span>
+        @if(isTicketOpen){
+            <span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#cc0ec6"><path d="m368-320 112-84 110 84-42-136 112-88H524l-44-136-44 136H300l110 88-42 136ZM160-160q-33 0-56.5-23.5T80-240v-135q0-11 7-19t18-10q24-8 39.5-29t15.5-47q0-26-15.5-47T105-556q-11-2-18-10t-7-19v-135q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v135q0 11-7 19t-18 10q-24 8-39.5 29T800-480q0 26 15.5 47t39.5 29q11 2 18 10t7 19v135q0 33-23.5 56.5T800-160H160Z"/></svg></span>
+            &nbsp;
+        } @else {
+            <span (click)="openDialog()" class="cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#a3a3a3"><path d="m368-320 112-84 110 84-42-136 112-88H524l-44-136-44 136H300l110 88-42 136ZM160-160q-33 0-56.5-23.5T80-240v-135q0-11 7-19t18-10q24-8 39.5-29t15.5-47q0-26-15.5-47T105-556q-11-2-18-10t-7-19v-135q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v135q0 11-7 19t-18 10q-24 8-39.5 29T800-480q0 26 15.5 47t39.5 29q11 2 18 10t7 19v135q0 33-23.5 56.5T800-160H160Z"/></svg></span>
+            &nbsp;  
+        }
+        <div class="badge" [ngClass]="getStatusClass(order?.status)">
         {{order?.status | uppercase}}
     </div>
+    </span>
 </div>
 
 <div class="container-fluid p-0" *ngIf="order">
@@ -54,10 +65,10 @@
                 <div class="card-body">
                     <p class="mb-1">
                         <span class="badge bg-secondary me-2">{{order.address?.label}}</span>
-                        <a [href]="'https://www.google.com/maps/search/?api=1&query=' + order.address?.lat + ',' + order.address?.lng"
-                            target="_blank" class="text-decoration-none">
+                        <span (click)="openMap('customer')"
+                            class="text-primary" style="cursor: pointer;">
                             <i class="bi bi-geo-alt-fill text-danger"></i> View on Map
-                        </a>
+                    </span>
                     </p>
                     <p class="mb-1">{{order.address?.houseNo}}, {{order.address?.address}}</p>
                     <p class="mb-0 text-muted" *ngIf="order.address?.landmark">Landmark: {{order.address?.landmark}}</p>
@@ -107,8 +118,9 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="card mb-4 border-0 shadow-sm">
-                <div class="card-header bg-light">
+                <div class="card-header bg-light d-flex justify-content-between align-items-baseline">
                     <strong>Items ({{order.cart_items?.length}})</strong>
+                    <button class="text-primary border-0 bg-transparent" (click)="refund()">Refund/Exchange</button>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-middle mb-0">
@@ -179,17 +191,19 @@
                       position: relative;
                     ">
                         <mat-label>Assign Rider</mat-label>
-                        <mat-select [value]="order.rider?.id" (selectionChange)="assignRider($event.value)">
+                        <mat-select [value]="order.rider?.id" [disabled]="order?.status.toLowerCase() !== 'delivered' && order?.status.toLowerCase() == 'cancelled'" (selectionChange)="assignRider($event.value)">
                             <mat-option *ngFor="let rider of riders" [value]="rider.id">{{rider.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
                 @if(!isAssigning){
                     <div class="card-body">
-                    <div *ngIf="order.rider_details; else noRider">
+                    <div class="" *ngIf="order.rider_details; else noRider">
                         <p class="mb-1"><strong>Name:</strong> {{order.rider_details?.name}}</p>
                         <p class="mb-1"><strong>Phone:</strong> {{order.rider_details?.contact}}</p>
                         <p class="mb-0"><strong>Vehicle:</strong> {{order.rider_details?.vehicle_number}}</p>
+                        <button class="btn btn-dark btn-sm" (click)="openMap('rider')"> view on map
+                        </button>
                     </div>
                     <ng-template #noRider>
                         <p class="text-muted mb-0">No rider assigned</p>
@@ -206,14 +220,18 @@
 
     </mat-dialog-content>
 </div>
-<div class="d-flex justify-content-end gap-2 me-4" mat-dialog-actions>
-    @if(order?.status.toLowerCase() !== 'cancelled' && order?.status.toLowerCase() !== 'delivered' && order?.status.toLowerCase() !== 'failed' && order?.status.toLowerCase() !== 'pending'){
+<div class="d-flex justify-content-between gap-2 me-4" mat-dialog-actions>
+    <div class="ms-3">
+        @if(order?.status.toLowerCase() !== 'cancelled' && order?.status.toLowerCase() !== 'delivered' && order?.status.toLowerCase() !== 'failed' && order?.status.toLowerCase() !== 'pending'){
         <button matButton class="btn btn-outline-danger" (click)="cancelOrder()">Cancel Order</button>
     }
+    </div>
 
-    @if(order?.status.toLowerCase() === 'new' || order?.status.toLowerCase() === 'confirmed'){
+    <div>
+        @if(order?.status.toLowerCase() === 'new' || order?.status.toLowerCase() === 'confirmed'){
         <button matButton class="btn btn-outline-success" (click)="markPacked()">Mark Packed</button>
     }
     
-    <button matButton mat-dialog-close class="btn btn-dark me-2">Close</button>
+    <button matButton mat-dialog-close class="btn btn-dark mx-2">Close</button>
+    </div>
 </div>

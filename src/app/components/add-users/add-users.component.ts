@@ -7,15 +7,17 @@ import {FormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-users',
-  imports: [MatDialogModule, MatButtonModule, FormsModule, MatFormFieldModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, ButtonSpinnerComponent],
+  imports: [MatDialogModule, MatButtonModule, FormsModule, CommonModule, MatFormFieldModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, ButtonSpinnerComponent],
   templateUrl: './add-users.component.html',
   styleUrl: './add-users.component.css'
 })
 export class AddUsersComponent implements OnInit{
-
+  readonly dialog = inject(MatDialog);
   firstName = ''
   lastName = ''
   contact = ''
@@ -26,6 +28,7 @@ export class AddUsersComponent implements OnInit{
   isLoading: boolean = false
   userUpdating: boolean = false
   isDeleting: boolean = false
+  roles: any = []
 
 constructor( @Inject(MAT_DIALOG_DATA) public data: any, private commonService: CommonService, private dialogRef: MatDialogRef<AddUsersComponent>){
     console.log(data)
@@ -41,6 +44,17 @@ ngOnInit(): void {
       this.password = this.data.item.password_field,
       this.isActive = this.data.item.is_active
     }
+    this.getRolesFromMetadata();
+}
+
+getRolesFromMetadata(){
+  let params = {
+    "fields": ["roles"]
+  }
+  this.commonService.getMetaDatabyQuerry(params).subscribe((res:any) => {
+    console.log(res)
+    this.roles = res.data.roles
+  })
 }
 
 createUser(){
@@ -54,12 +68,24 @@ createUser(){
 }
 this.isLoading = true
 this.commonService.createUser(params).subscribe((res)=>{
-  alert("user added successfully")
   this.isLoading = false
+  this.dialog.open(AlertdialogComponent, {
+    data: {
+            title: 'success',
+            body: 'User added successfully',
+            type: 'success'
+          }
+  })
   this.dialogRef.close();
 }, error => {
   this.isLoading = false
-  alert("error while adding user")
+  this.dialog.open(AlertdialogComponent, {
+    data: {
+            title: 'error',
+            body: 'Error while adding user',
+            type: 'error'
+          }
+  })
 })
 }
 
@@ -76,12 +102,24 @@ updateUser(){
   }
   this.userUpdating = true
   this.commonService.updateUser(this.data.item.id, params).subscribe(res => {
-    alert('user updated successfully')
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+              title: 'success',
+              body: 'User updated successfully',
+              type: 'success'
+            }
+    })
     this.userUpdating = false
     this.dialogRef.close();
   }, error => {
     this.userUpdating = false
-    alert('error while updating user')
+    this.dialog.open(AlertdialogComponent, {
+      data: {
+              title: 'error',
+              body: 'Error while updating user',
+              type: 'error'
+            }
+    })
   })
 }
 
@@ -94,12 +132,24 @@ count = 0
     if(this.count == 10){
       this.isDeleting = true
       this.commonService.deleteUser(this.data.item.id, params).subscribe(res=>{
-        alert('item deleted successfully')
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+                  title: 'success',
+                  body: 'User deleted successfully',
+                  type: 'success'
+                }
+        })
         this.isDeleting = false
         this.dialogRef.close();
       }, error => {
         this.isDeleting = false
-        alert('error while deleting user')
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+                  title: 'error',
+                  body: 'Error while deleting user',
+                  type: 'error'
+          }
+        })
       })
     }
 

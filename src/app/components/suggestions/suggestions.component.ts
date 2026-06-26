@@ -61,10 +61,11 @@ addNewTicket(){
   const dialogRef = this.dialog.open(TicketDialogComponent, {
         data: { type: 'add' },
         maxWidth: '75vw',
+        disableClose: true,
       });
   
       dialogRef.afterClosed().subscribe((result) => {
-        if (result == undefined || result == 'true') {
+        if (result == true || result == 'true') {
           // this.getAllGroceryList();
         }
         console.log(`Dialog result: ${result}`);

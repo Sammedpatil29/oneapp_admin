@@ -49,6 +49,7 @@ export class EventsComponent implements OnInit {
     const dialogRef = this.dialog.open(EditEventsComponent, {
       data: { type: 'add' },
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -65,6 +66,7 @@ export class EventsComponent implements OnInit {
     const dialogRef = this.dialog.open(EditEventsComponent, {
       data: { item: item, type: 'edit' },
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {

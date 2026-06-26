@@ -8,6 +8,7 @@ import {jwtDecode} from 'jwt-decode';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { environment } from '../../../environments/environment';  
 
 @Component({
   selector: 'app-login',
@@ -20,20 +21,23 @@ export class LoginComponent {
   mobileNumber = ''
   password = ''
   isLoading:boolean = false
-
+  version = environment.version
   constructor(private router: Router, private authService: AuthService){}
 
   logIn(){
+    if (this.password === '' || this.mobileNumber.length !== 10 || this.isLoading) {
+      return;
+    }
     let params = {
       'phone': this.mobileNumber,
       'password': this.password
     }
     this.isLoading = true
     this.authService.Login(params).subscribe((res:any)=>{
-      console.log(res)
       sessionStorage.setItem('token', res.token)
       try {
           const decoded = jwtDecode<any>(res.token);
+          this.dialog.closeAll()
           this.router.navigate(['/layout/home']);
         } catch (err) {
           console.error('Error decoding token', err);

@@ -7,6 +7,7 @@
         <h1 class="fw-bold display-4">ONE<span class="fw-light">APP</span></h1>
         <h4 class="text-secondary">ADMIN CONSOLE</h4>
       </div>
+      <small class="position-fixed bottom-0 mb-2 text-secondary" style="font-family: monospace;">{{version}}</small>
     </div>
 
     <!-- RIGHT LOGIN SECTION -->
@@ -27,6 +28,7 @@
               inputmode="numeric"
               [(ngModel)]="mobileNumber"
               placeholder="Mobile Number"
+              (keyup.enter)="logIn()"
             />
           </mat-form-field>
 
@@ -37,6 +39,7 @@
               type="password"
               [(ngModel)]="password"
               placeholder="Password"
+              (keyup.enter)="logIn()"
             />
           </mat-form-field>
 
@@ -49,7 +52,6 @@
           <button
             class="btn btn-dark w-100 py-2"
             [disabled]="password == '' || mobileNumber.length !== 10 || isLoading"
-            (keydown)="logIn()"
             (click)="logIn()"
           >
             @if (isLoading) {

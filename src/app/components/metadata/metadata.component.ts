@@ -12,10 +12,12 @@ import { LoaderComponent } from "../loader/loader.component";
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 import { MatTabGroup, MatTab } from "@angular/material/tabs";
+import { ServiceControlComponent } from "../service-control/service-control.component";
+import { SidebarSettingsComponent } from "../sidebar-settings/sidebar-settings.component";
 
 @Component({
   selector: 'app-metadata',
-  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatExpansionModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, LoaderComponent, ButtonSpinnerComponent, MatTabGroup, MatTab],
+  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatExpansionModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, LoaderComponent, ButtonSpinnerComponent, MatTabGroup, MatTab, ServiceControlComponent, SidebarSettingsComponent],
   templateUrl: './metadata.component.html',
   styleUrl: './metadata.component.css'
 })
@@ -48,16 +50,20 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   ngOnInit(): void {
       this.getMetaData()
       this.getbanners()
+      this.getPolygonData()
   }
 
   ngAfterViewInit(): void {
-    this.getPolygonData()
+    
   }
 
   getPolygonData(){
     console.log('polygon called')
     this.isMapDataLoading = true
-    this.commonService.getPolygonData().subscribe((res: any)=>{
+    let params = {
+        'fields': ['polygon']
+      }
+    this.commonService.getPolygonData(params).subscribe((res: any)=>{
       this.polygonCoords = res.data.polygon
       this.areaColor = res.inside_color
       this.strokeColor = res.border_color
@@ -83,12 +89,15 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
 
   getMetaData(){
     this.isMetaDataLoading = true
-    this.commonService.getMetaData().subscribe(res => {
+      let params = {
+        "fields": ["categories", "locations", "status"]
+      }
+    this.commonService.getMetaDatabyQuerry(params).subscribe((res:any) => {
         this.metaData = res
-        this.latest_version = this.metaData.latest_version
-        this.download_link = this.metaData.download_link
-        this.last_updated = this.metaData.last_updated
-        this.otherDetails = this.metaData.video
+        this.latest_version = this.metaData?.latest_version
+        this.download_link = this.metaData?.download_link
+        this.last_updated = this.metaData?.last_updated
+        this.otherDetails = this.metaData?.video
         this.isMetaDataLoading = false
          const parsed = JSON.parse(this.otherDetails);
     this.otherDetails = JSON.stringify(parsed, null, 10)

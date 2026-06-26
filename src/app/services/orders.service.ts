@@ -13,8 +13,8 @@ export class OrdersService {
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
-  getOrders(service:any, status?:any){
-    return this.http.get(`${this.url}/api/admin/orders?service=${service}`)
+  getOrders(service:any, params?:any, status?:any){
+    return this.http.get(`${this.url}/api/admin/orders?service=${service}`, { params: params })
   }
 
   updateOrder(params:any){
@@ -38,11 +38,43 @@ export class OrdersService {
     return this.http.get(`${this.url}/api/rider/online`)
   }
 
+  getAllRiders(){
+    return this.http.get(`${this.url}/api/rider/all`)
+  }
+
   assignRider(params:any){
     const token = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : '';
     let headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     })
     return this.http.post(`${this.url}/api/grocery-order/assign-rider`, params, {headers: headers})
+  }
+
+  getGroceryCoupons(){
+    return this.http.get(`${this.url}/api/grocery-coupons/`)
+  }
+
+  createGroceryCoupon(params:any){
+    const token = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : '';
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    })
+    return this.http.post(`${this.url}/api/grocery-coupons/`, params, {headers: headers})
+  }
+
+  updateGroceryCoupon(id:any, params:any){
+    const token = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : '';
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    })
+    return this.http.put(`${this.url}/api/grocery-coupons/${id}/`, params, {headers: headers})
+  }
+
+  deleteGroceryCoupon(id:any){
+    const token = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : '';
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    })
+    return this.http.delete(`${this.url}/api/grocery-coupons/${id}/`, {headers: headers})
   }
 }

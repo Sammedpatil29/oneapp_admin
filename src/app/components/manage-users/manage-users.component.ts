@@ -33,6 +33,7 @@ export class ManageUsersComponent implements OnInit{
     const dialogRef = this.dialog.open(AddUsersComponent, {
         data: {type: 'add'},
         maxWidth: '75vw',
+        disableClose: true,
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -47,6 +48,7 @@ export class ManageUsersComponent implements OnInit{
     const dialogRef = this.dialog.open(AddUsersComponent, {
         data: {item: item, type: 'edit'},
         maxWidth: '75vw',
+        disableClose: true,
       });
 
     dialogRef.afterClosed().subscribe(result => {

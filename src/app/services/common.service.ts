@@ -41,8 +41,12 @@ export class CommonService {
     return this.http.get(`${this.url}/service`)
   }
 
-  getMetaData(){
-    return this.http.get(this.metaDataUrl)
+  getMetaDatabyQuerry(params:any){
+    return this.http.post(this.url + '/api/metadata/query', params)
+  }
+
+  getMetadata(){
+    return this.http.get(`${this.url}/api/metadata/`)
   }
 
   updateService(params:any,id:any){
@@ -77,8 +81,8 @@ export class CommonService {
     return this.http.put(`${this.bannerUrl}${id}/`, params)
   }
 
-  getPolygonData(){
-    return this.http.get(`${this.url}/api/metadata`)
+  getPolygonData(params:any){
+    return this.http.post(`${this.url}/api/metadata/query`, params)
   }
 
   updatePlygonData(params:any){
@@ -111,6 +115,10 @@ export class CommonService {
 
   getAllUsers(params:any){
     return this.http.get(`${this.url}/api/admin/list`)
+  }
+
+  getAllNormalUsers(params:any){
+    return this.http.get(`${this.url}/users`)
   }
 
   createUser(params:any){
@@ -205,22 +213,73 @@ export class CommonService {
   }
 
   getAllSupportTickets(params:any){
-    return this.http.post(`${this.getAllSupportTicketsUrl}`, params)
+    return this.http.get(`${this.url}/api/tickets/`, { params: params })
   }
 
   createSupportTickets(params:any){
-    return this.http.post(`${this.createSupportTicketsUrl}`, params)
+    return this.http.post(`${this.url}/api/tickets/create`, params)
   }
 
   updateSupportTickets(params:any, id:any){
-    return this.http.post(`${this.updateSupportTicketsUrl}/${id}/`, params)
+    return this.http.put(`${this.url}/api/tickets/${id}/`, params)
   }
 
   deleteSupportTickets(params:any, id:any){
-    return this.http.post(`${this.deleteSupportTicketsUrl}${id}/`, params)
+    return this.http.delete(`${this.url}/api/tickets/${id}/`, params)
   }
 
   getAllVisits(){
     return this.http.get(this.allVisitsUrl)
+  }
+
+  getSidebarItems(){
+    return this.http.get(`${this.url}/api/sidebar-items`)
+  }
+
+  getValidSidebarItems(){
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    })
+    return this.http.get(`${this.url}/api/sidebar-items/valid`, { headers: headers })
+  }
+
+  deleteSidebarItem(id:any){
+    return this.http.delete(`${this.url}/api/sidebar-items/${id}/`)
+  }
+
+  addSidebarItem(params:any){
+    return this.http.post(`${this.url}/api/sidebar-items/create`, params)
+  }
+
+  updateSidebarItem(id:any, params:any){
+    return this.http.put(`${this.url}/api/sidebar-items/${id}/`, params)
+  }
+
+  getAdminOrderById(id:any, service:any){
+    return this.http.get(`${this.url}/api/admin/orders/${id}?service=${service}`)
+  }
+
+  updateAdminOrderById(params:any){
+    return this.http.patch(`${this.url}/api/admin/orders/`, params)
+  }
+
+  sendEmail(params:any){
+    return this.http.post(`${this.url}/api/email/send`, params)
+  }
+
+  getDamageItems(){
+    return this.http.get(`${this.url}/api/grocery-damage`)
+  }
+
+  createDamage(params:any){
+    return this.http.post(`${this.url}/api/grocery-damage`, params)
+  }
+
+  updateDamage(params:any){
+    return this.http.put(`${this.url}/api/grocery-damage/${params.id}`, params)
+  }
+
+  deleteDamage(id:any){
+    return this.http.delete(`${this.url}/api/grocery-damage/${id}`)
   }
 }

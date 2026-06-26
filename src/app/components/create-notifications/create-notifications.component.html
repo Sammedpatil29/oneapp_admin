@@ -53,18 +53,21 @@
             <!-- select other options block ends -->
 
             <div class="w-100 d-flex justify-content-center gap-2">
-                 <button class="btn btn-outline-dark w-100" style="cursor: pointer;" [disabled]="title == '' || sendingNotification" (click)="saveNotification()">
+                <button class="btn btn-outline-dark w-25" style="cursor: pointer;" [disabled]="title == '' || savingNotification" (click)="clear()">
+                    Clear
+                 </button>
+                 <button class="btn btn-outline-dark w-100" style="cursor: pointer;" [disabled]="title == '' || savingNotification" (click)="saveNotification()">
                     @if (savingNotification) {
                     <app-button-spinner></app-button-spinner>
                 } @else {
-                    Save Notification
+                    <span class="text-truncate">Save Notification</span>
                 }
                  </button>
                  <button class="btn btn-dark w-100" [disabled]="title == '' || sendingNotification" (click)="sendNotification()">
                     @if (sendingNotification) {
                     <app-button-spinner></app-button-spinner>
                 } @else {
-                    Send Notification
+                    <span class="text-truncate">Send Notification</span>
                 }
                  </button>
             </div>
@@ -137,8 +140,9 @@
         }
         </div>
     <div class="col-4">
-        <h5 class="text-center">Past Notifications</h5>
-        <div class="scroll-container px-1 pb-2" style="height: 72vh; overflow-y: scroll; overflow-x: hidden;">
+        <h5 class="text-center">Past / Saved Notifications</h5>
+        @if(!isLoadingNotifications){
+            <div class="scroll-container px-1 pb-2" style="height: 72vh; overflow-y: scroll; overflow-x: hidden;">
             @for (item of notifications; track $index) {
             <div class="notification pastNotification mt-2" (click)="duplicateNotification(item)">
             <div class="row">
@@ -147,7 +151,29 @@
                 </div>
                 <div class="col-11">
                         <div class="me-2 position-relative">
-                            <button class="position-absolute border-0 bg-transparent" style="right: -20px; top: -20px" (click)="deleteNotification(item.id); $event.stopPropagation()"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="red"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></button>
+                            <div class="position-absolute border-rounded" style="right: -20px; top: -20px">
+                                    <button class="border-0 bg-transparent" (click)="deleteNotification(item.id); $event.stopPropagation()" [disabled]="isDeleting"><svg version="1.1" id="Uploaded to svgrepo.com" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 width="20px" height="20px" viewBox="0 0 32 32" xml:space="preserve">
+<style type="text/css">
+	.pictogram_een{fill:#F4D6B0;}
+	.pictogram_drie{fill:#F27261;}
+	.pictogram_vier{fill:#E54D2E;}
+	.st0{fill:#F8AD89;}
+	.st1{fill:#01A59C;}
+	.st2{fill:#0C6667;}
+	.st3{fill:none;}
+</style>
+<g>
+	<circle class="pictogram_vier" cx="16" cy="16" r="13"/>
+	<path class="pictogram_drie" d="M16,3v26c7.18,0,13-5.82,13-13C29,8.82,23.18,3,16,3z"/>
+	<path class="pictogram_een" d="M16,3c7.168,0,13,5.832,13,13s-5.832,13-13,13S3,23.168,3,16S8.832,3,16,3 M16,0
+		C7.163,0,0,7.163,0,16s7.163,16,16,16s16-7.163,16-16S24.837,0,16,0L16,0z M18.121,16l2.475-2.475c0.586-0.585,0.586-1.536,0-2.121
+		c-0.586-0.586-1.535-0.586-2.121,0L16,13.879l-2.475-2.475c-0.586-0.586-1.535-0.586-2.121,0c-0.586,0.585-0.586,1.536,0,2.121
+		L13.879,16l-2.475,2.475c-0.586,0.585-0.586,1.536,0,2.121c0.293,0.293,0.677,0.439,1.061,0.439s0.768-0.146,1.061-0.439L16,18.121
+		l2.475,2.475c0.293,0.293,0.677,0.439,1.061,0.439s0.768-0.146,1.061-0.439c0.586-0.585,0.586-1.536,0-2.121L18.121,16z"/>
+</g>
+</svg></button>
+                            </div>
                         <div class="d-flex justify-content-between">
                         <small>OneApp • {{item.createdAt | date:'medium'}}</small>
                         <div><svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#000000"><path d="m480-538.85-189 189L253.85-387 480-613.15 706.15-387 669-349.85l-189-189Z"/></svg></div>
@@ -167,6 +193,11 @@
         </div>
         }
         </div>
+        } @else {
+            <div class="w-100 d-flex h-75 justify-content-center align-items-center">
+                <app-button-spinner></app-button-spinner>
+            </div>
+        }
     </div>
    
 </div>

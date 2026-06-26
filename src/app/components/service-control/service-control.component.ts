@@ -12,7 +12,7 @@ import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-service-control',
-  imports: [RouterLink, LoaderComponent, MatButtonModule, MatDialogModule, CommonModule],
+  imports: [LoaderComponent, MatButtonModule, MatDialogModule, CommonModule],
   templateUrl: './service-control.component.html',
   styleUrl: './service-control.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,6 +42,7 @@ isLoading: boolean = false
     const dialogRef = this.dialog.open(AddEditServicesComponent, {
       data: {item: item, type: 'edit'},
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -56,6 +57,7 @@ isLoading: boolean = false
     const dialogRef = this.dialog.open(AddEditServicesComponent, {
       data: {type: 'add'},
       maxWidth: '75vw',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe(result => {
