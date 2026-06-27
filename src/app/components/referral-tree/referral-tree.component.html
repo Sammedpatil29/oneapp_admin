@@ -1,0 +1,63 @@
+<div class="referral-container p-4">
+  <div class="search-bar mb-4">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Search by Name, Email, or Phone</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" placeholder="Enter search term...">
+      <button mat-icon-button matSuffix (click)="onSearch()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <!-- Breadcrumb Navigation -->
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      @for (user of breadcrumb; track user.id; let i = $index) {
+        <li class="breadcrumb-item" [class.active]="i === breadcrumb.length - 1">
+          @if (i < breadcrumb.length - 1) {
+            <a href="javascript:void(0)" (click)="navigateToBreadcrumb(user, i)">{{ user.name }}</a>
+          } @else {
+            {{ user.name }}
+          }
+        </li>
+      }
+    </ol>
+  </nav>
+
+  <!-- Flowchart View -->
+  <div class="flowchart-container">
+    @if (currentUser) {
+      <!-- Current User Node -->
+      <div class="current-user-node d-flex justify-content-center">
+        <div class="user-card">
+          <div class="card-body">
+            <h5 class="card-title">{{ currentUser.name }}</h5>
+            <p class="card-text mb-0">{{ currentUser.email }}</p>
+            <p class="card-text">{{ currentUser.phone }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Children Nodes -->
+      @if (childUsers.length > 0) {
+        <div class="children-container">
+          @for (child of childUsers; track child.id) {
+            <div class="child-node">
+              <div class="user-card clickable" (click)="navigateToUser(child)">
+                <div class="card-body">
+                  <h6 class="card-title">{{ child.name }}</h6>
+                  <p class="card-text mb-0">{{ child.email }}</p>
+                  <p class="card-text text-muted">{{ child.referralCount }} Referrals</p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="text-center text-muted mt-5">
+          <p>This user has no referrals.</p>
+        </div>
+      }
+    }
+  </div>
+</div>
