@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { LoaderComponent } from "../components/loader/loader.component";
 import { GoogleChartsModule, ChartType } from 'angular-google-charts';
 import { ButtonSpinnerComponent } from "../components/button-spinner/button-spinner.component";
@@ -12,6 +12,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { get } from 'http';
+import { MatDialog } from '@angular/material/dialog';
+import { AskPintuComponent } from '../components/ask-pintu/ask-pintu.component';
 
 
 
@@ -30,6 +32,8 @@ export class HomeComponent implements OnInit, OnDestroy{
   endDate:any = new Date();
   maxDate: Date = new Date();
   homeData: any = {}
+
+  readonly dialog = inject(MatDialog);
 
   constructor(private commonService: CommonService){}
 
@@ -182,5 +186,11 @@ chart = {
       this.getHomeData()
       // You can now use these timestamps to filter your dashboard data.
     }
+  }
+
+  askPintu(){
+    this.dialog.open(AskPintuComponent, {
+      width: '80vw',
+    });
   }
 }

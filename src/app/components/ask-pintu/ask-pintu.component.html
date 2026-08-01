@@ -1,0 +1,30 @@
+<div class="ask-pintu-container">
+  <!-- Search Input Area -->
+  <div class="input-wrapper d-flex align-items-center gap-2">
+    <input 
+      type="text" 
+      [(ngModel)]="query" 
+      (keyup.enter)="onAskPintu()"
+      placeholder="Ask Pintu anything..." 
+      [disabled]="loading"
+      class="form-control"
+    />
+    <button class="ai-btn" (click)="onAskPintu()" [disabled]="loading || !query.trim()">
+      <span *ngIf="!loading">Ask Pintu</span>
+      <span *ngIf="loading" class="spinner"></span>
+    </button>
+  </div>
+
+  <!-- Dynamic Response Card (Shown ONLY when res exists) -->
+  <div class="response-container" *ngIf="apiResponseHtml">
+    <div class="response-card">
+      <div class="response-header">
+        <span class="badge">Pintu AI</span>
+        <button class="close-btn" (click)="clearResponse()">&times;</button>
+      </div>
+      
+      <!-- Inner HTML Binding -->
+      <div class="html-content" [innerHTML]="apiResponseHtml"></div>
+    </div>
+  </div>
+</div>

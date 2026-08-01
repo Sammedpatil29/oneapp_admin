@@ -282,4 +282,8 @@ export class CommonService {
   deleteDamage(id:any){
     return this.http.delete(`${this.url}/api/grocery-damage/${id}`)
   }
+
+  askPintu(params:any){
+    return this.http.post(`${this.url}/api/ask-pintu/query`, params)
+  }
 }
