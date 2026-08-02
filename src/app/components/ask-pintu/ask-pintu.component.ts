@@ -16,7 +16,7 @@ export class AskPintuComponent {
   loading: boolean = false;
   
   // Holds sanitized HTML response from the API
-  apiResponseHtml: SafeHtml | null = null;
+  apiResponseHtml: SafeHtml | null = '';
 
   constructor(private sanitizer: DomSanitizer, private commonService: CommonService) {}
 
@@ -37,7 +37,7 @@ export class AskPintuComponent {
       error: (error: any) => {
         console.error('Error fetching Pintu response:', error);
         const errorMessage = `<div class="alert alert-danger">
-                                <strong>Oops!</strong> Something went wrong while asking Pintu. Please try again.
+                                <strong>Oops!</strong> Something went wrong while asking Pintu. \n Try asking different Question.
                               </div>`;
         this.apiResponseHtml = this.sanitizer.bypassSecurityTrustHtml(errorMessage);
         this.loading = false;
