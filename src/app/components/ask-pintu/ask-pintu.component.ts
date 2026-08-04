@@ -32,6 +32,7 @@ export class AskPintuComponent {
       next: (response: any) => {
         // Sanitize the HTML response from the API before displaying it
         this.apiResponseHtml = this.sanitizer.bypassSecurityTrustHtml(response.text);
+        this.query = ''; // Clear the input field after successful response
         this.loading = false;
       },
       error: (error: any) => {
