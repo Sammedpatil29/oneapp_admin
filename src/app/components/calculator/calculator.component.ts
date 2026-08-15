@@ -9,7 +9,7 @@ import { MatOption } from "@angular/material/select";
 
 @Component({
   selector: 'app-calculator',
-  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatRadioModule, MatFormField, MatLabel, MatOption],
+  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatRadioModule, MatLabel, MatOption],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.css'
 })

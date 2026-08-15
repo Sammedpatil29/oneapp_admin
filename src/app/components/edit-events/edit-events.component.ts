@@ -29,7 +29,7 @@ export interface Fruit {
 @Component({
   selector: 'app-edit-events',
   providers: [provideNativeDateAdapter()],
-  imports: [MatDialogModule, MatFormFieldModule, MatChipsModule, MatIconModule, MatTimepickerModule, MatIcon, MatInputModule, MatDatepickerModule, MatButtonModule, FormsModule, MatFormFieldModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, ButtonSpinnerComponent],
+  imports: [MatDialogModule, MatFormFieldModule, MatChipsModule, MatIconModule, MatTimepickerModule, MatInputModule, MatDatepickerModule, MatButtonModule, FormsModule, MatFormFieldModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, ButtonSpinnerComponent],
   templateUrl: './edit-events.component.html',
   styleUrl: './edit-events.component.css'
 })
