@@ -28,7 +28,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .btn {
-  --bs-btn-border-radius: 3px 13px !important;
+  /* --bs-btn-border-radius: 3px 13px !important; */
 }
 
 .ai-btn {
