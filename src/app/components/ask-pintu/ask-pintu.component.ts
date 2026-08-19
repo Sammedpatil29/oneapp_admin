@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { CommonService } from '../../services/common.service';
+import { MatDialogClose } from "@angular/material/dialog";
 
 @Component({
   selector: 'app-ask-pintu',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatDialogClose],
   templateUrl: './ask-pintu.component.html',
   styleUrl: './ask-pintu.component.css'
 })
