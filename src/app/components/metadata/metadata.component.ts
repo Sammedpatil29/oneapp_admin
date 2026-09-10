@@ -14,6 +14,7 @@ import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.compone
 import { MatTabGroup, MatTab } from "@angular/material/tabs";
 import { ServiceControlComponent } from "../service-control/service-control.component";
 import { SidebarSettingsComponent } from "../sidebar-settings/sidebar-settings.component";
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-metadata',
@@ -51,7 +52,7 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   map!: google.maps.Map;
   drawingManager!: google.maps.drawing.DrawingManager;
 
-  constructor(private commonService: CommonService){}
+  constructor(private commonService: CommonService, private dialog: MatDialog){}
 
   ngOnInit(): void {
       this.getMetaData()
@@ -136,11 +137,23 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
     };
     this.commonService.updatePlygonData(params).subscribe({
       next: () => {
-        alert('✅ Ride platform commission settings updated successfully!');
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'success',
+            body: 'Ride platform commission settings updated successfully!',
+            type: 'success',
+          },
+        });
       },
       error: (err: any) => {
         console.error('Commission update error:', err);
-        alert('Failed to update commission settings: ' + (err?.error?.message || err.message));
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'error',
+            body: 'Failed to update commission settings: ' + (err?.error?.message || err.message),
+            type: 'error',
+          },
+        });
       }
     });
   }

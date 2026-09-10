@@ -26,8 +26,15 @@ year = new Date().getFullYear()
 version = environment.version
 
 showAlarm: boolean = false;
+sosAlert: any = null;
 private orderSubscription: Subscription | undefined;
+private sosSubscription: Subscription | undefined;
 private audio: HTMLAudioElement | undefined;
+private sosAudio: HTMLAudioElement | undefined;
+private audioContext: AudioContext | null = null;
+private sirenOscillator: OscillatorNode | null = null;
+private sirenGain: GainNode | null = null;
+private sirenInterval: any = null;
 private alarmTimeout: any;
 isConnected: boolean = false;
 private connectSub: Subscription | undefined;
@@ -102,16 +109,36 @@ private disconnectSub: Subscription | undefined;
     // this.year = new Date().getFullYear()
   }
 
-  // Unlock audio context for strict browsers (like Safari) on first user interaction
+  // Unlock audio context for strict browsers (like Safari/Chrome) on first user interaction
   @HostListener('document:click')
   unlockAudio() {
-    if (!this.audioUnlocked && this.audio && !this.showAlarm) {
-      this.audio.muted = true;
-      this.audio.play().then(() => {
-        this.audio?.pause();
-        if (this.audio) { this.audio.currentTime = 0; this.audio.muted = false; }
-        this.audioUnlocked = true;
-      }).catch(() => {});
+    if (!this.audioUnlocked) {
+      if (this.audio && !this.showAlarm) {
+        this.audio.muted = true;
+        this.audio.play().then(() => {
+          this.audio?.pause();
+          if (this.audio) { this.audio.currentTime = 0; this.audio.muted = false; }
+        }).catch(() => {});
+      }
+      if (this.sosAudio && !this.sosAlert) {
+        this.sosAudio.muted = true;
+        this.sosAudio.play().then(() => {
+          this.sosAudio?.pause();
+          if (this.sosAudio) { this.sosAudio.currentTime = 0; this.sosAudio.muted = false; }
+        }).catch(() => {});
+      }
+      try {
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioContextClass) {
+          if (!this.audioContext) {
+            this.audioContext = new AudioContextClass();
+          }
+          if (this.audioContext.state === 'suspended') {
+            this.audioContext.resume();
+          }
+        }
+      } catch (e) {}
+      this.audioUnlocked = true;
     }
   }
 
@@ -131,6 +158,13 @@ private disconnectSub: Subscription | undefined;
       this.triggerAlarm();
     });
 
+    this.sosSubscription = this.socketService.on<any>('admin:sos_alert').subscribe((data) => {
+      console.log('🚨 ADMIN SOS ALERT RECEIVED:', data);
+      this.sosAlert = data;
+      this.triggerSosAlarm();
+      this.cdr.detectChanges();
+    });
+
     this.connectSub = this.socketService.on<any>('connect').subscribe(() => {
       this.isConnected = true;
       this.cdr.detectChanges();
@@ -146,10 +180,16 @@ private disconnectSub: Subscription | undefined;
       this.role = decoded.role
       console.log(this.role)
 
-    // Pre-load the audio instance once when the component initializes
+    // Pre-load the order audio instance
     this.audio = new Audio('assets/mixkit-urgent-digital-alarm-tone-loop-2973.mp3');
     this.audio.loop = true;
     this.audio.load();
+
+    // Pre-load the emergency siren audio instance
+    this.sosAudio = new Audio('assets/emergency-siren.wav');
+    this.sosAudio.loop = true;
+    this.sosAudio.load();
+
     this.getSidebarItems()
 
     this.sidebarMidService.$value.subscribe(() => {
@@ -169,18 +209,118 @@ private disconnectSub: Subscription | undefined;
       this.audio.currentTime = 0;
       this.audio.play().catch(err => console.error('Audio play failed (maybe blocked by browser):', err));
     }
+  }
 
+  triggerSosAlarm() {
+    this.showAlarm = true;
+    this.cdr.detectChanges();
+
+    if (this.alarmTimeout) clearTimeout(this.alarmTimeout);
+
+    // Stop normal order audio if playing
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+    }
+
+    // Play dedicated emergency siren WAV
+    if (this.sosAudio) {
+      this.sosAudio.pause();
+      this.sosAudio.currentTime = 0;
+      this.sosAudio.play().catch(err => {
+        console.warn('HTML5 SOS audio play failed, falling back to Web Audio oscillator siren:', err);
+        this.startWebAudioSiren();
+      });
+    } else {
+      this.startWebAudioSiren();
+    }
+  }
+
+  private startWebAudioSiren() {
+    this.stopWebAudioSiren();
+    try {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContextClass) return;
+      if (!this.audioContext) {
+        this.audioContext = new AudioContextClass();
+      }
+      if (this.audioContext.state === 'suspended') {
+        this.audioContext.resume();
+      }
+
+      const osc = this.audioContext.createOscillator();
+      const gain = this.audioContext.createGain();
+      osc.type = 'sawtooth';
+      gain.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+
+      osc.connect(gain);
+      gain.connect(this.audioContext.destination);
+      osc.start();
+
+      this.sirenOscillator = osc;
+      this.sirenGain = gain;
+
+      let high = false;
+      this.sirenInterval = setInterval(() => {
+        if (!this.audioContext || !this.sirenOscillator) return;
+        const targetFreq = high ? 960 : 650;
+        high = !high;
+        this.sirenOscillator.frequency.setTargetAtTime(targetFreq, this.audioContext.currentTime, 0.15);
+      }, 500);
+    } catch (e) {
+      console.error('Failed to start Web Audio siren:', e);
+    }
+  }
+
+  private stopWebAudioSiren() {
+    if (this.sirenInterval) {
+      clearInterval(this.sirenInterval);
+      this.sirenInterval = null;
+    }
+    if (this.sirenOscillator) {
+      try {
+        this.sirenOscillator.stop();
+        this.sirenOscillator.disconnect();
+      } catch (e) {}
+      this.sirenOscillator = null;
+    }
+    if (this.sirenGain) {
+      try {
+        this.sirenGain.disconnect();
+      } catch (e) {}
+      this.sirenGain = null;
+    }
   }
 
   stopAlarm(){
     this.showAlarm = false;
-      this.audio?.pause();
+    this.audio?.pause();
+    this.sosAudio?.pause();
+    this.stopWebAudioSiren();
+  }
+
+  dismissSosAlert() {
+    this.stopAlarm();
+    this.sosAlert = null;
+    this.cdr.detectChanges();
+  }
+
+  openGoogleMaps(lat: any, lng: any) {
+    if (lat && lng) {
+      window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+    }
   }
 
   ngOnDestroy(): void {
     this.socketService.disconnect();
     this.orderSubscription?.unsubscribe();
+    this.sosSubscription?.unsubscribe();
     this.audio?.pause();
+    this.sosAudio?.pause();
+    this.stopWebAudioSiren();
+    if (this.audioContext && this.audioContext.state !== 'closed') {
+      try { this.audioContext.close(); } catch(e) {}
+    }
     if (this.alarmTimeout) clearTimeout(this.alarmTimeout);
     this.connectSub?.unsubscribe();
     this.disconnectSub?.unsubscribe();
