@@ -40,6 +40,12 @@ isMapUpdateLoading: boolean = false
 
 polygonCoords: google.maps.LatLngLiteral[] = [];
 
+  rideCommission = {
+    type: 'fixed',
+    value: 3,
+    enabled: true,
+    min_fare: 0
+  };
 
 @ViewChild('mapContainer', { static: false }) mapContainer: any;
   map!: google.maps.Map;
@@ -90,19 +96,53 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   getMetaData(){
     this.isMetaDataLoading = true
       let params = {
-        "fields": ["categories", "locations", "status"]
+        "fields": ["categories", "locations", "status", "ride_commission"]
       }
     this.commonService.getMetaDatabyQuerry(params).subscribe((res:any) => {
-        this.metaData = res
+        this.metaData = res?.data || res
         this.latest_version = this.metaData?.latest_version
         this.download_link = this.metaData?.download_link
         this.last_updated = this.metaData?.last_updated
         this.otherDetails = this.metaData?.video
+
+        if (this.metaData?.ride_commission) {
+          this.rideCommission = {
+            type: this.metaData.ride_commission.type || 'fixed',
+            value: this.metaData.ride_commission.value !== undefined ? Number(this.metaData.ride_commission.value) : 3,
+            enabled: this.metaData.ride_commission.enabled !== undefined ? !!this.metaData.ride_commission.enabled : true,
+            min_fare: this.metaData.ride_commission.min_fare !== undefined ? Number(this.metaData.ride_commission.min_fare) : 0
+          };
+        }
+
         this.isMetaDataLoading = false
-         const parsed = JSON.parse(this.otherDetails);
-    this.otherDetails = JSON.stringify(parsed, null, 10)
+        try {
+          if (this.otherDetails) {
+            const parsed = JSON.parse(this.otherDetails);
+            this.otherDetails = JSON.stringify(parsed, null, 10);
+          }
+        } catch (e) {}
         
     })
+  }
+
+  updateRideCommission() {
+    const params = {
+      ride_commission: {
+        type: this.rideCommission.type,
+        value: Number(this.rideCommission.value) || 0,
+        enabled: this.rideCommission.enabled,
+        min_fare: Number(this.rideCommission.min_fare) || 0
+      }
+    };
+    this.commonService.updatePlygonData(params).subscribe({
+      next: () => {
+        alert('✅ Ride platform commission settings updated successfully!');
+      },
+      error: (err: any) => {
+        console.error('Commission update error:', err);
+        alert('Failed to update commission settings: ' + (err?.error?.message || err.message));
+      }
+    });
   }
 
   updateMetaData(){
