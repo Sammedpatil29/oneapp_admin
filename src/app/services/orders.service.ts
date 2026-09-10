@@ -42,6 +42,22 @@ export class OrdersService {
     return this.http.get(`${this.url}/api/rider/all`)
   }
 
+  updateRiderChecklist(riderId: string, data: any) {
+    const token = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : '';
+    let headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.put(`${this.url}/api/rider/checklist/${riderId}`, data, { headers });
+  }
+
+  getRiderProfile(riderId: string) {
+    return this.http.get(`${this.url}/api/rider/profile/${riderId}`);
+  }
+
+  unzipRiderKyc(riderId: string) {
+    return this.http.get(`${this.url}/api/rider/unzip-kyc/${riderId}`);
+  }
+
   assignRider(params:any){
     const token = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('token') : '';
     let headers = new HttpHeaders({
