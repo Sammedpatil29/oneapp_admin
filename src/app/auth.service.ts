@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { CommonService } from '../../src/app/services/common.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private platformId = inject(PLATFORM_ID);
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
@@ -26,11 +28,15 @@ export class AuthService {
    * for the lifetime of the app session.
    */
   public isAuthenticated(): Observable<boolean> {
+    if (!isPlatformBrowser(this.platformId)) {
+      return of(true);
+    }
+
     if (this.authCheck$) {
       return this.authCheck$;
     }
 
-    const token = sessionStorage.getItem('token');
+    const token = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('token') : null;
 
     if (!token) {
       this.authCheck$ = of(false).pipe(shareReplay(1));
@@ -51,7 +57,7 @@ export class AuthService {
 
     // Token exists and is not expired, now verify with the backend.
     this.authCheck$ = this.commonService.getUserDetails(token).pipe(
-      map((response:any) => {
+      map((response: any) => {
         if (response && response?.success) {
           this.isAuthenticatedSubject.next(true);
           return true;
@@ -73,7 +79,9 @@ export class AuthService {
    * Call this method from your login component on a successful login.
    */
   handleLoginSuccess(token: string): void {
-    sessionStorage.setItem('token', token);
+    if (isPlatformBrowser(this.platformId) && typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('token', token);
+    }
     this.isAuthenticatedSubject.next(true);
     this.authCheck$ = of(true).pipe(shareReplay(1));
   }
@@ -87,8 +95,14 @@ export class AuthService {
   }
 
   private clearSession(): void {
-    sessionStorage.removeItem('token');
-    localStorage.removeItem('role');
+    if (isPlatformBrowser(this.platformId)) {
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem('token');
+      }
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('role');
+      }
+    }
     this.isAuthenticatedSubject.next(false);
     this.authCheck$ = of(false).pipe(shareReplay(1));
   }

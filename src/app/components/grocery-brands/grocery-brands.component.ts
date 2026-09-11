@@ -98,3 +98,5 @@ deleteBrand(){
   })
 }
 }
+
+export { groceryBrandsComponent as GroceryBrandsComponent };
