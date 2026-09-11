@@ -1,1 +1,721 @@
-<app-under-development [featureName]="'Validation Dashboard'" [message]="'This section is under development. Please check back later for updates.🚧'"></app-under-development>
+<div class="validation-container p-3">
+  <!-- TOAST / ALERT NOTIFICATION -->
+  @if (alertMessage) {
+    <div class="alert alert-{{alertType}} alert-dismissible fade show d-flex align-items-center justify-content-between shadow-sm mb-3" role="alert">
+      <div>
+        <i class="bi me-2" [ngClass]="alertType === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
+        <strong>{{ alertType === 'success' ? 'Success: ' : 'Notice: ' }}</strong>{{ alertMessage }}
+      </div>
+      <button type="button" class="btn-close" (click)="alertMessage = ''" aria-label="Close"></button>
+    </div>
+  }
+
+  <!-- HEADER -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h3 class="fw-bold mb-1 d-flex align-items-center gap-2">
+        <i class="bi bi-shield-check text-primary"></i>
+        <span>Captain Verification & Onboarding</span>
+      </h3>
+      <p class="text-muted small mb-0">Review submitted KYC documents, inspect archives, and verify checklist items.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1" (click)="loadRiders()" [disabled]="isLoading">
+        <i class="bi bi-arrow-clockwise" [class.spin]="isLoading"></i>
+        <span>{{ isLoading ? 'Refreshing...' : 'Refresh' }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- STATS METRICS ROW -->
+  <div class="row g-2 mb-3">
+    <div class="col-6 col-md-3">
+      <div class="metric-card bg-white p-3 rounded-3 border shadow-xs d-flex align-items-center gap-3">
+        <div class="metric-icon bg-primary-subtle text-primary rounded-3 p-2 fs-4">
+          <i class="bi bi-people-fill"></i>
+        </div>
+        <div>
+          <div class="metric-val fs-4 fw-bold text-dark">{{ totalCount }}</div>
+          <div class="metric-lbl text-muted small text-uppercase">Total Captains</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="metric-card bg-white p-3 rounded-3 border shadow-xs d-flex align-items-center gap-3">
+        <div class="metric-icon bg-warning-subtle text-warning rounded-3 p-2 fs-4">
+          <i class="bi bi-hourglass-split"></i>
+        </div>
+        <div>
+          <div class="metric-val fs-4 fw-bold text-warning">{{ pendingCount }}</div>
+          <div class="metric-lbl text-muted small text-uppercase">Pending Review</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="metric-card bg-white p-3 rounded-3 border shadow-xs d-flex align-items-center gap-3">
+        <div class="metric-icon bg-success-subtle text-success rounded-3 p-2 fs-4">
+          <i class="bi bi-patch-check-fill"></i>
+        </div>
+        <div>
+          <div class="metric-val fs-4 fw-bold text-success">{{ verifiedCount }}</div>
+          <div class="metric-lbl text-muted small text-uppercase">Approved & Active</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="metric-card bg-white p-3 rounded-3 border shadow-xs d-flex align-items-center gap-3">
+        <div class="metric-icon bg-danger-subtle text-danger rounded-3 p-2 fs-4">
+          <i class="bi bi-x-circle-fill"></i>
+        </div>
+        <div>
+          <div class="metric-val fs-4 fw-bold text-danger">{{ rejectedCount }}</div>
+          <div class="metric-lbl text-muted small text-uppercase">Needs Revision</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN MASTER-DETAIL WORKSPACE -->
+  <div class="row g-3">
+    <!-- LEFT: CAPTAIN LIST PANEL -->
+    <div class="col-12 col-lg-4">
+      <div class="bg-white rounded-3 border shadow-xs p-3 h-100 d-flex flex-column">
+        <!-- Search -->
+        <div class="input-group input-group-sm mb-2">
+          <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+          <input
+            type="text"
+            class="form-control bg-light border-start-0"
+            placeholder="Search name, phone, vehicle..."
+            [(ngModel)]="searchQuery"
+            (ngModelChange)="applyFilters()" />
+          @if (searchQuery) {
+            <button class="btn btn-light border" (click)="searchQuery = ''; applyFilters()"><i class="bi bi-x"></i></button>
+          }
+        </div>
+
+        <!-- Filter Pills -->
+        <div class="filter-pills d-flex gap-1 mb-2 overflow-x-auto pb-1">
+          <button
+            class="btn btn-xs rounded-pill"
+            [ngClass]="statusFilter === 'all' ? 'btn-dark' : 'btn-outline-secondary'"
+            (click)="setStatusFilter('all')">
+            All ({{ totalCount }})
+          </button>
+          <button
+            class="btn btn-xs rounded-pill"
+            [ngClass]="statusFilter === 'pending' ? 'btn-warning text-dark fw-bold' : 'btn-outline-secondary'"
+            (click)="setStatusFilter('pending')">
+            Pending ({{ pendingCount }})
+          </button>
+          <button
+            class="btn btn-xs rounded-pill"
+            [ngClass]="statusFilter === 'verified' ? 'btn-success text-white' : 'btn-outline-secondary'"
+            (click)="setStatusFilter('verified')">
+            Verified ({{ verifiedCount }})
+          </button>
+          <button
+            class="btn btn-xs rounded-pill"
+            [ngClass]="statusFilter === 'rejected' ? 'btn-danger text-white' : 'btn-outline-secondary'"
+            (click)="setStatusFilter('rejected')">
+            Rejected ({{ rejectedCount }})
+          </button>
+        </div>
+
+        <!-- Captain Scrollable List -->
+        <div class="captain-list flex-grow-1 overflow-y-auto pe-1" style="max-height: calc(100vh - 310px);">
+          @if (isLoading) {
+            <div class="text-center py-5 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary mb-2" role="status"></div>
+              <div class="small">Loading Captain applications...</div>
+            </div>
+          } @else if (filteredRiders.length === 0) {
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
+              <div class="fw-semibold">No Captains Found</div>
+              <small>Try adjusting your search or status filter.</small>
+            </div>
+          } @else {
+            @for (captain of filteredRiders; track captain.id) {
+              <div
+                class="captain-item p-2 mb-2 rounded-3 border transition cursor-pointer"
+                [class.active-captain]="selectedCaptain?.id === captain.id"
+                (click)="selectCaptain(captain)">
+                <div class="d-flex justify-content-between align-items-start mb-1">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="captain-avatar rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
+                         [ngClass]="selectedCaptain?.id === captain.id ? 'bg-primary' : 'bg-secondary'"
+                         style="width: 36px; height: 36px; font-size: 14px;">
+                      {{ (captain.name || 'C').charAt(0) | uppercase }}
+                    </div>
+                    <div>
+                      <div class="fw-bold text-dark text-truncate" style="max-width: 140px;">
+                        {{ captain.name || 'Unnamed Captain' }}
+                      </div>
+                      <small class="text-muted d-block">
+                        <i class="bi bi-telephone me-1"></i>{{ captain.contact || 'No phone' }}
+                      </small>
+                    </div>
+                  </div>
+                  <!-- Status badge -->
+                  <div>
+                    @if (captain.computedStatus === 'verified') {
+                      <span class="badge bg-success-subtle text-success rounded-pill px-2 py-1 small">
+                        <i class="bi bi-check-circle-fill me-1"></i>Verified
+                      </span>
+                    } @else if (captain.computedStatus === 'rejected') {
+                      <span class="badge bg-danger-subtle text-danger rounded-pill px-2 py-1 small">
+                        <i class="bi bi-x-circle-fill me-1"></i>Rejected
+                      </span>
+                    } @else if (captain.computedStatus === 'pending') {
+                      <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill px-2 py-1 small">
+                        <i class="bi bi-clock-fill me-1"></i>Review
+                      </span>
+                    } @else {
+                      <span class="badge bg-secondary-subtle text-secondary rounded-pill px-2 py-1 small">
+                        Incomplete
+                      </span>
+                    }
+                  </div>
+                </div>
+
+                <!-- Footer meta in list item -->
+                <div class="d-flex justify-content-between align-items-center text-muted small pt-1 border-top mt-1">
+                  <span>
+                    <i class="bi bi-car-front me-1"></i>{{ captain.vehicle_number || captain.vehicle_type || 'N/A' }}
+                  </span>
+                  @if (captain.kyc_docs?.zip_archive) {
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2">
+                      <i class="bi bi-file-zip me-1"></i>ZIP Attached
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: CAPTAIN REVIEW & CHECKLIST DETAIL -->
+    <div class="col-12 col-lg-8">
+      @if (!selectedCaptain) {
+        <div class="bg-white rounded-3 border shadow-xs p-5 text-center text-muted h-100 d-flex flex-column align-items-center justify-content-center">
+          <i class="bi bi-person-check fs-1 text-secondary mb-3"></i>
+          <h5>Select a Captain Application</h5>
+          <p class="small text-muted mb-0">Choose an applicant from the left column to inspect documents and verify checklist.</p>
+        </div>
+      } @else {
+        <div class="bg-white rounded-3 border shadow-xs p-3 overflow-y-auto" style="max-height: calc(100vh - 210px);">
+          <!-- CAPTAIN HEADER CARD -->
+          <div class="captain-header-card p-3 rounded-3 bg-light border mb-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+              <div class="d-flex align-items-center gap-3">
+                <div class="avatar-lg rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fw-bold fs-3" style="width: 54px; height: 54px;">
+                  {{ (selectedCaptain.name || 'C').charAt(0) | uppercase }}
+                </div>
+                <div>
+                  <h5 class="fw-bold mb-0 text-dark">{{ selectedCaptain.name || 'Unnamed Captain' }}</h5>
+                  <div class="text-muted small">
+                    <span><i class="bi bi-envelope me-1"></i>{{ selectedCaptain.email || 'No Email' }}</span>
+                    <span class="mx-2">•</span>
+                    <span><i class="bi bi-telephone me-1"></i>{{ selectedCaptain.contact || 'No Phone' }}</span>
+                    <span class="mx-2">•</span>
+                    <span class="badge bg-dark-subtle text-dark">{{ selectedCaptain.role | uppercase }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick verification status banner -->
+              <div class="text-end">
+                @if (selectedCaptain.computedStatus === 'verified') {
+                  <span class="badge bg-success fs-6 px-3 py-2 rounded-pill">
+                    <i class="bi bi-shield-check me-1"></i>Account Verified & Active
+                  </span>
+                } @else if (selectedCaptain.computedStatus === 'rejected') {
+                  <span class="badge bg-danger fs-6 px-3 py-2 rounded-pill">
+                    <i class="bi bi-exclamation-octagon me-1"></i>Attention Required
+                  </span>
+                } @else {
+                  <span class="badge bg-warning text-dark fs-6 px-3 py-2 rounded-pill">
+                    <i class="bi bi-hourglass-split me-1"></i>Verification in Progress
+                  </span>
+                }
+                <div class="small text-muted mt-1">ID: {{ selectedCaptain.id | slice:0:13 }}...</div>
+              </div>
+            </div>
+
+            <!-- VEHICLE SPECIFICATIONS PILLS -->
+            <div class="row g-2 mt-2 pt-2 border-top">
+              <div class="col-6 col-md-3">
+                <small class="text-muted d-block">Vehicle Category</small>
+                <strong class="text-dark">{{ selectedCaptain.vehicle_type | titlecase }}</strong>
+              </div>
+              <div class="col-6 col-md-3">
+                <small class="text-muted d-block">Vehicle Model</small>
+                <strong class="text-dark">{{ selectedCaptain.vehicle_model || 'N/A' }}</strong>
+              </div>
+              <div class="col-6 col-md-3">
+                <small class="text-muted d-block">Registration Number</small>
+                <strong class="text-primary text-uppercase">{{ selectedCaptain.vehicle_number || 'N/A' }}</strong>
+              </div>
+              <div class="col-6 col-md-3">
+                <small class="text-muted d-block">Fuel Type</small>
+                <strong class="text-dark text-uppercase">{{ selectedCaptain.fuel_type || 'N/A' }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- KYC ZIP ARCHIVE DOWNLOAD CARD -->
+          <div class="kyc-zip-banner p-3 rounded-3 border mb-3"
+               [ngClass]="selectedCaptain.kyc_docs?.zip_archive ? 'bg-primary-subtle border-primary-subtle' : 'bg-light border-secondary-subtle'">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+              <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-file-earmark-zip fs-2" [ngClass]="selectedCaptain.kyc_docs?.zip_archive ? 'text-primary' : 'text-muted'"></i>
+                <div>
+                  <h6 class="fw-bold mb-0 text-dark">
+                    KYC Document Package
+                    @if (selectedCaptain.kyc_docs?.zip_archive) {
+                      <span class="badge bg-primary text-white rounded-pill px-2 py-0 ms-1 small">Available</span>
+                    } @else {
+                      <span class="badge bg-secondary text-white rounded-pill px-2 py-0 ms-1 small">Not Uploaded Yet</span>
+                    }
+                  </h6>
+                  <small class="text-muted">
+                    @if (selectedCaptain.kyc_docs?.zip_archive) {
+                      <span>{{ getZipFileName(selectedCaptain) }} ({{ getZipFileSizeKb(selectedCaptain) }})</span>
+                      <span class="mx-1">•</span>
+                      <span>Uploaded {{ selectedCaptain.kyc_docs?.zip_archive?.uploadedAt | date:'medium' }}</span>
+                    } @else {
+                      <span>Applicant has not uploaded document archive package yet.</span>
+                    }
+                  </small>
+                </div>
+              </div>
+
+              @if (selectedCaptain.kyc_docs?.zip_archive) {
+                <a
+                  [href]="getZipUrl(selectedCaptain)"
+                  target="_blank"
+                  download
+                  class="btn btn-primary btn-sm d-flex align-items-center gap-1 shadow-sm px-3">
+                  <i class="bi bi-download"></i>
+                  <span>Download ZIP Archive</span>
+                </a>
+              }
+            </div>
+
+            <!-- APPLICANT ENTERED DOCUMENT NUMBERS -->
+            @if (selectedCaptain.kyc_docs) {
+              <div class="row g-2 mt-2 pt-2 border-top border-primary-subtle small">
+                <div class="col-6 col-md-3">
+                  <span class="text-muted d-block">DL Number:</span>
+                  <span class="fw-semibold text-dark">{{ getDocDetail(selectedCaptain, 'driving_license') || 'Provided in ZIP' }}</span>
+                </div>
+                <div class="col-6 col-md-3">
+                  <span class="text-muted d-block">RC Number:</span>
+                  <span class="fw-semibold text-dark">{{ getDocDetail(selectedCaptain, 'vehicle_rc') || selectedCaptain.vehicle_number || 'Provided in ZIP' }}</span>
+                </div>
+                <div class="col-6 col-md-3">
+                  <span class="text-muted d-block">Insurance Valid:</span>
+                  <span class="fw-semibold text-dark">{{ getDocDetail(selectedCaptain, 'vehicle_insurance') || 'Provided in ZIP' }}</span>
+                </div>
+                <div class="col-6 col-md-3">
+                  <span class="text-muted d-block">Aadhaar / PAN:</span>
+                  <span class="fw-semibold text-dark">{{ getDocDetail(selectedCaptain, 'aadhaar_pan') || 'Provided in ZIP' }}</span>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- CHECKLIST REVIEW CONTROLS -->
+          <div class="checklist-section mb-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
+              <div>
+                <h6 class="fw-bold mb-0 text-dark d-flex align-items-center gap-2">
+                  <i class="bi bi-check2-square text-primary"></i>
+                  <span>9-Point Verification Checklist</span>
+                </h6>
+                <small class="text-muted">
+                  @if (isUnzipping) {
+                    <span class="text-primary"><span class="spinner-border spinner-border-sm me-1"></span>Extracting KYC documents for inspection...</span>
+                  } @else if (unzipSuccess) {
+                    <span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>All document images extracted &amp; ready to review.</span>
+                  } @else {
+                    <span>Inspect applicant document images and approve or reject each item.</span>
+                  }
+                </small>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-outline-success btn-xs rounded-pill" (click)="approveAll()">
+                  <i class="bi bi-check-all me-1"></i>Approve All
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-xs rounded-pill" (click)="resetAllToPending()">
+                  <i class="bi bi-arrow-counterclockwise me-1"></i>Reset to Pending
+                </button>
+              </div>
+            </div>
+
+            <!-- 9 CHECKLIST ITEMS -->
+            <div class="checklist-list d-flex flex-column gap-2">
+              @for (item of checklistDefinitions; track item.key; let idx = $index) {
+                <div class="checklist-row p-3 rounded-3 border transition shadow-xs"
+                     [ngClass]="{
+                       'border-success-subtle bg-success-subtle bg-opacity-25': activeChecklist[item.key] === 'verified',
+                       'border-danger-subtle bg-danger-subtle bg-opacity-25': activeChecklist[item.key] === 'not_verified',
+                       'border-warning-subtle bg-warning-subtle bg-opacity-10': activeChecklist[item.key] === 'pending'
+                     }">
+                  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                    <!-- Left: Number, Title & Main Label -->
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="item-badge-num rounded-circle text-center fw-bold shadow-xs"
+                           [ngClass]="{
+                             'bg-success text-white': activeChecklist[item.key] === 'verified',
+                             'bg-danger text-white': activeChecklist[item.key] === 'not_verified',
+                             'bg-warning text-dark': activeChecklist[item.key] === 'pending'
+                           }"
+                           style="width: 28px; height: 28px; line-height: 28px; font-size: 13px;">
+                        {{ idx + 1 }}
+                      </div>
+                      <div>
+                        <div class="fw-bold text-dark small mb-0 d-flex align-items-center gap-1">
+                          <i class="bi {{ item.icon }} text-primary"></i>
+                          <span>{{ item.label }}</span>
+                        </div>
+                        <small class="text-muted" style="font-size: 11px;">{{ item.desc }}</small>
+                      </div>
+                    </div>
+
+                    <!-- Right Controls: View Image Button + Status Pill + Approval Toggles -->
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                      <!-- VIEW IMAGE BUTTON & THUMBNAIL (FOR DOCUMENT ITEMS) -->
+                      @if (item.hasDocument) {
+                        <div class="d-flex align-items-center gap-1">
+                          @if (hasDocImage(item.key)) {
+                            <img
+                              [src]="getDocImageUrl(item.key)"
+                              alt="{{ item.label }}"
+                              class="rounded border shadow-xs doc-thumb-btn"
+                              title="Click to zoom image"
+                              (click)="openImageModal(item.key)" />
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-primary d-flex align-items-center gap-1 shadow-xs px-2 py-1"
+                              (click)="openImageModal(item.key)">
+                              <i class="bi bi-eye-fill"></i>
+                              <span class="small fw-semibold">View Image</span>
+                            </button>
+                          } @else if (isUnzipping) {
+                            <button type="button" class="btn btn-sm btn-outline-secondary px-2 py-1" disabled>
+                              <span class="spinner-border spinner-border-sm me-1"></span>
+                              <span class="small">Extracting...</span>
+                            </button>
+                          } @else if (selectedCaptain.kyc_docs?.zip_archive) {
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1 px-2 py-1"
+                              (click)="openImageModal(item.key)">
+                              <i class="bi bi-file-earmark-image"></i>
+                              <span class="small">Inspect</span>
+                            </button>
+                          } @else {
+                            <span class="badge bg-secondary-subtle text-muted small px-2 py-1">No Image</span>
+                          }
+                        </div>
+                      }
+
+                      <!-- STATUS BADGE -->
+                      <div>
+                        @if (activeChecklist[item.key] === 'verified') {
+                          <span class="badge bg-success rounded-pill px-2 py-1 small">
+                            <i class="bi bi-check-circle me-1"></i>Verified
+                          </span>
+                        } @else if (activeChecklist[item.key] === 'not_verified') {
+                          <span class="badge bg-danger rounded-pill px-2 py-1 small">
+                            <i class="bi bi-x-circle me-1"></i>Not Verified
+                          </span>
+                        } @else {
+                          <span class="badge bg-warning text-dark rounded-pill px-2 py-1 small">
+                            <i class="bi bi-hourglass me-1"></i>Pending
+                          </span>
+                        }
+                      </div>
+
+                      <!-- 3-WAY VERIFIER APPROVAL BUTTONS -->
+                      <div class="btn-group btn-group-sm" role="group" aria-label="Verifier Action">
+                        <button
+                          type="button"
+                          class="btn btn-xs"
+                          [ngClass]="activeChecklist[item.key] === 'verified' ? 'btn-success text-white fw-semibold shadow-xs' : 'btn-outline-secondary'"
+                          (click)="setItemStatus(item.key, 'verified')"
+                          title="Mark Verified">
+                          <i class="bi bi-check-lg me-1"></i>Approve
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-xs"
+                          [ngClass]="activeChecklist[item.key] === 'not_verified' ? 'btn-danger text-white fw-semibold shadow-xs' : 'btn-outline-secondary'"
+                          (click)="setItemStatus(item.key, 'not_verified')"
+                          title="Mark Rejected / Incomplete">
+                          <i class="bi bi-x-lg me-1"></i>Reject
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-xs"
+                          [ngClass]="activeChecklist[item.key] === 'pending' ? 'btn-warning text-dark fw-semibold shadow-xs' : 'btn-outline-secondary'"
+                          (click)="setItemStatus(item.key, 'pending')"
+                          title="Keep Pending">
+                          <i class="bi bi-clock me-1"></i>Pending
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- INLINE BASIC DETAILS CARDS (FOR FAST CHECKING WITHOUT CLICKING) -->
+                  <!-- 1. PERSONAL DETAILS CARD -->
+                  @if (item.key === 'personal_details') {
+                    <div class="p-2 bg-white rounded-2 border border-secondary-subtle small d-flex flex-wrap gap-3 align-items-center mt-2">
+                      <div><span class="text-muted">Legal Name:</span> <strong class="text-dark ms-1">{{ selectedCaptain.name || 'N/A' }}</strong></div>
+                      <div><span class="text-muted">Mobile:</span> <strong class="text-primary ms-1"><i class="bi bi-telephone me-1"></i>{{ selectedCaptain.contact || 'N/A' }}</strong></div>
+                      <div><span class="text-muted">Email:</span> <strong class="text-dark ms-1"><i class="bi bi-envelope me-1"></i>{{ selectedCaptain.email || 'N/A' }}</strong></div>
+                      <div><span class="text-muted">City:</span> <strong class="text-dark ms-1"><i class="bi bi-geo-alt me-1"></i>{{ selectedCaptain.city || extractedMeta['city'] || 'Bangalore' }}</strong></div>
+                    </div>
+                  }
+
+                  <!-- 2. VEHICLE DETAILS CARD -->
+                  @if (item.key === 'vehicle_details') {
+                    <div class="p-2 bg-white rounded-2 border border-secondary-subtle small d-flex flex-wrap gap-3 align-items-center mt-2">
+                      <div><span class="text-muted">Model:</span> <strong class="text-dark ms-1">{{ selectedCaptain.vehicle_model || 'N/A' }}</strong></div>
+                      <div><span class="text-muted">Plate Number:</span> <strong class="text-primary text-uppercase ms-1"><i class="bi bi-123 me-1"></i>{{ selectedCaptain.vehicle_number || 'N/A' }}</strong></div>
+                      <div><span class="text-muted">Category:</span> <strong class="text-dark text-capitalize ms-1">{{ selectedCaptain.vehicle_type || 'bike' }}</strong></div>
+                      <div><span class="text-muted">Fuel Type:</span> <strong class="text-dark text-uppercase ms-1"><i class="bi bi-fuel-pump me-1"></i>{{ selectedCaptain.fuel_type || 'petrol' }}</strong></div>
+                    </div>
+                  }
+
+                  <!-- 3. DRIVING LICENSE DETAILS CARD -->
+                  @if (item.key === 'driving_license') {
+                    <div class="p-2 bg-white rounded-2 border border-secondary-subtle small d-flex flex-wrap gap-3 align-items-center mt-2">
+                      <div><span class="text-muted">License (DL) Number:</span> <strong class="text-dark ms-1 badge bg-light text-dark border font-monospace fs-7">{{ getDocNumber('driving_license') || 'Provided in Document Image' }}</strong></div>
+                      <div><span class="text-muted">File:</span> <span class="text-secondary ms-1">{{ getDocFileName('driving_license') }}</span></div>
+                    </div>
+                  }
+
+                  <!-- 4. VEHICLE RC BOOK CARD -->
+                  @if (item.key === 'vehicle_rc') {
+                    <div class="p-2 bg-white rounded-2 border border-secondary-subtle small d-flex flex-wrap gap-3 align-items-center mt-2">
+                      <div><span class="text-muted">RC Number:</span> <strong class="text-dark ms-1 badge bg-light text-dark border font-monospace fs-7">{{ getDocNumber('vehicle_rc') || selectedCaptain.vehicle_number || 'Provided in Document Image' }}</strong></div>
+                      <div><span class="text-muted">File:</span> <span class="text-secondary ms-1">{{ getDocFileName('vehicle_rc') }}</span></div>
+                    </div>
+                  }
+
+                  <!-- 5. VEHICLE INSURANCE CARD -->
+                  @if (item.key === 'vehicle_insurance') {
+                    <div class="p-2 bg-white rounded-2 border border-secondary-subtle small d-flex flex-wrap gap-3 align-items-center mt-2">
+                      <div><span class="text-muted">Valid Until / Expiration:</span> <strong class="text-dark ms-1 badge bg-light text-dark border font-monospace fs-7">{{ getDocNumber('vehicle_insurance') || '2027-12-31' }}</strong></div>
+                      <div><span class="text-muted">File:</span> <span class="text-secondary ms-1">{{ getDocFileName('vehicle_insurance') }}</span></div>
+                    </div>
+                  }
+
+                  <!-- 6. AADHAAR / PAN CARD -->
+                  @if (item.key === 'aadhaar_pan') {
+                    <div class="p-2 bg-white rounded-2 border border-secondary-subtle small d-flex flex-wrap gap-3 align-items-center mt-2">
+                      <div><span class="text-muted">Aadhaar / PAN Number:</span> <strong class="text-dark ms-1 badge bg-light text-dark border font-monospace fs-7">{{ getDocNumber('aadhaar_pan') || 'Provided in Document Image' }}</strong></div>
+                      <div><span class="text-muted">File:</span> <span class="text-secondary ms-1">{{ getDocFileName('aadhaar_pan') }}</span></div>
+                    </div>
+                  }
+
+                  <!-- 7. LIVE SELFIE CARD -->
+                  @if (item.key === 'live_selfie') {
+                    <div class="p-2 bg-white rounded-2 border border-secondary-subtle small d-flex flex-wrap gap-3 align-items-center mt-2">
+                      <div><span class="text-muted">Face Check:</span> <strong class="text-dark ms-1">Live Facial Camera Photo</strong></div>
+                      <div><span class="text-muted">File:</span> <span class="text-secondary ms-1">{{ getDocFileName('live_selfie') }}</span></div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- VERIFICATION FEEDBACK & REVIEW NOTES -->
+          <div class="p-3 bg-light rounded-3 border mb-3">
+            <h6 class="fw-bold mb-2 text-dark d-flex align-items-center gap-1">
+              <i class="bi bi-chat-left-text text-primary"></i>
+              <span>Verification Notes & Captain Feedback</span>
+            </h6>
+            <p class="text-muted small mb-2">
+              This message will be shown to the Captain in their partner app under "Verification in Progress" or "Requires Attention".
+            </p>
+
+            <!-- Quick Template Chips -->
+            <div class="preset-chips d-flex flex-wrap gap-1 mb-2">
+              @for (note of presetNotes; track note) {
+                <button
+                  type="button"
+                  class="btn btn-xs btn-outline-dark bg-white rounded-pill text-truncate"
+                  style="max-width: 260px; font-size: 11px;"
+                  (click)="applyPresetNote(note)">
+                  + {{ note }}
+                </button>
+              }
+            </div>
+
+            <textarea
+              class="form-control form-control-sm"
+              rows="3"
+              placeholder="e.g. All documents verified. Welcome to Pintu Captain!"
+              [(ngModel)]="verificationNotes"></textarea>
+          </div>
+
+          <!-- FOOTER ACTION BAR -->
+          <div class="d-flex justify-content-between align-items-center p-3 bg-white border rounded-3 shadow-xs sticky-bottom">
+            <div class="small">
+              <span class="text-muted">Save will update Captain's status to: </span>
+              <strong class="text-uppercase"
+                      [ngClass]="activeChecklist['personal_details'] === 'verified' && activeChecklist['vehicle_details'] === 'verified' && activeChecklist['driving_license'] === 'verified' && activeChecklist['vehicle_rc'] === 'verified' && activeChecklist['vehicle_insurance'] === 'verified' && activeChecklist['aadhaar_pan'] === 'verified' && activeChecklist['live_selfie'] === 'verified' && activeChecklist['background_verification'] === 'verified' && activeChecklist['safety_activation'] === 'verified' ? 'text-success' : 'text-warning'">
+                {{ activeChecklist['personal_details'] === 'verified' && activeChecklist['vehicle_details'] === 'verified' && activeChecklist['driving_license'] === 'verified' && activeChecklist['vehicle_rc'] === 'verified' && activeChecklist['vehicle_insurance'] === 'verified' && activeChecklist['aadhaar_pan'] === 'verified' && activeChecklist['live_selfie'] === 'verified' && activeChecklist['background_verification'] === 'verified' && activeChecklist['safety_activation'] === 'verified' ? 'Approved & Activated 🚀' : 'Under Review ⏳' }}
+              </strong>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-primary px-4 d-flex align-items-center gap-2 shadow-sm"
+              [disabled]="isSaving"
+              (click)="saveVerification()">
+              @if (isSaving) {
+                <div class="spinner-border spinner-border-sm text-white" role="status"></div>
+                <span>Saving Verification...</span>
+              } @else {
+                <i class="bi bi-cloud-check-fill fs-5"></i>
+                <span class="fw-bold">Save Verification Changes</span>
+              }
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- INTERACTIVE ZOOMABLE IMAGE INSPECTION MODAL -->
+  @if (showImageModal && activeModalDoc) {
+    <div class="modal-backdrop-custom d-flex align-items-center justify-content-center">
+      <div class="modal-dialog-custom bg-white rounded-4 shadow-lg border d-flex flex-column overflow-hidden">
+        <!-- MODAL HEADER -->
+        <div class="modal-header-custom p-3 border-bottom d-flex justify-content-between align-items-center bg-light">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-file-earmark-image fs-4 text-primary"></i>
+            <div>
+              <h5 class="fw-bold mb-0 text-dark">{{ activeModalDoc.title }}</h5>
+              <div class="small text-muted">
+                <span>{{ activeModalDoc.fileName }}</span>
+                @if (activeModalDoc.docNumber) {
+                  <span class="mx-1">•</span>
+                  <span class="badge bg-dark-subtle text-dark font-monospace">{{ activeModalDoc.docNumber }}</span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- ZOOM & ROTATE CONTROLS + DOWNLOAD + CLOSE -->
+          <div class="d-flex align-items-center gap-2">
+            <!-- Zoom Controls -->
+            <div class="btn-group btn-group-sm" role="group">
+              <button type="button" class="btn btn-outline-secondary" (click)="zoomOut()" title="Zoom Out (-)">
+                <i class="bi bi-zoom-out"></i>
+              </button>
+              <span class="btn btn-outline-secondary disabled text-dark fw-bold px-2" style="font-size: 11px;">
+                {{ (zoomLevel * 100).toFixed(0) }}%
+              </span>
+              <button type="button" class="btn btn-outline-secondary" (click)="zoomIn()" title="Zoom In (+)">
+                <i class="bi bi-zoom-in"></i>
+              </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="rotateDoc()" title="Rotate 90°">
+                <i class="bi bi-arrow-clockwise"></i>
+              </button>
+              <button type="button" class="btn btn-outline-secondary" (click)="resetZoom()" title="Reset Zoom">
+                <i class="bi bi-aspect-ratio"></i>
+              </button>
+            </div>
+
+            <!-- DOWNLOAD BUTTON -->
+            <a
+              [href]="activeModalDoc.url"
+              [download]="activeModalDoc.fileName"
+              target="_blank"
+              class="btn btn-sm btn-dark d-flex align-items-center gap-1 shadow-xs px-3"
+              title="Download full resolution document to local disk">
+              <i class="bi bi-download"></i>
+              <span class="small fw-semibold">Download</span>
+            </a>
+
+            <!-- CLOSE BUTTON -->
+            <button type="button" class="btn-close ms-2" aria-label="Close" (click)="closeImageModal()"></button>
+          </div>
+        </div>
+
+        <!-- MODAL BODY: ZOOMABLE IMAGE VIEWPORT -->
+        <div class="modal-body-custom flex-grow-1 p-3 overflow-auto d-flex align-items-center justify-content-center bg-dark bg-opacity-10 position-relative" style="min-height: 480px; max-height: 65vh;">
+          @if (activeModalDoc.isPdf) {
+            <iframe [src]="activeModalDoc.url" class="w-100 h-100 rounded border" style="min-height: 480px;"></iframe>
+          } @else {
+            <div class="image-wrapper d-flex align-items-center justify-content-center w-100 h-100">
+              <img
+                [src]="activeModalDoc.url"
+                [alt]="activeModalDoc.title"
+                class="img-fluid rounded shadow-sm"
+                [style.transform]="'scale(' + zoomLevel + ') rotate(' + rotation + 'deg)'"
+                style="transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1); max-height: 60vh; max-width: 90%; object-fit: contain; cursor: grab;" />
+            </div>
+          }
+        </div>
+
+        <!-- MODAL FOOTER: IN-MODAL QUICK VERIFIER DECISION BAR -->
+        <div class="modal-footer-custom p-3 border-top d-flex justify-content-between align-items-center bg-light">
+          <div class="d-flex align-items-center gap-2">
+            <span class="small text-muted">Document Decision:</span>
+            @if (activeChecklist[activeModalDoc.key] === 'verified') {
+              <span class="badge bg-success rounded-pill px-3 py-1 fs-7">
+                <i class="bi bi-check-circle-fill me-1"></i>Approved
+              </span>
+            } @else if (activeChecklist[activeModalDoc.key] === 'not_verified') {
+              <span class="badge bg-danger rounded-pill px-3 py-1 fs-7">
+                <i class="bi bi-x-circle-fill me-1"></i>Rejected
+              </span>
+            } @else {
+              <span class="badge bg-warning text-dark rounded-pill px-3 py-1 fs-7">
+                <i class="bi bi-hourglass-split me-1"></i>Pending Review
+              </span>
+            }
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <button
+              type="button"
+              class="btn btn-sm"
+              [ngClass]="activeChecklist[activeModalDoc.key] === 'verified' ? 'btn-success text-white fw-bold shadow-sm' : 'btn-outline-success'"
+              (click)="setModalItemStatus('verified')">
+              <i class="bi bi-check-lg me-1"></i>Approve Document
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm"
+              [ngClass]="activeChecklist[activeModalDoc.key] === 'not_verified' ? 'btn-danger text-white fw-bold shadow-sm' : 'btn-outline-danger'"
+              (click)="setModalItemStatus('not_verified')">
+              <i class="bi bi-x-lg me-1"></i>Reject Document
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm"
+              [ngClass]="activeChecklist[activeModalDoc.key] === 'pending' ? 'btn-warning text-dark fw-bold shadow-sm' : 'btn-outline-secondary'"
+              (click)="setModalItemStatus('pending')">
+              <i class="bi bi-clock me-1"></i>Keep Pending
+            </button>
+            <button type="button" class="btn btn-sm btn-secondary ms-2" (click)="closeImageModal()">
+              Done &amp; Return
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

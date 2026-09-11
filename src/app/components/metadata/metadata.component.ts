@@ -14,6 +14,7 @@ import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.compone
 import { MatTabGroup, MatTab } from "@angular/material/tabs";
 import { ServiceControlComponent } from "../service-control/service-control.component";
 import { SidebarSettingsComponent } from "../sidebar-settings/sidebar-settings.component";
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-metadata',
@@ -40,12 +41,18 @@ isMapUpdateLoading: boolean = false
 
 polygonCoords: google.maps.LatLngLiteral[] = [];
 
+  rideCommission = {
+    type: 'fixed',
+    value: 3,
+    enabled: true,
+    min_fare: 0
+  };
 
 @ViewChild('mapContainer', { static: false }) mapContainer: any;
   map!: google.maps.Map;
   drawingManager!: google.maps.drawing.DrawingManager;
 
-  constructor(private commonService: CommonService){}
+  constructor(private commonService: CommonService, private dialog: MatDialog){}
 
   ngOnInit(): void {
       this.getMetaData()
@@ -90,19 +97,65 @@ polygonCoords: google.maps.LatLngLiteral[] = [];
   getMetaData(){
     this.isMetaDataLoading = true
       let params = {
-        "fields": ["categories", "locations", "status"]
+        "fields": ["categories", "locations", "status", "ride_commission"]
       }
     this.commonService.getMetaDatabyQuerry(params).subscribe((res:any) => {
-        this.metaData = res
+        this.metaData = res?.data || res
         this.latest_version = this.metaData?.latest_version
         this.download_link = this.metaData?.download_link
         this.last_updated = this.metaData?.last_updated
         this.otherDetails = this.metaData?.video
+
+        if (this.metaData?.ride_commission) {
+          this.rideCommission = {
+            type: this.metaData.ride_commission.type || 'fixed',
+            value: this.metaData.ride_commission.value !== undefined ? Number(this.metaData.ride_commission.value) : 3,
+            enabled: this.metaData.ride_commission.enabled !== undefined ? !!this.metaData.ride_commission.enabled : true,
+            min_fare: this.metaData.ride_commission.min_fare !== undefined ? Number(this.metaData.ride_commission.min_fare) : 0
+          };
+        }
+
         this.isMetaDataLoading = false
-         const parsed = JSON.parse(this.otherDetails);
-    this.otherDetails = JSON.stringify(parsed, null, 10)
+        try {
+          if (this.otherDetails) {
+            const parsed = JSON.parse(this.otherDetails);
+            this.otherDetails = JSON.stringify(parsed, null, 10);
+          }
+        } catch (e) {}
         
     })
+  }
+
+  updateRideCommission() {
+    const params = {
+      ride_commission: {
+        type: this.rideCommission.type,
+        value: Number(this.rideCommission.value) || 0,
+        enabled: this.rideCommission.enabled,
+        min_fare: Number(this.rideCommission.min_fare) || 0
+      }
+    };
+    this.commonService.updatePlygonData(params).subscribe({
+      next: () => {
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'success',
+            body: 'Ride platform commission settings updated successfully!',
+            type: 'success',
+          },
+        });
+      },
+      error: (err: any) => {
+        console.error('Commission update error:', err);
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'error',
+            body: 'Failed to update commission settings: ' + (err?.error?.message || err.message),
+            type: 'error',
+          },
+        });
+      }
+    });
   }
 
   updateMetaData(){

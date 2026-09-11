@@ -1,0 +1,97 @@
+.referral-container {
+  font-family: 'Roboto', sans-serif;
+  min-height: 60vh;
+  overflow-x: auto;
+}
+
+.breadcrumb-item a {
+  text-decoration: none;
+  color: var(--bs-primary);
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+.flowchart-container {
+  padding: 40px 0;
+  text-align: center;
+}
+
+.user-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  display: inline-block;
+  min-width: 240px;
+  text-align: left;
+  transition: all 0.2s ease-in-out;
+  padding: 6px;
+}
+
+.user-card.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.current-user-node {
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.children-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  position: relative;
+  padding-top: 40px;
+}
+
+/* Vertical line from parent */
+.current-user-node::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 40px;
+  background-color: #ccc;
+}
+
+.child-node {
+  position: relative;
+}
+
+/* Vertical line up to horizontal connector */
+.child-node::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 40px;
+  background-color: #ccc;
+}
+
+/* Horizontal line connecting all children. It starts from the center of the first child and ends at the center of the last child. */
+.children-container::before, .children-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 2px;
+  background-color: #ccc;
+}
+
+.children-container::before {
+  left: 0;
+  width: 50%;
+}
+
+.children-container::after {
+  right: 0;
+  width: 50%;
+}

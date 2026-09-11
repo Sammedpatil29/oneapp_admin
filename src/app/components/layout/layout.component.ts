@@ -26,8 +26,15 @@ year = new Date().getFullYear()
 version = environment.version
 
 showAlarm: boolean = false;
+sosAlert: any = null;
 private orderSubscription: Subscription | undefined;
+private sosSubscription: Subscription | undefined;
 private audio: HTMLAudioElement | undefined;
+private sosAudio: HTMLAudioElement | undefined;
+private audioContext: AudioContext | null = null;
+private sirenOscillator: OscillatorNode | null = null;
+private sirenGain: GainNode | null = null;
+private sirenInterval: any = null;
 private alarmTimeout: any;
 isConnected: boolean = false;
 private connectSub: Subscription | undefined;
@@ -102,16 +109,36 @@ private disconnectSub: Subscription | undefined;
     // this.year = new Date().getFullYear()
   }
 
-  // Unlock audio context for strict browsers (like Safari) on first user interaction
+  // Unlock audio context for strict browsers (like Safari/Chrome) on first user interaction
   @HostListener('document:click')
   unlockAudio() {
-    if (!this.audioUnlocked && this.audio && !this.showAlarm) {
-      this.audio.muted = true;
-      this.audio.play().then(() => {
-        this.audio?.pause();
-        if (this.audio) { this.audio.currentTime = 0; this.audio.muted = false; }
-        this.audioUnlocked = true;
-      }).catch(() => {});
+    if (!this.audioUnlocked) {
+      if (this.audio && !this.showAlarm) {
+        this.audio.muted = true;
+        this.audio.play().then(() => {
+          this.audio?.pause();
+          if (this.audio) { this.audio.currentTime = 0; this.audio.muted = false; }
+        }).catch(() => {});
+      }
+      if (this.sosAudio && !this.sosAlert) {
+        this.sosAudio.muted = true;
+        this.sosAudio.play().then(() => {
+          this.sosAudio?.pause();
+          if (this.sosAudio) { this.sosAudio.currentTime = 0; this.sosAudio.muted = false; }
+        }).catch(() => {});
+      }
+      try {
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioContextClass) {
+          if (!this.audioContext) {
+            this.audioContext = new AudioContextClass();
+          }
+          if (this.audioContext.state === 'suspended') {
+            this.audioContext.resume();
+          }
+        }
+      } catch (e) {}
+      this.audioUnlocked = true;
     }
   }
 
@@ -131,6 +158,13 @@ private disconnectSub: Subscription | undefined;
       this.triggerAlarm();
     });
 
+    this.sosSubscription = this.socketService.on<any>('admin:sos_alert').subscribe((data) => {
+      console.log('🚨 ADMIN SOS ALERT RECEIVED:', data);
+      this.sosAlert = data;
+      this.triggerSosAlarm();
+      this.cdr.detectChanges();
+    });
+
     this.connectSub = this.socketService.on<any>('connect').subscribe(() => {
       this.isConnected = true;
       this.cdr.detectChanges();
@@ -146,10 +180,16 @@ private disconnectSub: Subscription | undefined;
       this.role = decoded.role
       console.log(this.role)
 
-    // Pre-load the audio instance once when the component initializes
+    // Pre-load the order audio instance
     this.audio = new Audio('assets/mixkit-urgent-digital-alarm-tone-loop-2973.mp3');
     this.audio.loop = true;
     this.audio.load();
+
+    // Pre-load the emergency siren audio instance
+    this.sosAudio = new Audio('assets/emergency-siren.wav');
+    this.sosAudio.loop = true;
+    this.sosAudio.load();
+
     this.getSidebarItems()
 
     this.sidebarMidService.$value.subscribe(() => {
@@ -169,18 +209,118 @@ private disconnectSub: Subscription | undefined;
       this.audio.currentTime = 0;
       this.audio.play().catch(err => console.error('Audio play failed (maybe blocked by browser):', err));
     }
+  }
 
+  triggerSosAlarm() {
+    this.showAlarm = true;
+    this.cdr.detectChanges();
+
+    if (this.alarmTimeout) clearTimeout(this.alarmTimeout);
+
+    // Stop normal order audio if playing
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+    }
+
+    // Play dedicated emergency siren WAV
+    if (this.sosAudio) {
+      this.sosAudio.pause();
+      this.sosAudio.currentTime = 0;
+      this.sosAudio.play().catch(err => {
+        console.warn('HTML5 SOS audio play failed, falling back to Web Audio oscillator siren:', err);
+        this.startWebAudioSiren();
+      });
+    } else {
+      this.startWebAudioSiren();
+    }
+  }
+
+  private startWebAudioSiren() {
+    this.stopWebAudioSiren();
+    try {
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContextClass) return;
+      if (!this.audioContext) {
+        this.audioContext = new AudioContextClass();
+      }
+      if (this.audioContext.state === 'suspended') {
+        this.audioContext.resume();
+      }
+
+      const osc = this.audioContext.createOscillator();
+      const gain = this.audioContext.createGain();
+      osc.type = 'sawtooth';
+      gain.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+
+      osc.connect(gain);
+      gain.connect(this.audioContext.destination);
+      osc.start();
+
+      this.sirenOscillator = osc;
+      this.sirenGain = gain;
+
+      let high = false;
+      this.sirenInterval = setInterval(() => {
+        if (!this.audioContext || !this.sirenOscillator) return;
+        const targetFreq = high ? 960 : 650;
+        high = !high;
+        this.sirenOscillator.frequency.setTargetAtTime(targetFreq, this.audioContext.currentTime, 0.15);
+      }, 500);
+    } catch (e) {
+      console.error('Failed to start Web Audio siren:', e);
+    }
+  }
+
+  private stopWebAudioSiren() {
+    if (this.sirenInterval) {
+      clearInterval(this.sirenInterval);
+      this.sirenInterval = null;
+    }
+    if (this.sirenOscillator) {
+      try {
+        this.sirenOscillator.stop();
+        this.sirenOscillator.disconnect();
+      } catch (e) {}
+      this.sirenOscillator = null;
+    }
+    if (this.sirenGain) {
+      try {
+        this.sirenGain.disconnect();
+      } catch (e) {}
+      this.sirenGain = null;
+    }
   }
 
   stopAlarm(){
     this.showAlarm = false;
-      this.audio?.pause();
+    this.audio?.pause();
+    this.sosAudio?.pause();
+    this.stopWebAudioSiren();
+  }
+
+  dismissSosAlert() {
+    this.stopAlarm();
+    this.sosAlert = null;
+    this.cdr.detectChanges();
+  }
+
+  openGoogleMaps(lat: any, lng: any) {
+    if (lat && lng) {
+      window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+    }
   }
 
   ngOnDestroy(): void {
     this.socketService.disconnect();
     this.orderSubscription?.unsubscribe();
+    this.sosSubscription?.unsubscribe();
     this.audio?.pause();
+    this.sosAudio?.pause();
+    this.stopWebAudioSiren();
+    if (this.audioContext && this.audioContext.state !== 'closed') {
+      try { this.audioContext.close(); } catch(e) {}
+    }
     if (this.alarmTimeout) clearTimeout(this.alarmTimeout);
     this.connectSub?.unsubscribe();
     this.disconnectSub?.unsubscribe();
@@ -223,6 +363,18 @@ openAlert(data:any){
 getSidebarItems(){
   this.commonService.getValidSidebarItems().subscribe((res:any)=>{
     this.sidebarItems = res.data.filter((item:any) => item.is_active === true);
+    const hasValidation = this.sidebarItems.some((item:any) => 
+      Array.isArray(item.routerLink) ? item.routerLink.includes('/layout/validation') : item.routerLink === '/layout/validation'
+    );
+    if (!hasValidation) {
+      this.sidebarItems.push({
+        routerLink: ['/layout/validation'],
+        routerLinkActiveOptions: { exact: true },
+        title: 'Captain Verification',
+        svg: "M481-779.67q107.33 0 202.33 45.84 95 45.83 158 131.83 4.34 6.33 3.17 10.67-1.17 4.33-5.17 8-4 3.66-9.66 3.5Q824-580 819.33-586q-57.66-80.67-147.5-123.83Q582-753 481-753q-101 0-189.33 43.5-88.34 43.5-147 123.5-4.67 6.33-9.67 7.33t-9.67-2q-5-3-5.5-8.5t2.84-10.83q62-85.67 156.5-132.67 94.5-47 201.83-47Zm0 95.34q135.67 0 233 90 97.33 90 97.33 222.33 0 47.33-34.5 79.83t-83.5 32.5q-49.66 0-85.16-32.5T572.67-372q0-37-27.17-61.83-27.17-24.84-64.5-24.84t-64.83 24.84Q388.67-409 388.67-372q0 101.67 61.16 169.67Q511-134.33 604-107q7 2.33 9 6.67 2 4.33.67 9.66-1.34 5.67-5.34 8.67T598-81q-103.33-26-169.67-103.17Q362-261.33 362-372q0-48 35-80.67 35-32.66 84-32.66t84 32.66Q600-420 600-372q0 36.33 28 61.17Q656-286 693.33-286 730-286 757-310.83q27-24.84 27-61.17 0-120.67-89.33-202.33Q605.33-656 481.33-656T268-574.33q-89.33 81.66-89.33 202 0 24 5.16 61.66Q189-273 206.67-224.33 209-218 206.5-214t-7.17 6.33q-5.33 2.34-10.83.5-5.5-1.83-7.83-7.83-13.67-38.33-20.84-77.5-7.16-39.17-7.16-79.5 0-130.33 97.5-221.33t230.83-91Zm0-195.34q64.67 0 126.67 15.84 62 15.83 119 44.83 6.33 3 7.16 8 .84 5-1.5 9.33-2.33 4.34-7 7Q720.67-792 714-795q-54.33-27-113.17-42.17Q542-852.33 481-852.33q-60.67 0-118.67 14.16-58 14.17-111 43.17-6 3-10.33 1.17-4.33-1.84-7-6.5-2.67-4-2-8.84.67-4.83 5.33-7.83Q294-847.67 356-863.67t125-16Zm0 295q92.33 0 159 61.5T706.67-372q0 6.33-3.5 9.83t-9.84 3.5q-6 0-10-3.5t-4-9.83q0-79-58.83-132.5T481-558q-80.67 0-138.5 53.5T284.67-372q0 83.67 29 142.5t85.66 117.83Q404-107 403.67-102q-.34 5-4.34 9-3.33 3.33-9 4.33-5.66 1-10.33-4.33-58.33-60.67-90.5-126.17T257.33-372q0-89.67 65.67-151.17 65.67-61.5 158-61.5ZM480-386q6.33 0 9.83 4t3.5 10q0 79 57.67 130t133.67 51q7.33 0 18.33-1 11-1 23.67-3 6.33-1.33 10.5 1.83 4.16 3.17 5.5 8.17 1.33 5.33-1.34 9.33-2.66 4-8.66 5.34-18 5-31.5 5.5t-16.5.5q-88.34 0-153.17-59-64.83-59-64.83-148.67 0-6 3.5-10t9.83-4Z",
+        is_active: true,
+      });
+    }
     if(this.sidebarItems.length == 0){
       this.sidebarItems.push({
       routerLink: ['/layout/metadata'],

@@ -9,6 +9,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { ButtonSpinnerComponent } from "../button-spinner/button-spinner.component";
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 import { CommonModule } from '@angular/common';
+import { ReferralTreeComponent } from '../referral-tree/referral-tree.component';
+import { min } from 'rxjs';
 
 @Component({
   selector: 'app-add-users',
@@ -153,5 +155,14 @@ count = 0
       })
     }
 
+  }
+
+  openReferralTree(){
+    this.dialog.open(ReferralTreeComponent, {
+      data: {
+        item: this.data.item
+      },
+      minWidth: '50vw'
+    })
   }
 }
