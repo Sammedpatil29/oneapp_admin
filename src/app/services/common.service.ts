@@ -228,6 +228,14 @@ export class CommonService {
     return this.http.delete(`${this.url}/api/tickets/${id}/`, params)
   }
 
+  getPayoutRequests(params?: any) {
+    return this.http.get(`${this.url}/api/payouts`, { params: params });
+  }
+
+  updatePayoutStatus(id: any, status: string, admin_notes?: string) {
+    return this.http.put(`${this.url}/api/payouts/${id}`, { status, admin_notes });
+  }
+
   getAllVisits(){
     return this.http.get(this.allVisitsUrl)
   }
