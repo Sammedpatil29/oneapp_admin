@@ -1,22 +1,25 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { inject } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService);  // Inject AuthService
-  const router = inject(Router);  // Inject Router
+  const platformId = inject(PLATFORM_ID);
+  // During SSR (Server-Side Rendering on Node.js), sessionStorage is not defined.
+  // Allow the server to render the shell; browser hydration will perform the real auth check.
+  if (!isPlatformBrowser(platformId)) {
+    return true;
+  }
 
-  // IMPORTANT: For this to fix the flicker, your `AuthService.isAuthenticated()`
-  // method must be changed to return an Observable<boolean>.
-  // This observable should only emit `true` after it has successfully
-  // verified the user's session (e.g., with an API call on app load).
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
   return authService.isAuthenticated().pipe(
     map(isAuthenticated => {
       if (isAuthenticated) {
-        return true; // Allow navigation
+        return true;
       }
-      // If not authenticated, redirect to the login page
       return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
     })
   );

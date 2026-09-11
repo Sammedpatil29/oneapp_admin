@@ -89,6 +89,32 @@ export class CommonService {
     return this.http.patch(`${this.url}/api/metadata`, params)
   }
 
+  // --- Multi-City Service Area CRUD ---
+  getServiceAreas(activeOnly: boolean = false) {
+    const query = activeOnly ? '?active=true' : '';
+    return this.http.get<any>(`${this.url}/api/service-areas${query}`);
+  }
+
+  createServiceArea(data: any) {
+    return this.http.post<any>(`${this.url}/api/service-areas`, data);
+  }
+
+  getServiceAreaById(id: string) {
+    return this.http.get<any>(`${this.url}/api/service-areas/${id}`);
+  }
+
+  updateServiceArea(id: string, data: any) {
+    return this.http.put<any>(`${this.url}/api/service-areas/${id}`, data);
+  }
+
+  deleteServiceArea(id: string) {
+    return this.http.delete<any>(`${this.url}/api/service-areas/${id}`);
+  }
+
+  checkLocationServiceArea(lat: number, lng: number) {
+    return this.http.post<any>(`${this.url}/api/service-areas/check`, { lat, lng });
+  }
+
   getOrders(params:any){
     return this.http.post(this.orders, params)
   }
@@ -245,8 +271,9 @@ export class CommonService {
   }
 
   getValidSidebarItems(){
+    const token = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('token') : '';
     let headers = new HttpHeaders({
-      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+      'Authorization': `Bearer ${token}`
     })
     return this.http.get(`${this.url}/api/sidebar-items/valid`, { headers: headers })
   }
