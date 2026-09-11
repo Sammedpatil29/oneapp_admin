@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, OnDestroy, HostListener, ChangeDetectorRef } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, OnDestroy, HostListener, ChangeDetectorRef, PLATFORM_ID } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
@@ -20,6 +20,7 @@ import { SidebarMidService } from '../../services/sidebar-mid.service';
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   readonly dialog = inject(MatDialog);
+  private platformId = inject(PLATFORM_ID);
 role:string | null = ''
 token: any = ''
 year = new Date().getFullYear()
@@ -152,6 +153,10 @@ private disconnectSub: Subscription | undefined;
   }
 
   ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.socketService.connect();
 
     this.orderSubscription = this.socketService.on<any>('new order').subscribe((data) => {
