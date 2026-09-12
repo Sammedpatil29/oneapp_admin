@@ -44,6 +44,8 @@ serviceAreas: any[] = [];
 selectedAreaId: string = '';
 cityNameInput: string = '';
 isActiveAreaInput: boolean = true;
+isOfflineAreaInput: boolean = false;
+offlineMessageInput: string = '';
 areaDescriptionInput: string = '';
 isCreatingNewArea: boolean = false;
 polygonCoords: google.maps.LatLngLiteral[] = [];
@@ -100,6 +102,8 @@ otherPolygonOverlays: google.maps.Polygon[] = [];
     this.strokeColor = area.strokeColor || '#a000e2';
     this.areaColor = area.areaColor || '#a000e2';
     this.isActiveAreaInput = area.isActive !== undefined ? !!area.isActive : true;
+    this.isOfflineAreaInput = area.isOffline !== undefined ? !!area.isOffline : false;
+    this.offlineMessageInput = area.offlineMessage || '';
     this.areaDescriptionInput = area.description || '';
     this.polygonCoords = (area.polygon || []).map((p: any) => ({
       lat: Number(p.lat),
@@ -118,6 +122,8 @@ otherPolygonOverlays: google.maps.Polygon[] = [];
     this.strokeColor = '#a000e2';
     this.areaColor = '#a000e2';
     this.isActiveAreaInput = true;
+    this.isOfflineAreaInput = false;
+    this.offlineMessageInput = '';
     this.areaDescriptionInput = '';
     this.polygonCoords = [];
     this.renderMapPolygons();
@@ -143,6 +149,8 @@ otherPolygonOverlays: google.maps.Polygon[] = [];
       strokeColor: this.strokeColor,
       areaColor: this.areaColor,
       isActive: this.isActiveAreaInput,
+      isOffline: this.isOfflineAreaInput,
+      offlineMessage: this.offlineMessageInput ? this.offlineMessageInput.trim() : '',
       description: this.areaDescriptionInput
     };
 
@@ -162,6 +170,8 @@ otherPolygonOverlays: google.maps.Polygon[] = [];
             strokeColor: payload.strokeColor,
             areaColor: payload.areaColor,
             isActive: payload.isActive,
+            isOffline: payload.isOffline,
+            offlineMessage: payload.offlineMessage,
             description: payload.description
           };
           this.serviceAreas = [...this.serviceAreas, newArea];
