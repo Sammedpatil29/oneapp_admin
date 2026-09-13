@@ -1,0 +1,278 @@
+.dialog-header {
+  background: #ffffff;
+}
+
+.dialog-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.dialog-title {
+  color: #0f172a;
+  letter-spacing: -0.2px;
+}
+
+.property-dialog-content {
+  max-height: 75vh;
+  overflow-y: auto;
+  padding-bottom: 24px !important;
+}
+
+.form-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 18px 12px 18px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.section-title h6 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #1e293b;
+  letter-spacing: -0.2px;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* Material form field adjustments inside dialog */
+::ng-deep .property-dialog-content .mat-mdc-form-field {
+  font-size: 0.85rem;
+}
+
+::ng-deep .property-dialog-content .mat-mdc-text-field-wrapper {
+  background-color: #ffffff !important;
+  border-radius: 8px;
+}
+
+/* Image Preview Grid */
+.images-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.img-preview-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  background: #000;
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.preview-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.img-preview-card:hover .preview-thumb {
+  transform: scale(1.04);
+}
+
+.img-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+.btn-remove-img {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.btn-remove-img:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   AMENITIES SELECTION
+   ========================================================================== */
+.amenities-toggle-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.btn-amenity-pill {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.btn-amenity-pill:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.btn-amenity-pill.active {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.15);
+}
+
+.amenity-check-icon {
+  font-weight: 700;
+}
+
+.selected-amenities-tags {
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.active-amenity-chip {
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-remove-chip {
+  background: transparent;
+  border: none;
+  color: #0284c7;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-remove-chip:hover {
+  color: #ef4444;
+}
+
+/* ==========================================================================
+   LANDMARKS TABLE
+   ========================================================================== */
+.landmarks-table-wrapper {
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+/* ==========================================================================
+   LEGAL CHECKS LIST
+   ========================================================================== */
+.legal-checks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legal-check-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: all 0.15s ease;
+}
+
+.legal-check-card.is-clear {
+  border-left: 4px solid #10b981;
+}
+
+.legal-check-card:not(.is-clear) {
+  border-left: 4px solid #f59e0b;
+}
+
+.doc-title {
+  font-size: 0.85rem;
+  color: #0f172a;
+}
+
+.doc-category-badge {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.68rem;
+  border: 1px solid #e2e8f0;
+}
+
+.doc-details {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+.btn-doc-toggle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.add-custom-doc-box {
+  background: #ffffff;
+}

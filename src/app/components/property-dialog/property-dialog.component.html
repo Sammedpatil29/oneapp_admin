@@ -1,277 +1,634 @@
-<h2 mat-dialog-title>
-    {{header}}
-</h2>
-<mat-dialog-content class="mat-typography pb-4">
-    
-    <!-- BASIC DETAILS -->
-    <h6 class="mt-2 text-muted fw-bold">Basic Details</h6>
-    <div class="row">
-        <div class="col-md-6">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Property Name*</mat-label>
-                <input matInput [(ngModel)]="property_name" placeholder="e.g. Kavya Emerald Gardens">
-            </mat-form-field>
-        </div>
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Property Code</mat-label>
-                <input matInput [(ngModel)]="property_code" placeholder="e.g. KEG-ATH-002">
-            </mat-form-field>
-        </div>
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Status</mat-label>
-                <mat-select [(ngModel)]="status" placeholder="Select Status">
-                    <mat-option value="Available">Available</mat-option>
-                    <mat-option value="Under Construction">Under Construction</mat-option>
-                    <mat-option value="Hold">Hold</mat-option>
-                    <mat-option value="Sold">Sold</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
+<div class="dialog-header d-flex justify-content-between align-items-center px-4 py-3 border-bottom">
+  <div class="d-flex align-items-center gap-2">
+    <div class="dialog-header-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#0f172a">
+        <path d="M120-120v-560l360-200 360 200v560H120Zm80-80h240v-200h80v200h160v-436L480-776 200-636v436Zm240-280h-80v-80h80v80Zm0-160h-80v-80h80v80Zm160 160h-80v-80h80v80Zm0-160h-80v-80h80v80Z"/>
+      </svg>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Property Type*</mat-label>
-                <mat-select [(ngModel)]="property_type" placeholder="Select Type">
-                    <mat-option value="Residential">Residential</mat-option>
-                    <mat-option value="Commercial">Commercial</mat-option>
-                    <mat-option value="Industrial">Industrial</mat-option>
-                    <mat-option value="Agricultural">Agricultural</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="col-md-4">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Sub Type</mat-label>
-                <input matInput [(ngModel)]="sub_type" placeholder="e.g. Villa, Studio, Warehouse">
-            </mat-form-field>
-        </div>
-        <div class="col-md-4">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Listing Type*</mat-label>
-                <mat-select [(ngModel)]="listing_type" placeholder="Select Listing Type">
-                    <mat-option value="For Sale">For Sale</mat-option>
-                    <mat-option value="For Rent">For Rent</mat-option>
-                    <mat-option value="Lease">Lease</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
+    <h5 class="mb-0 fw-bold dialog-title">{{ headerTitle }}</h5>
+  </div>
+  <button type="button" class="btn-close" mat-dialog-close aria-label="Close"></button>
+</div>
+
+<mat-dialog-content class="property-dialog-content px-4 py-3">
+  <!-- SECTION 1: BASIC DETAILS & STATUS -->
+  <div class="form-section mb-3">
+    <div class="section-title">
+      <span class="step-num">1</span>
+      <h6>Basic Information & Lifecycle Status</h6>
     </div>
 
-    <!-- LOCATION DETAILS -->
-    <h6 class="mt-4 text-muted fw-bold">Location</h6>
-    <div class="row">
-        <div class="col-md-4">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Address Line 1*</mat-label>
-                <input matInput [(ngModel)]="address_line_1" placeholder="Address Line 1">
-            </mat-form-field>
-        </div>
-        <div class="col-md-4">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Address Line 2</mat-label>
-                <input matInput [(ngModel)]="address_line_2" placeholder="Address Line 2">
-            </mat-form-field>
-        </div>
-        <div class="col-md-4">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Landmark</mat-label>
-                <input matInput [(ngModel)]="landmark" placeholder="Near milestone...">
-            </mat-form-field>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>City*</mat-label>
-                <input matInput [(ngModel)]="city" placeholder="City">
-            </mat-form-field>
-        </div>
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>District</mat-label>
-                <input matInput [(ngModel)]="district" placeholder="District">
-            </mat-form-field>
-        </div>
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>State</mat-label>
-                <input matInput [(ngModel)]="state" placeholder="State">
-            </mat-form-field>
-        </div>
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Pincode*</mat-label>
-                <input matInput type="number" [(ngModel)]="pincode" placeholder="Pincode">
-            </mat-form-field>
-        </div>
-    </div>
+    <div class="row g-2">
+      <!-- Category -->
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Category*</mat-label>
+          <mat-select [(ngModel)]="category" (selectionChange)="onCategoryChange()">
+            <mat-option value="buy_house">🏡 Buy House</mat-option>
+            <mat-option value="rent_house">🔑 Rent House</mat-option>
+            <mat-option value="buy_land">🌾 Buy Land</mat-option>
+            <mat-option value="buy_plot">📐 Buy Plot</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-    <!-- SPECIFICATIONS -->
-    <h6 class="mt-4 text-muted fw-bold">Specifications</h6>
-    <div class="row">
-        <div class="col-md-2">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Total Area*</mat-label>
-                <input matInput type="number" [(ngModel)]="total_area" placeholder="0">
-            </mat-form-field>
-        </div>
-        <div class="col-md-2">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Built Up Area</mat-label>
-                <input matInput type="number" [(ngModel)]="built_up_area" placeholder="0">
-            </mat-form-field>
-        </div>
-        <div class="col-md-2">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Unit</mat-label>
-                <mat-select [(ngModel)]="area_unit" placeholder="Select Unit">
-                    <mat-option value="sq_ft">sq_ft</mat-option>
-                    <mat-option value="acres">acres</mat-option>
-                    <mat-option value="sq_m">sq_m</mat-option>
-                    <mat-option value="hectares">hectares</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="col-md-2">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>BHK Count</mat-label>
-                <input matInput type="number" [(ngModel)]="bhk_count" placeholder="0">
-            </mat-form-field>
-        </div>
-        <div class="col-md-2">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Bathrooms</mat-label>
-                <input matInput type="number" [(ngModel)]="bathrooms" placeholder="0">
-            </mat-form-field>
-        </div>
-        <div class="col-md-2">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Balconies</mat-label>
-                <input matInput type="number" [(ngModel)]="balconies" placeholder="0">
-            </mat-form-field>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Facing</mat-label>
-                <input matInput [(ngModel)]="facing" placeholder="e.g. North, East">
-            </mat-form-field>
-        </div>
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Furnished Status</mat-label>
-                <mat-select [(ngModel)]="furnished_status">
-                    <mat-option value="Fully-furnished">Fully-furnished</mat-option>
-                    <mat-option value="Semi-furnished">Semi-furnished</mat-option>
-                    <mat-option value="Unfurnished">Unfurnished</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Total Floors</mat-label>
-                <input matInput type="number" [(ngModel)]="total_floors" placeholder="0">
-            </mat-form-field>
-        </div>
-        <div class="col-md-3">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Age of Property</mat-label>
-                <input matInput type="number" [(ngModel)]="age_of_property" placeholder="Years">
-            </mat-form-field>
-        </div>
-    </div>
-
-    <!-- FINANCIALS & LEGAL -->
-    <div class="row mt-3">
-        <div class="col-md-6">
-            <h6 class="text-muted fw-bold mb-2">Financials</h6>
-            <div class="row">
-                <div class="col-md-6">
-                    <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                        <mat-label>Base Price*</mat-label>
-                        <input matInput type="number" [(ngModel)]="base_price" placeholder="Amount">
-                    </mat-form-field>
-                </div>
-                <div class="col-md-6">
-                    <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                        <mat-label>Booking Amount</mat-label>
-                        <input matInput type="number" [(ngModel)]="booking_amount" placeholder="Amount">
-                    </mat-form-field>
-                </div>
-                <div class="col-md-6">
-                    <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                        <mat-label>Maintenance / Tax Rate</mat-label>
-                        <input matInput [(ngModel)]="maintenance_charges" placeholder="e.g. 3000 / 5%">
-                    </mat-form-field>
-                </div>
-                <div class="col-md-6 d-flex align-items-center">
-                    <div class="mb-0 ms-2">
-                        Is Negotiable? <input type="checkbox" [(ngModel)]="is_negotiable">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <h6 class="text-muted fw-bold mb-2">Legal & Ownership</h6>
-            <div class="row">
-                <div class="col-md-6">
-                    <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                        <mat-label>Owner Name</mat-label>
-                        <input matInput [(ngModel)]="owner_name" placeholder="Name">
-                    </mat-form-field>
-                </div>
-                <div class="col-md-6">
-                    <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                        <mat-label>Owner Contact</mat-label>
-                        <input matInput [(ngModel)]="owner_contact" placeholder="+91-">
-                    </mat-form-field>
-                </div>
-                <div class="col-md-12">
-                    <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                        <mat-label>RERA ID / Khata Type</mat-label>
-                        <input matInput [(ngModel)]="rera_id" placeholder="RERA ID">
-                    </mat-form-field>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MEDIA -->
-    <h6 class="mt-4 text-muted fw-bold">Media & Assets</h6>
-    <div class="row">
-        <div class="col-md-6">
-            <mat-form-field class="example-full-width mt-2 w-100" appearance="outline">
-                <mat-label>Cover Image Url*</mat-label>
-                <input matInput [(ngModel)]="cover_image" placeholder="https://...">
-            </mat-form-field>
-        </div>
-        <div class="col-md-6 d-flex align-items-center">
-            @if(cover_image && cover_image !== ''){
-            <img style="width: 80px; height: 80px; border-radius: 10px; object-fit: cover;" class="me-3 mt-2" [src]="cover_image" alt="Cover Preview">
+      <!-- Property Type (Dynamic by Category) -->
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Property Type*</mat-label>
+          <mat-select [(ngModel)]="propertyType">
+            @for (type of currentPropertyTypes; track type) {
+              <mat-option [value]="type">{{ type }}</mat-option>
             }
-            <div class="d-flex flex-column ms-3 mt-2">
-                <div class="mb-2">Verified Property? <input type="checkbox" [(ngModel)]="is_verified"></div>
-                <div>Power Backup? <input type="checkbox" [(ngModel)]="power_backup"></div>
-            </div>
-        </div>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Overall Status -->
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Overall Status*</mat-label>
+          <mat-select [(ngModel)]="status">
+            <mat-option value="approved">✅ Approved (Live on App)</mat-option>
+            <mat-option value="pending_verification">⏳ Pending Review</mat-option>
+            <mat-option value="verifying">🔍 Under Verification</mat-option>
+            <mat-option value="sold">🔒 Sold / Rented</mat-option>
+            <mat-option value="closed">📁 Closed</mat-option>
+            <mat-option value="rejected">❌ Rejected</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Verified Toggle -->
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Pintu Verification*</mat-label>
+          <mat-select [(ngModel)]="is_verified">
+            <mat-option [value]="true">⭐ Verified Listing</mat-option>
+            <mat-option [value]="false">⚪ Unverified</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Title -->
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Property Title / Headline*</mat-label>
+          <input matInput [(ngModel)]="title" placeholder="e.g. 3 BHK Modern Luxury Villa in Girinagar" required />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: PRICING & FINANCIALS -->
+  <div class="form-section mb-3">
+    <div class="section-title">
+      <span class="step-num">2</span>
+      <h6>Pricing & Financial Details</h6>
     </div>
 
+    <div class="row g-2">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>{{ category === 'rent_house' ? 'Monthly Rent (₹)*' : 'Total Price (₹)*' }}</mat-label>
+          <input matInput type="number" [(ngModel)]="price" (blur)="onPriceBlur()" placeholder="e.g. 6850000 or 15000" required />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Custom Price Display</mat-label>
+          <input matInput [(ngModel)]="priceDisplay" placeholder="e.g. ₹68.5 L or ₹15,000" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Price Unit</mat-label>
+          <input matInput [(ngModel)]="priceUnit" placeholder="e.g. /month for rent (leave empty for sale)" />
+        </mat-form-field>
+      </div>
+
+      <!-- Rent-specific fields -->
+      @if (category === 'rent_house') {
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Security Deposit (₹)</mat-label>
+            <input matInput type="number" [(ngModel)]="securityDeposit" placeholder="e.g. 50000" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Maintenance / Mo (₹)</mat-label>
+            <input matInput type="number" [(ngModel)]="maintenancePerMonth" placeholder="e.g. 2000" />
+          </mat-form-field>
+        </div>
+      } @else {
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Rate per Sq.Ft</mat-label>
+            <input matInput [(ngModel)]="pricePerSqFt" placeholder="e.g. ₹3,700 / sq.ft" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Estimated EMI</mat-label>
+            <input matInput [(ngModel)]="emiEstimate" placeholder="e.g. ₹38,200/mo" />
+          </mat-form-field>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- SECTION 3: LOCATION & GPS -->
+  <div class="form-section mb-3">
+    <div class="section-title">
+      <span class="step-num">3</span>
+      <h6>Location, Address & GPS Coordinates</h6>
+    </div>
+
+    <div class="row g-2">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Locality / Neighborhood*</mat-label>
+          <input matInput [(ngModel)]="locality" placeholder="e.g. Girinagar, Mudhol Road" required />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>City*</mat-label>
+          <input matInput [(ngModel)]="city" placeholder="e.g. Jamkhandi" required />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Latitude (GPS)</mat-label>
+          <input matInput type="number" step="0.0001" [(ngModel)]="lat" placeholder="16.5062" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Longitude (GPS)</mat-label>
+          <input matInput type="number" step="0.0001" [(ngModel)]="lng" placeholder="75.2985" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Full Address / Landmark*</mat-label>
+          <textarea matInput [(ngModel)]="fullAddress" rows="2" placeholder="e.g. Plot #42, Girinagar Layout, Near Royal Palace, Mudhol Road, Jamkhandi - 587301" required></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: SPECIFICATIONS & DIMENSIONS -->
+  <div class="form-section mb-3">
+    <div class="section-title">
+      <span class="step-num">4</span>
+      <h6>Property Specifications & Dimensions</h6>
+    </div>
+
+    <div class="row g-2">
+      <!-- House / Flat Specific Fields -->
+      @if (category === 'buy_house' || category === 'rent_house') {
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Bedrooms (BHK)</mat-label>
+            <input matInput type="number" [(ngModel)]="bedrooms" placeholder="e.g. 3" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Bathrooms</mat-label>
+            <input matInput type="number" [(ngModel)]="bathrooms" placeholder="e.g. 2" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Balconies</mat-label>
+            <input matInput type="number" [(ngModel)]="balconies" placeholder="e.g. 1" />
+          </mat-form-field>
+        </div>
+      }
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Carpet Area (sqft)</mat-label>
+          <input matInput type="number" [(ngModel)]="carpetAreaSqFt" placeholder="e.g. 1200" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Super Built-Up (sqft)</mat-label>
+          <input matInput type="number" [(ngModel)]="superBuiltUpAreaSqFt" placeholder="e.g. 1450" />
+        </mat-form-field>
+      </div>
+
+      <!-- Land / Plot Acreage -->
+      @if (category === 'buy_land' || category === 'buy_plot') {
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Total Area (Acres / Guntha)</mat-label>
+            <input matInput type="number" step="0.01" [(ngModel)]="totalAcres" placeholder="e.g. 2.5" />
+          </mat-form-field>
+        </div>
+      }
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Facing Direction</mat-label>
+          <mat-select [(ngModel)]="facing">
+            <mat-option value="East">East</mat-option>
+            <mat-option value="North">North</mat-option>
+            <mat-option value="North-East">North-East</mat-option>
+            <mat-option value="West">West</mat-option>
+            <mat-option value="South">South</mat-option>
+            <mat-option value="North-West">North-West</mat-option>
+            <mat-option value="South-East">South-East</mat-option>
+            <mat-option value="South-West">South-West</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      @if (category === 'buy_house' || category === 'rent_house') {
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Furnishing Status</mat-label>
+            <mat-select [(ngModel)]="furnishing">
+              <mat-option value="Unfurnished">Unfurnished</mat-option>
+              <mat-option value="Semi-Furnished">Semi-Furnished</mat-option>
+              <mat-option value="Furnished">Furnished</mat-option>
+              <mat-option value="Fully-Furnished">Fully-Furnished</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      }
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Possession Status</mat-label>
+          <mat-select [(ngModel)]="possessionStatus">
+            <mat-option value="Ready to Move">Ready to Move</mat-option>
+            <mat-option value="Under Construction">Under Construction</mat-option>
+            <mat-option value="Immediate">Immediate</mat-option>
+            <mat-option value="Under Development">Under Development</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Age of Property</mat-label>
+          <mat-select [(ngModel)]="ageOfProperty">
+            <mat-option value="Brand New / Under 1 Year">Brand New / Under 1 Year</mat-option>
+            <mat-option value="1-2 Years">1-2 Years</mat-option>
+            <mat-option value="3-5 Years">3-5 Years</mat-option>
+            <mat-option value="5-10 Years">5-10 Years</mat-option>
+            <mat-option value="10+ Years">10+ Years</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      @if (category === 'buy_house' || category === 'rent_house') {
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Floor Information</mat-label>
+            <input matInput [(ngModel)]="floor" placeholder="e.g. Ground Floor, G+1 Duplex" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Parking Facilities</mat-label>
+            <input matInput [(ngModel)]="parking" placeholder="e.g. 1 Covered + 1 Open" />
+          </mat-form-field>
+        </div>
+      }
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Water Supply</mat-label>
+          <input matInput [(ngModel)]="waterSupply" placeholder="e.g. 24/7 Municipal & Borewell" />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: SELLER & CONTACTS -->
+  <div class="form-section mb-3">
+    <div class="section-title">
+      <span class="step-num">5</span>
+      <h6>Seller & Direct Contact Details</h6>
+    </div>
+
+    <div class="row g-2">
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Seller Name*</mat-label>
+          <input matInput [(ngModel)]="sellerName" placeholder="e.g. Mallikarjun Patil" required />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Seller Type</mat-label>
+          <mat-select [(ngModel)]="sellerType">
+            <mat-option value="Owner">Owner</mat-option>
+            <mat-option value="Builder">Builder / Developer</mat-option>
+            <mat-option value="Broker">Broker</mat-option>
+            <mat-option value="Verified Agent">Verified Agent</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Phone Contact*</mat-label>
+          <input matInput [(ngModel)]="sellerPhone" placeholder="e.g. +91 94801 23456" required />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>WhatsApp Number</mat-label>
+          <input matInput [(ngModel)]="sellerWhatsapp" placeholder="e.g. 919480123456" />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: PHOTOS & MEDIA -->
+  <div class="form-section mb-3">
+    <div class="section-title">
+      <span class="step-num">6</span>
+      <h6>Photos & Image Gallery URLs</h6>
+    </div>
+
+    <div class="d-flex gap-2 mb-2">
+      <mat-form-field appearance="outline" class="flex-grow-1">
+        <mat-label>Add Photo Image URL (HTTPS)</mat-label>
+        <input matInput [(ngModel)]="newImageUrl" placeholder="https://images.unsplash.com/..." (keyup.enter)="addImage()" />
+      </mat-form-field>
+      <button type="button" class="btn btn-dark align-self-start mt-1 px-3 py-2.5" (click)="addImage()">
+        + Add URL
+      </button>
+    </div>
+
+    <!-- Images Previews Grid -->
+    <div class="images-preview-grid">
+      @for (img of images; track $index) {
+        <div class="img-preview-card">
+          <img [src]="img" alt="Preview" class="preview-thumb" />
+          <span class="img-badge">{{ $index === 0 ? 'Cover Photo' : 'Photo #' + ($index + 1) }}</span>
+          <button type="button" class="btn-remove-img" (click)="removeImage($index)" title="Remove Image">
+            &times;
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- SECTION 7: DESCRIPTION & TAGS -->
+  <div class="form-section mb-3">
+    <div class="section-title">
+      <span class="step-num">7</span>
+      <h6>Property Description & Search Tags</h6>
+    </div>
+
+    <div class="row g-2">
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Detailed Description</mat-label>
+          <textarea matInput [(ngModel)]="description" rows="3" placeholder="Describe the property highlights, road access, flooring, ventilation, and colony benefits..."></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Search Tags (Comma-separated)</mat-label>
+          <input matInput [(ngModel)]="tagsInput" placeholder="Verified, Zero Brokerage, Ready to Move, Vastu Compliant" />
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: AMENITIES SELECTION -->
+  <div class="form-section mb-3">
+    <div class="section-title">
+      <span class="step-num">8</span>
+      <h6>Amenities Selection (Category Suggested)</h6>
+    </div>
+
+    <div class="mb-2">
+      <small class="text-muted fw-semibold d-block mb-1.5">Click to toggle suggested amenities for {{ category }}:</small>
+      <div class="amenities-toggle-grid">
+        @for (am of currentAvailableAmenities; track am) {
+          <button
+            type="button"
+            class="btn-amenity-pill"
+            [class.active]="isAmenitySelected(am)"
+            (click)="toggleAmenity(am)"
+          >
+            <span class="amenity-check-icon">{{ isAmenitySelected(am) ? '✓' : '+' }}</span>
+            <span>{{ am }}</span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Custom Amenity Add -->
+    <div class="d-flex gap-2 align-items-center mt-2.5">
+      <mat-form-field appearance="outline" class="flex-grow-1 mb-0">
+        <mat-label>Add Custom Amenity</mat-label>
+        <input matInput [(ngModel)]="customAmenityInput" placeholder="e.g. Electric Vehicle Charger, Servant Quarter" (keyup.enter)="addCustomAmenity()" />
+      </mat-form-field>
+      <button type="button" class="btn btn-outline-dark px-3 py-2.5" (click)="addCustomAmenity()">
+        + Add
+      </button>
+    </div>
+
+    <!-- Active Amenities List -->
+    @if (selectedAmenities.length > 0) {
+      <div class="selected-amenities-tags mt-2">
+        <small class="text-muted fw-bold d-block mb-1">Active Amenities ({{ selectedAmenities.length }}):</small>
+        <div class="d-flex flex-wrap gap-1.5">
+          @for (am of selectedAmenities; track am; let i = $index) {
+            <span class="active-amenity-chip">
+              {{ am }}
+              <button type="button" class="btn-remove-chip" (click)="removeAmenity(i)">&times;</button>
+            </span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- SECTION 9: NEARBY LANDMARKS & CONNECTIVITY -->
+  <div class="form-section mb-3">
+    <div class="section-title">
+      <span class="step-num">9</span>
+      <h6>Nearby Landmarks & Connectivity</h6>
+    </div>
+
+    <div class="row g-2 align-items-center mb-2">
+      <div class="col-md-5">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Landmark Name</mat-label>
+          <input matInput [(ngModel)]="newLandmarkName" placeholder="e.g. Kittur Chennamma High School" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Distance</mat-label>
+          <input matInput [(ngModel)]="newLandmarkDistance" placeholder="e.g. 650 m or 1.5 km" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Category / Type</mat-label>
+          <mat-select [(ngModel)]="newLandmarkType">
+            <mat-option value="transit">🚌 Transit / Bus Stand</mat-option>
+            <mat-option value="school">🏫 School / College</mat-option>
+            <mat-option value="hospital">🏥 Hospital / Clinic</mat-option>
+            <mat-option value="market">🛒 Market / Bazaar</mat-option>
+            <mat-option value="bank">🏦 Bank / ATM</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-1 d-flex justify-content-center">
+        <button type="button" class="btn btn-dark btn-sm w-100 py-2.5" (click)="addLandmark()" title="Add Landmark">
+          +
+        </button>
+      </div>
+    </div>
+
+    <!-- Landmarks List -->
+    @if (nearbyLandmarks.length > 0) {
+      <div class="landmarks-table-wrapper">
+        <table class="table table-sm table-bordered align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Type</th>
+              <th>Landmark Name</th>
+              <th>Distance</th>
+              <th style="width: 50px;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (lm of nearbyLandmarks; track $index) {
+              <tr>
+                <td>
+                  <span class="badge bg-light text-dark border">{{ lm.type | uppercase }}</span>
+                </td>
+                <td class="fw-semibold">{{ lm.name }}</td>
+                <td><span class="text-primary fw-bold">{{ lm.distance }}</span></td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-link text-danger p-0" (click)="removeLandmark($index)" title="Remove">
+                    🗑️
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="text-muted small mb-0">No nearby landmarks added yet. Add key schools, hospitals, or transit hubs.</p>
+    }
+  </div>
+
+  <!-- SECTION 10: LEGAL VERIFICATION CHECKLIST -->
+  <div class="form-section mb-3">
+    <div class="section-title">
+      <span class="step-num">10</span>
+      <h6>Legal Documents & Verification Checklist</h6>
+    </div>
+
+    <div class="legal-checks-list">
+      @for (doc of legalChecks; track $index) {
+        <div class="legal-check-card" [class.is-clear]="doc.status === 'clear'">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div class="d-flex align-items-center gap-2">
+                <strong class="doc-title">{{ doc.title }}</strong>
+                <span class="badge doc-category-badge">{{ doc.category }}</span>
+              </div>
+              <small class="doc-details text-muted">{{ doc.details }}</small>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <button
+                type="button"
+                class="btn btn-sm btn-doc-toggle"
+                [class.btn-success]="doc.status === 'clear'"
+                [class.btn-outline-warning]="doc.status !== 'clear'"
+                (click)="toggleLegalCheckStatus(doc)"
+              >
+                {{ doc.status === 'clear' ? '✓ ' + doc.statusLabel : '⏳ ' + doc.statusLabel }}
+              </button>
+
+              <button type="button" class="btn btn-link text-muted p-0 ms-1" (click)="removeLegalCheck($index)" title="Remove Check">
+                &times;
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Add Custom Legal Check -->
+    <div class="add-custom-doc-box mt-3 p-2.5 bg-white rounded border">
+      <small class="fw-bold d-block mb-1.5 text-secondary">+ Add Additional Legal Check / Document</small>
+      <div class="row g-2 align-items-center">
+        <div class="col-md-5">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="newDocTitle" placeholder="Document Title (e.g. Gram Panchayat NOC)" />
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="newDocCategory" placeholder="Category (e.g. Local NOC)" />
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="newDocDetails" placeholder="Details (e.g. Verified by Town Council)" />
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-dark btn-sm w-100" (click)="addCustomLegalDoc()">+ Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </mat-dialog-content>
 
-<mat-dialog-actions class="d-flex justify-content-between pt-3 border-top">
-    <div>
-        @if (data.type == 'edit') {
-        <button matButton class="btn btn-outline-danger me-2" (click)="deletePropertyItem()">Delete</button>
-        }
-    </div>
-    <div>
-        <button matButton class="btn btn-dark" cdkFocusInitial [disabled]="!property_name || !property_type || !base_price || !cover_image" (click)="data.type == 'edit' ? updateProperty() : createProperty()">
-            {{ data.type == 'edit' ? 'Save Changes' : 'Create Property' }}
-        </button>
-                <button matButton mat-dialog-close class="btn btn-outline-dark ms-2">Close</button>
-    </div>
+<!-- DIALOG ACTIONS -->
+<mat-dialog-actions class="d-flex justify-content-between px-4 py-3 border-top bg-light">
+  <div>
+    @if (isEditMode) {
+      <button type="button" class="btn btn-outline-danger btn-sm" [disabled]="isSaving" (click)="deletePropertyItem()">
+        🗑️ Delete Listing
+      </button>
+    }
+  </div>
+
+  <div class="d-flex gap-2">
+    <button type="button" class="btn btn-outline-secondary btn-sm" mat-dialog-close [disabled]="isSaving">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-dark btn-sm px-4 fw-semibold" [disabled]="isSaving" (click)="saveProperty()">
+      @if (isSaving) {
+        <span>Saving...</span>
+      } @else {
+        <span>{{ isEditMode ? 'Update Property' : 'Create Property' }}</span>
+      }
+    </button>
+  </div>
 </mat-dialog-actions>
