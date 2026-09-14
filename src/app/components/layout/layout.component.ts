@@ -25,6 +25,7 @@ role:string | null = ''
 token: any = ''
 year = new Date().getFullYear()
 version = environment.version
+watermark = environment.watermark
 
 showAlarm: boolean = false;
 sosAlert: any = null;

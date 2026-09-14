@@ -7,7 +7,12 @@
         <h1 class="fw-bold display-4">ONE<span class="fw-light">APP</span></h1>
         <h4 class="text-secondary">ADMIN CONSOLE</h4>
       </div>
-      <small class="position-fixed bottom-0 mb-2 text-secondary" style="font-family: monospace;">{{version}}</small>
+      <small class="position-fixed bottom-0 mb-2 text-secondary" style="font-family: monospace;">
+        {{version}}
+        @if (watermark) {
+          <span class="badge bg-danger ms-1">{{watermark}}</span>
+        }
+      </small>
     </div>
 
     <!-- RIGHT LOGIN SECTION -->
@@ -73,30 +78,9 @@
   class="position-fixed calculator-btn"
   
 >
-  <!-- <img
-    class="kitchenLogo"
-    src="assets/wired-flat-615-coffee-machine-hover-pinch (1).gif"
-    alt=""
-  />
-  <img
-  (click)="openTracker()"
-    class="kitchenLogo"
-    src="assets/wired-flat-1-cloud-in-reveal (1).gif"
-    alt=""
-  /> -->
   <div class="user p-1">
         <div class="user" (click)="openCalculator()">
-      <!-- <span class="user-name">Cloud Kitchen Calculator</span> -->
       <span class="user-emoji" title="Cloud Kitchen Calculator">🧮</span>
-    </div>
-    <div class="user" (click)="openTracker()">
-      <!-- <span class="user-name">Task Tracker</span> -->
-      <span class="user-emoji" title="Task Tracker">📊</span>
-    </div>
-    <div class="user p-0" (click)="openBrahmadev()">
-      <!-- <span class="user-name">Task Tracker</span> -->
-      <!-- <span class="user-emoji" title="Brahmadev Constructions">📊</span> -->
-       <img class="user" style="height: 40px" src="assets/Brahmadev Constructions.png" alt="">
     </div>
     </div>
 </div>

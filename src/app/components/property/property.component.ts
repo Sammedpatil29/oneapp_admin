@@ -1,437 +1,274 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { EmptyDataComponent } from '../empty-data/empty-data.component';
-import { LoaderComponent } from "../loader/loader.component";
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DialogRef } from '@angular/cdk/dialog';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { LoaderComponent } from '../loader/loader.component';
 import { PropertyDialogComponent } from '../property-dialog/property-dialog.component';
-import { AddGroceryComponent } from '../add-grocery/add-grocery.component';
+import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
+import { PropertyAdminService, PropertyItem } from '../../services/property-admin.service';
 
 @Component({
   selector: 'app-property',
-  imports: [EmptyDataComponent, LoaderComponent, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, LoaderComponent],
   templateUrl: './property.component.html',
   styleUrl: './property.component.css'
 })
 export class PropertyComponent implements OnInit {
+  private propertyService = inject(PropertyAdminService);
   readonly dialog = inject(MatDialog);
 
-  propertyData: any[] = [
-  {
-    "id": 1,
-    "property_id": "prop_9912_a2b3",
-    "property_name": "Kavya Emerald Gardens",
-    "property_code": "KEG-ATH-002",
-    "property_type": "Residential",
-    "sub_type": "Villa",
-    "listing_type": "For Sale",
-    "status": "Available",
-    "location": {
-      "address_line_1": "Near Basaveshwar Circle",
-      "address_line_2": "Saptapur Road",
-      "landmark": "Behind Government Hospital",
-      "city": "Athani",
-      "district": "Belagavi",
-      "state": "Karnataka",
-      "pincode": 591304,
-      "geography": {
-        "latitude": 16.7355,
-        "longitude": 75.0680,
-        "google_place_id": "ChIJT_x-eb7_vzsR_alt"
-      }
-    },
-    "specifications": {
-      "total_area": 2400.00,
-      "built_up_area": 1850.00,
-      "area_unit": "sq_ft",
-      "bhk_count": 4,
-      "bathrooms": 4,
-      "balconies": 2,
-      "floor_number": 0,
-      "total_floors": 2,
-      "facing": "North",
-      "furnished_status": "Fully-furnished",
-      "age_of_property": 2
-    },
-    "financials": {
-      "base_price": 8500000,
-      "price_per_unit": 3541,
-      "booking_amount": 500000,
-      "maintenance_charges": 3000,
-      "tax_rate": 5,
-      "is_negotiable": false,
-      "currency": "INR"
-    },
-    "amenities": ["Private Garden", "Solar Water Heater", "CCTV", "Car Parking", "Rainwater Harvesting"],
-    "infrastructure": {
-      "water_source": "Borewell",
-      "power_backup": true,
-      "parking_slots": 2
-    },
-    "legal": {
-      "owner_name": "Vinayak Patil",
-      "owner_contact": "+91-9900887766",
-      "registration_number": "ATH-BK1-2024-112",
-      "khata_type": "A-Khata",
-      "rera_id": "PRM/KA/RERA/0987/112",
-      "is_verified": true,
-      "is_legal_dispute": false,
-      "survey_number": "104/A"
-    },
-    "media": {
-      "cover_image": "https://dummyimage.com/400x400/1f77b4/fff",
-      "gallery": ["https://api.pintuapp.com/v1/assets/prop_9912_ext.webp"],
-      "floor_plan_url": "https://api.pintuapp.com/v1/assets/prop_9912_plan.pdf",
-      "video_tour_url": null
-    },
-    "metadata": {
-      "created_by": "admin_sammed",
-      "assigned_agent_id": "agent_002",
-      "view_count": 89,
-      "created_at": "2026-04-20T09:00:00Z",
-      "updated_at": "2026-04-25T11:30:00Z"
-    }
-  },
-  {
-    "property_id": "prop_7734_c4d5",
-    "property_name": "Pintu Logistics Hub",
-    "property_code": "PLH-KNT-99",
-    "property_type": "Industrial",
-    "sub_type": "Warehouse",
-    "listing_type": "Lease",
-    "status": "Available",
-    "location": {
-      "address_line_1": "KIADB Industrial Area",
-      "address_line_2": "Plot 14-B",
-      "landmark": "Near Highway Toll",
-      "city": "Belagavi",
-      "district": "Belagavi",
-      "state": "Karnataka",
-      "pincode": 590001,
-      "geography": {
-        "latitude": 15.8497,
-        "longitude": 74.4977,
-        "google_place_id": "ChIJ_f6_vzsR3SuX_ind"
-      }
-    },
-    "specifications": {
-      "total_area": 15000.00,
-      "built_up_area": 14500.00,
-      "area_unit": "sq_ft",
-      "bhk_count": 0,
-      "bathrooms": 2,
-      "balconies": 0,
-      "floor_number": 0,
-      "total_floors": 1,
-      "facing": "South",
-      "furnished_status": "Unfurnished",
-      "age_of_property": 5
-    },
-    "financials": {
-      "base_price": 120000,
-      "price_per_unit": 8,
-      "booking_amount": 360000,
-      "maintenance_charges": 15000,
-      "tax_rate": 18,
-      "is_negotiable": true,
-      "currency": "INR"
-    },
-    "amenities": ["Loading Dock", "24/7 Security", "Fire Sprinklers", "Heavy Vehicle Access"],
-    "infrastructure": {
-      "water_source": "Corporation",
-      "power_backup": true,
-      "parking_slots": 10
-    },
-    "legal": {
-      "owner_name": "Gundappa Enterprises",
-      "owner_contact": "+91-9448833221",
-      "registration_number": "BEL-IND-2021-88",
-      "khata_type": "A-Khata",
-      "rera_id": null,
-      "is_verified": true,
-      "is_legal_dispute": false,
-      "survey_number": "882/1"
-    },
-    "media": {
-      "cover_image": "https://dummyimage.com/400x400/ff7f0e/fff",
-      "gallery": [],
-      "floor_plan_url": null,
-      "video_tour_url": "https://vimeo.com/example_warehouse"
-    },
-    "metadata": {
-      "created_by": "system_bot",
-      "assigned_agent_id": "agent_015",
-      "view_count": 210,
-      "created_at": "2026-03-15T14:00:00Z",
-      "updated_at": "2026-04-28T08:45:00Z"
-    }
-  },
-  {
-    "property_id": "prop_4456_e6f7",
-    "property_name": "May I Help You Foundation Office",
-    "property_code": "MHF-OFF-01",
-    "property_type": "Commercial",
-    "sub_type": "Office Space",
-    "listing_type": "For Rent",
-    "status": "Hold",
-    "location": {
-      "address_line_1": "Suite 201, Unity Plaza",
-      "address_line_2": "Main Market",
-      "landmark": "Above Canara Bank",
-      "city": "Athani",
-      "district": "Belagavi",
-      "state": "Karnataka",
-      "pincode": 591304,
-      "geography": {
-        "latitude": 16.7280,
-        "longitude": 75.0610,
-        "google_place_id": "ChIJ_f6_vzsR3SuX_offc"
-      }
-    },
-    "specifications": {
-      "total_area": 800.00,
-      "built_up_area": 750.00,
-      "area_unit": "sq_ft",
-      "bhk_count": 0,
-      "bathrooms": 1,
-      "balconies": 0,
-      "floor_number": 2,
-      "total_floors": 3,
-      "facing": "East",
-      "furnished_status": "Semi-furnished",
-      "age_of_property": 10
-    },
-    "financials": {
-      "base_price": 18000,
-      "price_per_unit": 22.5,
-      "booking_amount": 50000,
-      "maintenance_charges": 1200,
-      "tax_rate": 0,
-      "is_negotiable": true,
-      "currency": "INR"
-    },
-    "amenities": ["High-speed Internet", "Lift", "Drinking Water", "Common Reception"],
-    "infrastructure": {
-      "water_source": "Corporation",
-      "power_backup": false,
-      "parking_slots": 2
-    },
-    "legal": {
-      "owner_name": "Foundation Trust",
-      "owner_contact": "+91-8888777766",
-      "registration_number": "ATH-COMM-2016-12",
-      "khata_type": "A-Khata",
-      "rera_id": null,
-      "is_verified": true,
-      "is_legal_dispute": false,
-      "survey_number": "N/A"
-    },
-    "media": {
-      "cover_image": "https://dummyimage.com/400x400/2ca02c/fff",
-      "gallery": ["https://api.pintuapp.com/v1/assets/prop_4456_int1.webp"],
-      "floor_plan_url": null,
-      "video_tour_url": null
-    },
-    "metadata": {
-      "created_by": "admin_sammed",
-      "assigned_agent_id": "agent_001",
-      "view_count": 45,
-      "created_at": "2026-01-10T11:00:00Z",
-      "updated_at": "2026-04-20T16:20:00Z"
-    }
-  },
-  {
-    "property_id": "prop_1122_g8h9",
-    "property_name": "Krishna River View Farm",
-    "property_code": "KRV-PLT-05",
-    "property_type": "Agricultural",
-    "sub_type": "Farm Land",
-    "listing_type": "For Sale",
-    "status": "Available",
-    "location": {
-      "address_line_1": "Ghataprabha Road",
-      "address_line_2": "Near River Bank",
-      "landmark": "2km from Village Entrance",
-      "city": "Hulagbali",
-      "district": "Belagavi",
-      "state": "Karnataka",
-      "pincode": 591304,
-      "geography": {
-        "latitude": 16.6500,
-        "longitude": 75.1000,
-        "google_place_id": "ChIJ_f6_vzsR3SuX_farm"
-      }
-    },
-    "specifications": {
-      "total_area": 5.5,
-      "built_up_area": 0,
-      "area_unit": "acres",
-      "bhk_count": 0,
-      "bathrooms": 0,
-      "balconies": 0,
-      "floor_number": 0,
-      "total_floors": 0,
-      "facing": "West",
-      "furnished_status": "Unfurnished",
-      "age_of_property": 0
-    },
-    "financials": {
-      "base_price": 11000000,
-      "price_per_unit": 2000000,
-      "booking_amount": 1000000,
-      "maintenance_charges": 0,
-      "tax_rate": 0,
-      "is_negotiable": true,
-      "currency": "INR"
-    },
-    "amenities": ["Fencing", "Drip Irrigation", "Farm House Foundation", "Fruit Trees"],
-    "infrastructure": {
-      "water_source": "Borewell",
-      "power_backup": false,
-      "parking_slots": 5
-    },
-    "legal": {
-      "owner_name": "Siddappa Kulkarni",
-      "owner_contact": "+91-9123456789",
-      "registration_number": "ATH-AGRI-2025-998",
-      "khata_type": "B-Khata",
-      "rera_id": null,
-      "is_verified": false,
-      "is_legal_dispute": false,
-      "survey_number": "112/4/C"
-    },
-    "media": {
-      "cover_image": "https://dummyimage.com/400x400/d62728/fff",
-      "gallery": ["https://api.pintuapp.com/v1/assets/prop_1122_river.webp"],
-      "floor_plan_url": null,
-      "video_tour_url": "https://youtube.com/watch?v=drone_farm"
-    },
-    "metadata": {
-      "created_by": "admin_sammed",
-      "assigned_agent_id": "agent_009",
-      "view_count": 312,
-      "created_at": "2026-04-01T10:00:00Z",
-      "updated_at": "2026-04-28T12:00:00Z"
-    }
-  },
-  {
-    "property_id": "prop_3399_i0j1",
-    "property_name": "Urban Skyline Studio",
-    "property_code": "USS-BLR-001",
-    "property_type": "Residential",
-    "sub_type": "Studio Apartment",
-    "listing_type": "For Sale",
-    "status": "Under Construction",
-    "location": {
-      "address_line_1": "Electronic City Phase 1",
-      "address_line_2": "Near Tech Park",
-      "landmark": "Opposite Infosys Gate 4",
-      "city": "Bengaluru",
-      "district": "Bengaluru Urban",
-      "state": "Karnataka",
-      "pincode": 560100,
-      "geography": {
-        "latitude": 12.8448,
-        "longitude": 77.6632,
-        "google_place_id": "ChIJ_f6_vzsR3SuX_blr_e"
-      }
-    },
-    "specifications": {
-      "total_area": 550.00,
-      "built_up_area": 480.00,
-      "area_unit": "sq_ft",
-      "bhk_count": 1,
-      "bathrooms": 1,
-      "balconies": 1,
-      "floor_number": 12,
-      "total_floors": 24,
-      "facing": "East",
-      "furnished_status": "Unfurnished",
-      "age_of_property": 0
-    },
-    "financials": {
-      "base_price": 3800000,
-      "price_per_unit": 6909,
-      "booking_amount": 200000,
-      "maintenance_charges": 1800,
-      "tax_rate": 12,
-      "is_negotiable": false,
-      "currency": "INR"
-    },
-    "amenities": ["Rooftop Infinity Pool", "Gym", "Smart Lock", "EV Charging Station"],
-    "infrastructure": {
-      "water_source": "Corporation",
-      "power_backup": true,
-      "parking_slots": 1
-    },
-    "legal": {
-      "owner_name": "Skyline Builders",
-      "owner_contact": "+91-8088009911",
-      "registration_number": "BLR-PRJ-2025-001",
-      "khata_type": "A-Khata",
-      "rera_id": "PRM/KA/RERA/1251/447/PR/210125/004000",
-      "is_verified": true,
-      "is_legal_dispute": false,
-      "survey_number": "221/9"
-    },
-    "media": {
-      "cover_image": "https://dummyimage.com/400x400/9467bd/fff",
-      "gallery": ["https://api.pintuapp.com/v1/assets/prop_3399_view.webp"],
-      "floor_plan_url": "https://api.pintuapp.com/v1/assets/prop_3399_plan.pdf",
-      "video_tour_url": null
-    },
-    "metadata": {
-      "created_by": "system_bot",
-      "assigned_agent_id": "agent_010",
-      "view_count": 560,
-      "created_at": "2026-02-28T09:00:00Z",
-      "updated_at": "2026-04-28T10:00:00Z"
-    }
-  }
-]
-isLoading: boolean = false;
-searchTerm = '';
-filteredProperties: any[] = [];
+  properties: PropertyItem[] = [];
+  filteredProperties: PropertyItem[] = [];
+  isLoading: boolean = false;
+  searchTerm: string = '';
+  selectedStatus: string = 'all';
+  selectedCategory: string = 'all';
 
-  constructor() {}
+  // Counts for header tabs
+  statusCounts = {
+    all: 0,
+    pending_verification: 0,
+    verifying: 0,
+    approved: 0,
+    sold: 0,
+    closed: 0,
+    rejected: 0
+  };
 
   ngOnInit(): void {
-    this.filteredProperties = this.propertyData;
+    this.loadProperties();
   }
 
-  addNewproperty(){
-
+  loadProperties(): void {
+    this.isLoading = true;
+    this.propertyService.getAllProperties({ status: 'all' }).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        if (res && res.success && Array.isArray(res.data)) {
+          this.properties = res.data;
+          this.computeStatusCounts();
+          this.applyFilters();
+        } else {
+          this.properties = [];
+          this.filteredProperties = [];
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Failed to fetch properties from API:', err);
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'Error',
+            body: 'Failed to load properties from server. Please check backend connection.',
+            type: 'error'
+          }
+        });
+      }
+    });
   }
 
-  searchProperties(){
-    this.filteredProperties = this.propertyData.filter(property => {
-      return property.property_name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.property_code.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.property_type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.sub_type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.listing_type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.status.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.location.address_line_1.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.location.address_line_2.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.location.landmark.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.location.city.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.location.district.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.location.state.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      property.specifications.total_area.toString().includes(this.searchTerm) ||
-      property.specifications.built_up_area.toString().includes(this.searchTerm)
-  })
-}
+  computeStatusCounts(): void {
+    this.statusCounts = {
+      all: this.properties.length,
+      pending_verification: this.properties.filter(p => p.status === 'pending_verification').length,
+      verifying: this.properties.filter(p => p.status === 'verifying').length,
+      approved: this.properties.filter(p => p.status === 'approved').length,
+      sold: this.properties.filter(p => p.status === 'sold').length,
+      closed: this.properties.filter(p => p.status === 'closed').length,
+      rejected: this.properties.filter(p => p.status === 'rejected').length
+    };
+  }
 
-openDialog(id:any, type:any, data:any){
-  const dialogRef = this.dialog.open(PropertyDialogComponent, {
-    data: {
-      id: id,
-      type: type,
-      data: data
-    },
-    minWidth: '75vw',
-    disableClose: true
-  })
-}
+  onStatusTabChange(status: string): void {
+    this.selectedStatus = status;
+    this.applyFilters();
+  }
 
+  onCategoryChange(cat: string): void {
+    this.selectedCategory = cat;
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    let result = [...this.properties];
+
+    // Status filter
+    if (this.selectedStatus !== 'all') {
+      result = result.filter(p => p.status === this.selectedStatus);
+    }
+
+    // Category filter
+    if (this.selectedCategory !== 'all') {
+      result = result.filter(p => p.category === this.selectedCategory);
+    }
+
+    // Search term
+    if (this.searchTerm && this.searchTerm.trim()) {
+      const q = this.searchTerm.trim().toLowerCase();
+      result = result.filter(p =>
+        (p.title && p.title.toLowerCase().includes(q)) ||
+        (p.id && p.id.toLowerCase().includes(q)) ||
+        (p.locality && p.locality.toLowerCase().includes(q)) ||
+        (p.city && p.city.toLowerCase().includes(q)) ||
+        (p.propertyType && p.propertyType.toLowerCase().includes(q)) ||
+        (p.fullAddress && p.fullAddress.toLowerCase().includes(q)) ||
+        (p.seller && p.seller.name && p.seller.name.toLowerCase().includes(q)) ||
+        (p.seller && p.seller.phone && p.seller.phone.includes(q))
+      );
+    }
+
+    this.filteredProperties = result;
+  }
+
+  quickUpdateStatus(property: PropertyItem, newStatus: string, event: Event): void {
+    event.stopPropagation();
+    if (property.status === newStatus) return;
+
+    this.propertyService.updateStatus(property.id, newStatus).subscribe({
+      next: (res) => {
+        if (res.success) {
+          property.status = newStatus;
+          this.computeStatusCounts();
+          this.applyFilters();
+        }
+      },
+      error: (err) => {
+        console.error('Status update failed:', err);
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'Error',
+            body: 'Failed to update property status.',
+            type: 'error'
+          }
+        });
+      }
+    });
+  }
+
+  toggleVerified(property: PropertyItem, event: Event): void {
+    event.stopPropagation();
+    const nextVal = !property.is_verified;
+
+    this.propertyService.toggleVerified(property.id, nextVal).subscribe({
+      next: (res) => {
+        if (res.success) {
+          property.is_verified = nextVal;
+        }
+      },
+      error: (err) => {
+        console.error('Verified toggle failed:', err);
+      }
+    });
+  }
+
+  openGoogleMaps(property: PropertyItem, event: Event): void {
+    event.stopPropagation();
+    const query = property.lat && property.lng
+      ? `${property.lat},${property.lng}`
+      : encodeURIComponent(`${property.title}, ${property.locality}, ${property.city}`);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
+  }
+
+  openDialog(id: any, type: 'add' | 'edit', data: any = null): void {
+    const dialogRef = this.dialog.open(PropertyDialogComponent, {
+      data: {
+        id: id,
+        type: type,
+        data: data ? { ...data } : null
+      },
+      width: '92vw',
+      maxWidth: '1200px',
+      maxHeight: '92vh',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadProperties();
+      }
+    });
+  }
+
+  deleteProperty(property: PropertyItem, event: Event): void {
+    event.stopPropagation();
+    if (!confirm(`Are you sure you want to delete "${property.title}"? This will deactivate the listing.`)) {
+      return;
+    }
+
+    this.propertyService.deleteProperty(property.id).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.properties = this.properties.filter(p => p.id !== property.id);
+          this.computeStatusCounts();
+          this.applyFilters();
+        }
+      },
+      error: (err) => {
+        console.error('Delete property failed:', err);
+        this.dialog.open(AlertdialogComponent, {
+          data: {
+            title: 'Error',
+            body: 'Failed to delete property.',
+            type: 'error'
+          }
+        });
+      }
+    });
+  }
+
+  getCategoryLabel(category: string): string {
+    switch (category) {
+      case 'buy_house': return 'Buy House';
+      case 'rent_house': return 'Rent House';
+      case 'buy_land': return 'Land';
+      case 'buy_plot': return 'Plot';
+      default: return category || 'Property';
+    }
+  }
+
+  getStatusBadgeClass(status: string): string {
+    switch (status) {
+      case 'approved': return 'badge-status-approved';
+      case 'pending_verification': return 'badge-status-pending';
+      case 'verifying': return 'badge-status-verifying';
+      case 'sold': return 'badge-status-sold';
+      case 'closed': return 'badge-status-closed';
+      case 'rejected': return 'badge-status-rejected';
+      default: return 'badge-status-default';
+    }
+  }
+
+  getStatusLabel(status: string, category?: string): string {
+    switch (status) {
+      case 'approved': return 'Approved (Live)';
+      case 'pending_verification': return 'Pending Review';
+      case 'verifying': return 'Verifying';
+      case 'sold': return category === 'rent_house' ? 'Rented Out' : 'Sold Out';
+      case 'closed': return 'Closed';
+      case 'rejected': return 'Rejected';
+      default: return status || 'Unknown';
+    }
+  }
+
+  onImgError(event: any): void {
+    event.target.src = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80';
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.applyFilters();
+  }
+
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'approved': return '✅';
+      case 'pending_verification': return '⏳';
+      case 'verifying': return '🔍';
+      case 'sold': return '🔒';
+      case 'closed': return '📁';
+      case 'rejected': return '❌';
+      default: return '⚪';
+    }
+  }
 }

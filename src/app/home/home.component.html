@@ -1,5 +1,5 @@
-<div class="d-flex justify-content-between align-items-center mt-3">
-  <h3 class="">Dashboard</h3>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="mb-0 fw-bold">Dashboard</h4>
   <div class="d-flex align-items-center gap-3">
     @if (isDataLoading) {
       <div class="spinner-grow fs-6 text-success" role="status">
@@ -75,14 +75,19 @@
       </div>
       <div class="col-4">
         <div class="card h-100 d-flex flex-column">
-          <small class="p-2 d-flex align-items-baseline">
+          <small class="p-2 d-flex align-items-baseline border-bottom">
             <div class="indicator me-1"></div>
-            <span>Live</span>
+            <span class="fw-semibold text-muted" style="font-size: 0.8rem;">Live Metrics</span>
           </small>
-          <div class="p-3 d-flex flex-column align-items-center justify-content-center flex-grow-1">
-            <h2>Total Orders - {{homeData.totalOrders}}</h2>
-            <h2>Total Sales - {{homeData.totalSales}}</h2>
-            <!-- <h2>Riders Online - {{homeData.ridersOnline}}</h2> -->
+          <div class="p-3 d-flex flex-column justify-content-center gap-2 flex-grow-1">
+            <div class="metric-row">
+              <span class="metric-label">Total Orders</span>
+              <span class="metric-val text-primary">{{homeData.totalOrders ?? 0}}</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Total Sales</span>
+              <span class="metric-val text-success">&#8377;{{homeData.totalSales ?? 0}}</span>
+            </div>
           </div>
         </div>
       </div>

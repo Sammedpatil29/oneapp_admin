@@ -1,5 +1,4 @@
 import { Component, inject, Inject, OnInit } from '@angular/core';
-import { UnderDevelopmentComponent } from "../under-development/under-development.component";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from '../../services/common.service';
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
@@ -8,7 +7,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-refund-exchange',
-  imports: [UnderDevelopmentComponent, LoaderComponent, CommonModule],
+  imports: [LoaderComponent, CommonModule],
   templateUrl: './refund-exchange.component.html',
   styleUrl: './refund-exchange.component.css'
 })
