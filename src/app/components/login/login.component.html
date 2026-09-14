@@ -7,7 +7,12 @@
         <h1 class="fw-bold display-4">ONE<span class="fw-light">APP</span></h1>
         <h4 class="text-secondary">ADMIN CONSOLE</h4>
       </div>
-      <small class="position-fixed bottom-0 mb-2 text-secondary" style="font-family: monospace;">{{version}}</small>
+      <small class="position-fixed bottom-0 mb-2 text-secondary" style="font-family: monospace;">
+        {{version}}
+        @if (watermark) {
+          <span class="badge bg-danger ms-1">{{watermark}}</span>
+        }
+      </small>
     </div>
 
     <!-- RIGHT LOGIN SECTION -->

@@ -4,7 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:testing": "ng serve --configuration=testing",
     "build": "ng build",
+    "build:testing": "ng build --configuration=testing",
+    "build:prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:oneapp_admin": "node dist/oneapp_admin/server/server.mjs",

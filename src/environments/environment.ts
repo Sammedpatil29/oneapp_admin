@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://oneapp-express-singapore.onrender.com',
+  watermark: 'For DEVELOPMENT',
+  apiUrl: 'http://localhost:3000',
   version: "1.0.0 (Pre-Prod/development)"
 };
