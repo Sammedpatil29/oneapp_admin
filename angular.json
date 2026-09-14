@@ -68,6 +68,18 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "testing": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "prerender": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testing.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -80,6 +92,9 @@
             },
             "development": {
               "buildTarget": "oneapp_admin:build:development"
+            },
+            "testing": {
+              "buildTarget": "oneapp_admin:build:testing"
             }
           },
           "defaultConfiguration": "development"

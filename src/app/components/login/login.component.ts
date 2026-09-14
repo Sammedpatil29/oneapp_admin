@@ -22,6 +22,7 @@ export class LoginComponent {
   password = ''
   isLoading:boolean = false
   version = environment.version
+  watermark = environment.watermark
   constructor(private router: Router, private authService: AuthService){}
 
   logIn(){

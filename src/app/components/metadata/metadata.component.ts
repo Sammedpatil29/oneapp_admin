@@ -18,7 +18,7 @@ import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
 
 @Component({
   selector: 'app-metadata',
-  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatExpansionModule, MatInputModule, MatFormFieldModule, MatSelectModule, FormsModule, LoaderComponent, ButtonSpinnerComponent, MatTabGroup, MatTab, ServiceControlComponent, SidebarSettingsComponent],
+  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatExpansionModule, MatInputModule, MatSelectModule, LoaderComponent, MatTabGroup, MatTab, ServiceControlComponent, SidebarSettingsComponent],
   templateUrl: './metadata.component.html',
   styleUrl: './metadata.component.css'
 })

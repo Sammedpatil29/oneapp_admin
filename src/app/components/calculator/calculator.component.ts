@@ -2,14 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material/card';
-import {MatRadioModule} from '@angular/material/radio';
-import { MatFormField, MatLabel } from "@angular/material/input";
-import { MatOption } from "@angular/material/select";
+import { MatCardModule } from '@angular/material/card';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
   selector: 'app-calculator',
-  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatRadioModule, MatLabel, MatOption],
+  imports: [CommonModule, FormsModule, MatCardModule, MatButtonModule, MatRadioModule],
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.css'
 })
