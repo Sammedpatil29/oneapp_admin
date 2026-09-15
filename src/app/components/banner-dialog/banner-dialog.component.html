@@ -1,0 +1,215 @@
+<div class="dialog-header d-flex justify-content-between align-items-center px-4 py-3 border-bottom">
+  <div class="d-flex align-items-center gap-2">
+    <div class="dialog-header-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#0f172a">
+        <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h480L570-480 450-320l-90-120-120 160Zm-40 80v-560 560Z"/>
+      </svg>
+    </div>
+    <h5 class="mb-0 fw-bold dialog-title">{{ headerTitle }}</h5>
+  </div>
+  <button type="button" class="btn-close" mat-dialog-close aria-label="Close"></button>
+</div>
+
+<mat-dialog-content class="banner-dialog-content px-4 py-3">
+  <div class="row g-4">
+    <!-- Left Column: Banner Form Details -->
+    <div class="col-lg-7">
+      <div class="form-section">
+        <div class="section-title">
+          <span class="step-num">1</span>
+          <h6>Banner Details &amp; Placement</h6>
+        </div>
+
+        <div class="row g-2">
+          <!-- Banner Title -->
+          <div class="col-12">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Banner Title (Optional)</mat-label>
+              <input matInput [(ngModel)]="bannerForm.title" placeholder="e.g. Flash Grocery Deals">
+            </mat-form-field>
+          </div>
+
+          <!-- Placement Tags (Multi-Select) -->
+          <div class="col-md-7">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Placement Tags (Multi-Select)*</mat-label>
+              <mat-select multiple [(ngModel)]="bannerForm.placements">
+                @for (tag of placementTags; track tag) {
+                  <mat-option [value]="tag">{{ tag }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Inline Custom Tag Adder -->
+            <div class="d-flex align-items-center gap-2 mt-n2 mb-2">
+              @if (!isAddingCustomTag) {
+                <button type="button" class="btn btn-sm btn-link text-decoration-none p-0 text-dark fw-semibold" (click)="isAddingCustomTag = true">
+                  + Add Custom Placement Tag
+                </button>
+              } @else {
+                <div class="input-group input-group-sm" style="max-width: 300px;">
+                  <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    placeholder="e.g. homesponsor"
+                    [(ngModel)]="customPlacementInput"
+                    (keyup.enter)="addCustomPlacementTag()">
+                  <button class="btn btn-dark btn-sm" type="button" (click)="addCustomPlacementTag()">Add</button>
+                  <button class="btn btn-outline-secondary btn-sm" type="button" (click)="isAddingCustomTag = false">✕</button>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Priority / Display Order -->
+          <div class="col-md-5">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Display Order / Priority</mat-label>
+              <input matInput type="number" [(ngModel)]="bannerForm.priority" placeholder="0">
+            </mat-form-field>
+          </div>
+
+          <!-- Banner Image URL -->
+          <div class="col-12">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Banner Image URL*</mat-label>
+              <input matInput [(ngModel)]="bannerForm.img" placeholder="https://...">
+            </mat-form-field>
+            <small class="text-muted d-block mt-n2 mb-2">
+              💡 Recommended resolution: <strong>1200 × 600 px</strong> (2:1 ratio) for hero sliders and promo cards.
+            </small>
+          </div>
+
+          <!-- Target App Route -->
+          <div class="col-12">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Target App Route (Optional)</mat-label>
+              <input matInput [(ngModel)]="bannerForm.route" placeholder="/layout/grocery-layout">
+            </mat-form-field>
+            <!-- Quick Route Chips -->
+            <div class="d-flex flex-wrap gap-1 align-items-center mb-2">
+              <small class="text-muted me-1">Quick Select:</small>
+              <span class="badge bg-light text-dark border cursor-pointer" role="button" (click)="bannerForm.route = '/layout/grocery-layout'">Grocery</span>
+              <span class="badge bg-light text-dark border cursor-pointer" role="button" (click)="bannerForm.route = '/layout/rides'">Rides</span>
+              <span class="badge bg-light text-dark border cursor-pointer" role="button" (click)="bannerForm.route = '/layout/dineout'">Dineout</span>
+              <span class="badge bg-light text-dark border cursor-pointer" role="button" (click)="bannerForm.route = '/layout/property'">Property</span>
+              <span class="badge bg-light text-dark border cursor-pointer" role="button" (click)="bannerForm.route = '/layout/referral'">Referral</span>
+            </div>
+          </div>
+
+          <!-- Linked Service -->
+          <div class="col-md-6">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Linked Service</mat-label>
+              <mat-select [(ngModel)]="bannerForm.service_id">
+                <mat-option [value]="null">None (Always Active / Global)</mat-option>
+                @for (svc of servicesList; track svc.id) {
+                  <mat-option [value]="svc.id">
+                    {{ svc.title }} [{{ svc.status }}]
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <small class="text-muted d-block mt-n2 mb-2">
+              ⚠️ When this service is turned OFF in Service Control, this banner is automatically disabled.
+            </small>
+          </div>
+
+          <!-- City Geo-Fencing Multi-Select -->
+          <div class="col-md-6">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Target Cities (Geo-Fencing)</mat-label>
+              <mat-select multiple [(ngModel)]="bannerForm.cities" placeholder="All Cities">
+                @for (city of getAvailableCities(); track city) {
+                  <mat-option [value]="city">{{ city }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <small class="text-muted d-block mt-n2 mb-2">
+              📍 Leave empty to show in all cities. Select specific cities to restrict visibility.
+            </small>
+          </div>
+
+          <!-- Visibility Status -->
+          <div class="col-12">
+            <div class="form-check form-switch mt-1">
+              <input class="form-check-input" type="checkbox" role="switch" id="bannerActiveSwitch" [(ngModel)]="bannerForm.is_active">
+              <label class="form-check-label fw-semibold" for="bannerActiveSwitch">
+                {{ bannerForm.is_active ? '✅ Banner is Active (Visible on App)' : '⏸️ Banner is Inactive (Hidden)' }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Live Preview -->
+    <div class="col-lg-5">
+      <div class="preview-box p-3 border rounded-3 bg-white text-center shadow-sm h-100 d-flex flex-column justify-content-between">
+        <div>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="small fw-bold text-muted">LIVE PREVIEW</span>
+            <div class="d-flex flex-wrap gap-1 justify-content-end">
+              @for (p of bannerForm.placements; track p) {
+                <span class="badge bg-dark">{{ p }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="ratio ratio-21x9 bg-light rounded-3 overflow-hidden border d-flex align-items-center justify-content-center mb-3">
+            @if (bannerForm.img) {
+              <img [src]="bannerForm.img" alt="Banner Preview" style="object-fit: cover; width: 100%; height: 100%;" (error)="bannerForm.img = ''">
+            } @else {
+              <div class="d-flex flex-column align-items-center justify-content-center text-muted p-4">
+                <span class="display-6 mb-1">🖼️</span>
+                <small>Enter an image URL to preview</small>
+              </div>
+            }
+          </div>
+
+          <div class="text-start">
+            <h6 class="fw-bold mb-1 text-truncate">{{ bannerForm.title || 'Untitled Banner' }}</h6>
+            <div class="small text-muted mb-1 text-truncate">
+              <span class="fw-semibold">Route:</span> {{ bannerForm.route || 'No route set' }}
+            </div>
+            <div class="small text-muted mb-1">
+              <span class="fw-semibold">Cities:</span> {{ bannerForm.cities.length > 0 ? bannerForm.cities.join(', ') : 'All Cities (Global)' }}
+            </div>
+            <div class="small text-muted">
+              <span class="fw-semibold">Linked:</span> {{ getServiceTitle(bannerForm.service_id) }}
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-secondary py-2 px-3 small text-start mt-3 mb-0">
+          <strong>Tip:</strong> Users on OneApp will only see this banner if they are inside the serviceable city and the linked service is active.
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<!-- DIALOG ACTIONS -->
+<mat-dialog-actions class="d-flex justify-content-between px-4 py-3 border-top bg-light">
+  <div>
+    @if (isEditMode) {
+      <button type="button" class="btn btn-outline-danger btn-sm" [disabled]="isSaving || isDeleting" (click)="deleteBanner()">
+        {{ isDeleting ? 'Deleting...' : '🗑️ Delete Banner' }}
+      </button>
+    }
+  </div>
+
+  <div class="d-flex gap-2">
+    <button type="button" class="btn btn-outline-secondary btn-sm" mat-dialog-close [disabled]="isSaving || isDeleting">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-dark btn-sm px-4 fw-semibold shadow-sm" [disabled]="isSaving || isDeleting" (click)="saveBanner()">
+      @if (isSaving) {
+        <span>Saving...</span>
+      } @else {
+        <span>{{ isEditMode ? 'Update Banner' : 'Publish Banner' }}</span>
+      }
+    </button>
+  </div>
+</mat-dialog-actions>
+

@@ -9,7 +9,7 @@
    <section>
 
     <!-- tabs -->
-     <mat-tab-group (selectedTabChange)="onTabChange($event)">
+     <mat-tab-group class="apple-tabs-group" (selectedTabChange)="onTabChange($event)">
 
       <mat-tab label="Services">
     <app-service-control></app-service-control>
@@ -123,7 +123,7 @@
   </div>
 
   <div class="d-flex justify-content-end mt-2">
-    <button class="btn btn-primary px-4 py-2 fw-semibold shadow-sm" (click)="updateRideCommission()">
+    <button class="btn btn-dark px-4 py-2 fw-semibold shadow-sm" (click)="updateRideCommission()">
       Save Commission Settings
     </button>
   </div>
@@ -140,88 +140,165 @@
   <!-- banners -->
   <mat-tab label="Banners">
     @if (!isBannersLoading) {
-    <section class="mt-3" style="border-radius: 20px;">
-    <div class="d-flex justify-content-between align-items-center mt-3">
-    <h3 class=" mt-3 mb-4 ms-3">Banners</h3>
-    <button class="btn btn-dark me-3" (click)="isCreateBanner = !isCreateBanner">Add New Banner</button>
-</div>
+      <section class="p-3">
+        <!-- Header Bar -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 pb-2 border-bottom">
+          <div>
+            <h4 class="fw-bold mb-1 text-dark">🖼️ Customer Banners</h4>
+            <small class="text-muted">Manage promotional banners, placement zones (hometop, homedown), service linkage, and city geo-fencing.</small>
+          </div>
+          <div class="d-flex gap-2 align-items-center mt-2 mt-md-0">
+            <!-- Placement Filter Buttons (Dynamic) -->
+            <div class="btn-group btn-group-sm me-2 flex-wrap" role="group">
+              <button
+                type="button"
+                class="btn"
+                [class.btn-dark]="activePlacementFilter === 'all'"
+                [class.btn-outline-dark]="activePlacementFilter !== 'all'"
+                (click)="activePlacementFilter = 'all'">
+                All ({{ banners?.length || 0 }})
+              </button>
+              @for (tag of placementTags; track tag) {
+                <button
+                  type="button"
+                  class="btn text-lowercase"
+                  [class.btn-dark]="activePlacementFilter === tag"
+                  [class.btn-outline-dark]="activePlacementFilter !== tag"
+                  (click)="activePlacementFilter = tag">
+                  {{ tag }}
+                </button>
+              }
+            </div>
 
-<!-- create banner starts -->
-
-@if (isCreateBanner) {
-    <section>
-        
-    <div class="row m-3" style="border-radius: 20px; border: 3px dashed green">
-        <h3 class="mt-2">Add New Banner</h3>
-        <div class="col-md-3 d-flex flex-column justify-content-center align-items-center">
-            <!-- <h2>ID - {{item.id}}</h2> -->
-            <div class="col-md-3 w-100 mb-3">
-    <mat-form-field class="w-100 mt-2" appearance="outline">
-      <mat-label>Route (Optional) </mat-label>
-      <input matInput [(ngModel)]="route" [value]="route" placeholder="route">
-    </mat-form-field>
-  </div>
-  <div class="col-md-3 w-100 mb-3">
-    <mat-form-field class="w-100 mt-2" appearance="outline">
-      <mat-label>imgUrl</mat-label>
-      <input matInput [(ngModel)]="imgUrl" [value]="imgUrl" placeholder="imgUrl">
-    </mat-form-field>
-        <small class="text-nowrap text-muted"> <img style="width: 20px; padding-bottom: 2px" src="../../../assets/wired-flat-1738-no-entry-hover-pinch.webp" alt=""> Note: use only <strong>1200*600px</strong> image </small>
-  </div>
-        </div>
-        <div class="col-md-7 d-flex justify-content-center align-items-center">
-            <img style="height: 200px;" [src]="imgUrl" alt="">
-        </div>
-        <div class="col-md-2 d-flex align-items-center flex-column justify-content-center">
-            <!-- <button class="btn btn-outline-danger">Delete</button> -->
-            <button class="btn btn-outline-primary my-2" (click)="createBanner()">Add</button>
-            <!-- <button class="btn btn-outline-dark">Hide</button> -->
+            <button class="btn btn-dark btn-sm px-3 shadow-sm" (click)="openCreateBanner()">
+              + Add New Banner
+            </button>
+          </div>
         </div>
 
-    </div>
-</section>
-}
+        <!-- BANNERS LIST -->
+        @if (filteredBannersList.length === 0) {
+          <div class="text-center py-5 border rounded-4 bg-white">
+            <div class="display-6 text-muted mb-2">📭</div>
+            <h5 class="fw-bold text-secondary">No Banners Found</h5>
+            <p class="text-muted small mb-3">No banners match the selected placement filter: <strong>{{ activePlacementFilter }}</strong></p>
+            <button class="btn btn-outline-dark btn-sm" (click)="openCreateBanner()">Create First Banner</button>
+          </div>
+        } @else {
+          <div class="row g-3">
+            @for (item of filteredBannersList; track item.id || $index) {
+              <div class="col-12 col-md-6 col-xl-4">
+                <div class="card h-100 shadow-sm border rounded-3 overflow-hidden position-relative" [class.opacity-75]="!item.is_active">
+                  <!-- Banner Image Preview -->
+                  <div class="position-relative bg-dark" style="height: 140px;">
+                    <img
+                      [src]="item.img"
+                      [alt]="item.title || 'Banner'"
+                      style="width: 100%; height: 100%; object-fit: cover;"
+                      (error)="item.imgError = true">
 
-<!-- create banner ends -->
+                    <!-- Placement Badges (Multi-Placement Support) -->
+                    <div class="position-absolute top-0 start-0 m-2 d-flex flex-wrap gap-1" style="max-width: 70%;">
+                      @if (item.placements && item.placements.length > 0) {
+                        @for (tag of item.placements; track tag) {
+                          <span class="badge bg-dark bg-opacity-75 shadow-sm text-uppercase">
+                            {{ tag }}
+                          </span>
+                        }
+                      } @else {
+                        <span class="badge bg-dark bg-opacity-75 shadow-sm text-uppercase">
+                          {{ item.placement || 'hometop' }}
+                        </span>
+                      }
+                    </div>
 
-@for (item of banners; track $index) {
-    <div class="row m-3 border position-relative" style="border-radius: 20px;">
-        <div class="col-md-3 d-flex flex-column justify-content-center align-items-center">
-            <h2>ID - {{item.id}}</h2>
-            <div class="col-md-3 w-100 mb-3">
-    <mat-form-field class="w-100 mt-2" appearance="outline">
-      <mat-label>Route (Optional)</mat-label>
-      <input matInput [(ngModel)]="item.route" [value]="item.route" placeholder="route">
-    </mat-form-field>
-  </div>
-  <div class="col-md-3 w-100 mb-3">
-    <mat-form-field class="w-100 mt-2" appearance="outline">
-      <mat-label>imgUrl</mat-label>
-      <input matInput [(ngModel)]="item.img" [value]="item.img" placeholder="imgUrl">
-    </mat-form-field>
-    <small class="text-nowrap text-muted"> <img style="width: 20px; padding-bottom: 2px" src="../../../assets/wired-flat-1738-no-entry-hover-pinch.webp" alt=""> Note: use only <strong>1200*600px</strong> image </small>
-  </div>
-        </div>
-        <div class="col-md-7 d-flex justify-content-center align-items-center">
-            <img style="height: 200px;" [src]="item.img" alt="">
-        </div>
-        <div class="col-md-2 d-flex align-items-center flex-column justify-content-center">
-            <button class="btn btn-outline-danger" (click)="deleteBanner(item.id)">Delete</button>
-            <button class="btn btn-outline-primary my-2" (click)="updateBanner(item.id, item.img, item.route, item.is_active)">Update</button>
-            @if (item.is_active) {
-              <button class="btn btn-outline-success" (click)="updateBanner(item.id, item.img, item.route, 'false')">Visible</button>
-            } @else {
-              <button class="btn btn-outline-secondary" (click)="updateBanner(item.id, item.img, item.route, 'true')">Not Visible</button>
+                    <!-- Visibility Badge -->
+                    <span
+                      class="position-absolute top-0 end-0 m-2 badge shadow-sm"
+                      [class.bg-success]="item.is_active"
+                      [class.bg-secondary]="!item.is_active">
+                      {{ item.is_active ? 'Active' : 'Inactive' }}
+                    </span>
+                  </div>
+
+                  <!-- Card Body Details -->
+                  <div class="card-body p-3 d-flex flex-column justify-content-between">
+                    <div>
+                      <div class="d-flex justify-content-between align-items-start mb-1">
+                        <h6 class="fw-bold mb-0 text-dark text-truncate" style="max-width: 75%;">
+                          {{ item.title || ('Banner #' + item.id) }}
+                        </h6>
+                        <span class="badge bg-light text-secondary border">Order: {{ item.priority || 0 }}</span>
+                      </div>
+
+                      <!-- Route -->
+                      <p class="small text-muted mb-2 text-truncate">
+                        <span class="fw-semibold">Route:</span> {{ item.route || 'None' }}
+                      </p>
+
+                      <!-- Linked Service Badge -->
+                      <div class="mb-2">
+                        @if (item.service_id) {
+                          <span
+                            class="badge"
+                            [class.bg-success]="isServiceActive(item.service_id)"
+                            [class.bg-danger]="!isServiceActive(item.service_id)"
+                            [title]="isServiceActive(item.service_id) ? 'Service is online' : 'Service is offline, banner is hidden'">
+                            🔗 {{ getServiceTitle(item.service_id) }} ({{ isServiceActive(item.service_id) ? 'Service ON' : 'Service OFF' }})
+                          </span>
+                        } @else {
+                          <span class="badge bg-light text-dark border">
+                            🌐 Global (No Service Link)
+                          </span>
+                        }
+                      </div>
+
+                      <!-- Target Cities -->
+                      <div class="d-flex flex-wrap gap-1 mb-2">
+                        @if (item.cities && item.cities.length > 0) {
+                          @for (c of item.cities; track c) {
+                            <span class="badge bg-info bg-opacity-25 text-info-emphasis border border-info-subtle">
+                              📍 {{ c }}
+                            </span>
+                          }
+                        } @else {
+                          <span class="badge bg-light text-muted border">
+                            📍 All Cities
+                          </span>
+                        }
+                      </div>
+                    </div>
+
+                    <!-- Footer Action Buttons -->
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top mt-2">
+                      <button
+                        type="button"
+                        class="btn btn-sm"
+                        [class.btn-outline-success]="!item.is_active"
+                        [class.btn-outline-secondary]="item.is_active"
+                        (click)="toggleBannerVisibility(item)">
+                        {{ item.is_active ? 'Hide' : 'Show' }}
+                      </button>
+
+                      <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-outline-dark" (click)="editBanner(item)">
+                          Edit
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" (click)="deleteBanner(item.id)">
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             }
-        </div>
-        
-
-    </div>
-}
-</section>
-} @else {
-    <app-loader></app-loader>
-}
+          </div>
+        }
+      </section>
+    } @else {
+      <app-loader></app-loader>
+    }
   </mat-tab>
 <!-- banners -->
 

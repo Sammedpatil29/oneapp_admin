@@ -11,7 +11,7 @@ export class CommonService {
 
   serviceUrl = 'https://oneapp-backend.onrender.com/api/services/'
   metaDataUrl = 'https://oneapp-backend.onrender.com/api/metadata/3/'
-  bannerUrl = 'https://oneapp-backend.onrender.com/api/banner/'
+  bannerUrl = `${environment.apiUrl}/api/banners`
   polygon = 'https://oneapp-backend.onrender.com/api/polygon/6/'
   orders = 'https://oneapp-backend.onrender.com/api/orders/all-orders/'
   suggestions = 'https://oneapp-backend.onrender.com/api/suggestions/admin-suggestion/'
@@ -65,8 +65,13 @@ export class CommonService {
     return this.http.put(`${this.metaDataUrl}`, params)
   }
 
-  getBanners(){
-    return this.http.get(this.bannerUrl)
+  getBanners(placement?: string){
+    const query = placement ? `?placement=${encodeURIComponent(placement)}` : '';
+    return this.http.get(`${this.bannerUrl}${query}`)
+  }
+
+  getPlacementTags(){
+    return this.http.get(`${this.bannerUrl}/tags`);
   }
 
   createBanner(params:any){
@@ -74,11 +79,11 @@ export class CommonService {
   }
 
   deleteBanner(id:any){
-    return this.http.delete(`${this.bannerUrl}${id}/`)
+    return this.http.delete(`${this.bannerUrl}/${id}`)
   }
 
   updateBanner(id:any, params:any){
-    return this.http.put(`${this.bannerUrl}${id}/`, params)
+    return this.http.put(`${this.bannerUrl}/${id}`, params)
   }
 
   getPolygonData(params:any){
