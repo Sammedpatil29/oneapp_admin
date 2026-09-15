@@ -15,10 +15,11 @@ import { MatTabGroup, MatTab } from "@angular/material/tabs";
 import { ServiceControlComponent } from "../service-control/service-control.component";
 import { SidebarSettingsComponent } from "../sidebar-settings/sidebar-settings.component";
 import { AlertdialogComponent } from '../../alertdialog/alertdialog.component';
+import { BannerDialogComponent } from '../banner-dialog/banner-dialog.component';
 
 @Component({
   selector: 'app-metadata',
-  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatExpansionModule, MatInputModule, MatSelectModule, LoaderComponent, MatTabGroup, MatTab, ServiceControlComponent, SidebarSettingsComponent],
+  imports: [MatDialogModule, CommonModule, MatButtonModule, FormsModule, MatFormFieldModule, MatExpansionModule, MatInputModule, MatSelectModule, LoaderComponent, MatTabGroup, MatTab, ServiceControlComponent, SidebarSettingsComponent, BannerDialogComponent],
   templateUrl: './metadata.component.html',
   styleUrl: './metadata.component.css'
 })
@@ -31,10 +32,14 @@ last_updated = ''
 otherDetails = ''
 route = ''
 imgUrl = ''
-isCreateBanner:boolean = false
 isMetaDataLoading:boolean = false
 isBannersLoading:boolean = false
 isMapDataLoading:boolean = false
+
+// Modern Banners State
+servicesList: any[] = [];
+activePlacementFilter: string = 'all';
+placementTags: string[] = ['hometop', 'homedown', 'grocery'];
 strokeColor = '#a000e2'
 areaColor = '#a000e2'
 isMapUpdateLoading: boolean = false
@@ -67,7 +72,9 @@ otherPolygonOverlays: google.maps.Polygon[] = [];
 
   ngOnInit(): void {
       this.getMetaData()
+      this.loadServices()
       this.getbanners()
+      this.loadPlacementTags()
       this.getPolygonData()
   }
 
@@ -322,47 +329,144 @@ otherPolygonOverlays: google.maps.Polygon[] = [];
     })
   }
 
-  getbanners(){
-    this.isBannersLoading = true
-    this.commonService.getBanners().subscribe((res)=>{
-        this.banners = res
-        this.isBannersLoading = false
-    })
+  loadServices() {
+    this.commonService.getServices().subscribe({
+      next: (res: any) => {
+        this.servicesList = Array.isArray(res) ? res : (res?.data || []);
+      },
+      error: (err: any) => console.error('Error loading services:', err)
+    });
   }
 
-  createBanner(){
-    let params = {
-      "img": this.imgUrl,
-      "route": this.route
-    }
-    this.isBannersLoading = true
-    this.commonService.createBanner(params).subscribe((res)=>{
-      this.getbanners()
-      this.isBannersLoading = false
-      alert('banner created')
-    })
+  getbanners() {
+    this.isBannersLoading = true;
+    this.commonService.getBanners().subscribe({
+      next: (res: any) => {
+        this.banners = Array.isArray(res) ? res : (res?.data || []);
+        this.isBannersLoading = false;
+      },
+      error: (err: any) => {
+        console.error('Error loading banners:', err);
+        this.banners = [];
+        this.isBannersLoading = false;
+      }
+    });
   }
 
-  deleteBanner(id:any){
-    console.log('deleting')
-    this.commonService.deleteBanner(id).subscribe((res)=> {
-      this.getbanners()
-      alert("banner deleted successfully")
-    })
+  loadPlacementTags() {
+    this.commonService.getPlacementTags().subscribe({
+      next: (res: any) => {
+        const tags = res?.data || res || [];
+        if (Array.isArray(tags)) {
+          const set = new Set([...this.placementTags, ...tags]);
+          this.placementTags = Array.from(set);
+        }
+      },
+      error: (err: any) => console.error('Error loading placement tags:', err)
+    });
   }
 
-  updateBanner(id:any, img:any, route:any, active:any){
-    let params = {
-      "img": img,
-      "route": route,
-      "is_active": active
-    }
-    console.log(params)
-    console.log('updating')
-    this.commonService.updateBanner(id, params).subscribe((res)=> {
-      this.getbanners()
-      alert("banner updated successfully")
-    })
+  openCreateBanner() {
+    const dialogRef = this.dialog.open(BannerDialogComponent, {
+      width: '940px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+      data: {
+        type: 'create',
+        servicesList: this.servicesList,
+        serviceAreas: this.serviceAreas,
+        placementTags: this.placementTags
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((res: any) => {
+      if (res?.saved) {
+        this.getbanners();
+        this.loadPlacementTags();
+      }
+    });
+  }
+
+  editBanner(item: any) {
+    const dialogRef = this.dialog.open(BannerDialogComponent, {
+      width: '940px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+      data: {
+        type: 'edit',
+        item: item,
+        servicesList: this.servicesList,
+        serviceAreas: this.serviceAreas,
+        placementTags: this.placementTags
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((res: any) => {
+      if (res?.saved) {
+        this.getbanners();
+        this.loadPlacementTags();
+      }
+    });
+  }
+
+  deleteBanner(id: any) {
+    if (!confirm('Are you sure you want to delete this banner?')) return;
+    this.isBannersLoading = true;
+    this.commonService.deleteBanner(id).subscribe({
+      next: () => {
+        this.getbanners();
+        alert('Banner deleted successfully!');
+      },
+      error: (err: any) => {
+        this.isBannersLoading = false;
+        console.error(err);
+        alert('Failed to delete banner');
+      }
+    });
+  }
+
+  toggleBannerVisibility(item: any) {
+    const newStatus = !item.is_active;
+    this.commonService.updateBanner(item.id, { is_active: newStatus }).subscribe({
+      next: () => {
+        item.is_active = newStatus;
+      },
+      error: (err: any) => {
+        console.error(err);
+        alert('Failed to update banner status');
+      }
+    });
+  }
+
+  getServiceTitle(serviceId: any): string {
+    if (!serviceId) return 'None (Global)';
+    const svc = this.servicesList.find(s => String(s.id) === String(serviceId));
+    return svc ? svc.title : `Service #${serviceId}`;
+  }
+
+  isServiceActive(serviceId: any): boolean {
+    if (!serviceId) return true;
+    const svc = this.servicesList.find(s => String(s.id) === String(serviceId));
+    return svc ? svc.status === 'active' : false;
+  }
+
+  getAvailableCities(): string[] {
+    const set = new Set<string>();
+    (this.serviceAreas || []).forEach((a: any) => {
+      if (a.cityName) set.add(a.cityName);
+    });
+    return Array.from(set);
+  }
+
+  get filteredBannersList(): any[] {
+    if (!Array.isArray(this.banners)) return [];
+    if (this.activePlacementFilter === 'all') return this.banners;
+    return this.banners.filter(b => {
+      if (Array.isArray(b.placements) && b.placements.length > 0) {
+        return b.placements.includes(this.activePlacementFilter);
+      }
+      return b.placement === this.activePlacementFilter;
+    });
   }
 
   onTabChange(event: any) {

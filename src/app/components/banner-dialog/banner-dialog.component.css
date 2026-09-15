@@ -1,0 +1,79 @@
+.dialog-header {
+  background: #ffffff;
+}
+
+.dialog-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.dialog-title {
+  color: #0f172a;
+  letter-spacing: -0.2px;
+}
+
+.banner-dialog-content {
+  max-height: 75vh;
+  overflow-y: auto;
+  padding-bottom: 24px !important;
+}
+
+.form-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 18px 14px 18px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.section-title h6 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #1e293b;
+  letter-spacing: -0.2px;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* Material form field adjustments inside dialog */
+::ng-deep .banner-dialog-content .mat-mdc-form-field {
+  font-size: 0.85rem;
+}
+
+::ng-deep .banner-dialog-content .mat-mdc-text-field-wrapper {
+  background-color: #ffffff !important;
+  border-radius: 8px;
+}
+
+.preview-box {
+  background: #ffffff;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
