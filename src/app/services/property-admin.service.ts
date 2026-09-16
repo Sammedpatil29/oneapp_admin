@@ -22,6 +22,7 @@ export interface PropertyItem {
   lng?: number;
   coordinates?: { lat: number; lng: number };
   images: string[];
+  videoUrl?: string;
   bedrooms?: number;
   bathrooms?: number;
   balconies?: number;

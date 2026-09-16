@@ -126,9 +126,10 @@ export class PropertyDialogComponent implements OnInit {
   sellerWhatsapp: string = '';
   sellerResponseRate: string = 'Under 15 mins';
 
-  // Section 6: Photos Gallery
+  // Section 6: Photos Gallery & Video
   images: string[] = [];
   newImageUrl: string = '';
+  videoUrl: string = '';
 
   // Section 7: Description, Amenities & Tags
   description: string = '';
@@ -333,6 +334,7 @@ export class PropertyDialogComponent implements OnInit {
     }
 
     this.images = Array.isArray(item.images) ? [...item.images] : [];
+    this.videoUrl = item.videoUrl || (item as any).video_url || '';
     this.description = item.description || '';
     this.selectedAmenities = Array.isArray(item.amenities) ? [...item.amenities] : [];
     this.tagsInput = Array.isArray(item.tags) ? item.tags.join(', ') : '';
@@ -515,6 +517,7 @@ export class PropertyDialogComponent implements OnInit {
       images: this.images.length > 0 ? this.images : [
         'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'
       ],
+      videoUrl: this.videoUrl.trim() || null,
       bedrooms: (this.category === 'buy_house' || this.category === 'rent_house') && this.bedrooms !== null ? Number(this.bedrooms) : null,
       bathrooms: (this.category === 'buy_house' || this.category === 'rent_house') && this.bathrooms !== null ? Number(this.bathrooms) : null,
       balconies: (this.category === 'buy_house' || this.category === 'rent_house') && this.balconies !== null ? Number(this.balconies) : null,
